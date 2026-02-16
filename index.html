@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Projeto Ampulheta - Miriã</title>
+
+  <style>
+    :root{
+      --bg:#fff3f7;
+      --card:#ffffff;
+      --primary:#ff2d7a;
+      --primary2:#c2185b;
+      --text:#1f1f1f;
+      --muted:#6b6b6b;
+      --ok:#1b9c5a;
+      --shadow:0 8px 22px rgba(0,0,0,0.08);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, var(--bg), #ffffff);
+      color:var(--text);
+    }
+    header{
+      padding:18px 18px 10px 18px;
+      text-align:center;
+    }
+    header h1{
+      margin:0;
+      font-size:22px;
+      color:var(--primary2);
+      font-weight:800;
+    }
+    header p{
+      margin:6px 0 0 0;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .container{
+      max-width:720px;
+      margin:0 auto;
+      padding:12px 14px 26px 14px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+    @media (max-width:520px){
+      .grid{grid-template-columns:1fr}
+    }
+    .btn{
+      width:100%;
+      border:none;
+      cursor:pointer;
+      padding:14px 14px;
+      background: var(--primary);
+      color:#fff;
+      border-radius: 14px;
+      font-size:15px;
+      font-weight:700;
+      box-shadow: var(--shadow);
+      transition: transform .05s ease;
+      text-align:left;
+    }
+    .btn:active{transform: scale(0.99)}
+    .btn small{display:block; font-weight:400; opacity:.9; margin-top:2px}
+    .card{
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:14px;
+      margin-top:14px;
+      display:none;
+    }
+    .card.active{display:block;}
+    .card h2{
+      margin:0 0 10px 0;
+      font-size:18px;
+      color:var(--primary2);
+    }
+    .meta{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .chip{
+      background:#ffe0ea;
+      color:var(--primary2);
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+    }
+    .item{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:10px 0;
+      border-top:1px solid #f2f2f2;
+    }
+    .item:first-of-type{border-top:none}
+    input[type="checkbox"]{
+      width:20px;
+      height:20px;
+      margin-top:2px;
+      accent-color: var(--ok);
+      cursor:pointer;
+    }
+    .item b{display:block; margin-bottom:4px}
+    .item .sub{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.35;
+    }
+    .links a{
+      display:inline-block;
+      margin-top:6px;
+      font-size:12px;
+      color: var(--primary2);
+      text-decoration:none;
+      font-weight:700;
+    }
+    .links a:hover{text-decoration:underline}
+    .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top:10px;
+    }
+    @media (max-width:520px){
+      .row{grid-template-columns:1fr}
+    }
+    .field label{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:4px;
+      font-weight:700;
+    }
+    .field input{
+      width:100%;
+      padding:10px 10px;
+      border:1px solid #e9e9e9;
+      border-radius:12px;
+      font-size:14px;
+    }
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+    .actionBtn{
+      border:none;
+      cursor:pointer;
+      padding:12px 14px;
+      border-radius:14px;
+      font-weight:800;
+      background:#222;
+      color:#fff;
+    }
+    .actionBtn.secondary{
+      background:#f3f3f3;
+      color:#222;
+    }
+    .toast{
+      margin-top:10px;
+      font-size:12px;
+      color:var(--ok);
+      font-weight:800;
+      display:none;
+    }
+    .footer{
+      text-align:center;
+      font-size:11px;
+      color:#888;
+      margin-top:18px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>🍑 Projeto Ampulheta </h1>
+    <p>Treino + cargas + medidas (salva automaticamente no navegador)</p>
+  </header>
+
+  <div class="container">
+    <div class="grid">
+      <button class="btn" onclick="abrir('seg')">Segunda – Glúteo Pesado <small>Hip Thrust + Leg Press</small></button>
+      <button class="btn" onclick="abrir('ter')">Terça – Costas + Cintura <small>Postura + Core</small></button>
+      <button class="btn" onclick="abrir('qui')">Quinta – Posterior + Glúteo <small>Afundo + Cabo</small></button>
+      <button class="btn" onclick="abrir('sex')">Sexta – Glúteo + Postura <small>Smith + Face Pull</small></button>
+      <button class="btn" onclick="abrir('cargas')">📈 Registrar Cargas <small>Salvar pesos e repetições</small></button>
+      <button class="btn" onclick="abrir('medidas')">📏 Medidas + Check-in <small>Cintura / Abdômen / Glúteo</small></button>
+      <button class="btn" onclick="abrir('dieta')">🥗 Dieta Econômica <small>Sem tapioca</small></button>
+    </div>
+
+    <!-- SEGUNDA -->
+    <div id="seg" class="card">
+      <h2>🟣 Segunda – Glúteo Pesado</h2>
+      <div class="meta">
+        <span class="chip">Descanso: 1m30 (principais)</span>
+        <span class="chip">Acessórios: 45s–1m</span>
+      </div>
+
+      <div class="item"><input type="checkbox" id="seg1"><div>
+        <b>Hip Thrust (máquina) – 4x8–10</b>
+        <div class="sub">Queixo para baixo • Calcanhar firme • Segurar 1s no topo • Sem arquear lombar</div>
+        <div class="links"><a href="https://www.youtube.com/results?search_query=hip+thrust+máquina+execução+correta+português" target="_blank">▶ Ver vídeo (PT)</a></div>
+      </div></div>
+
+      <div class="item"><input type="checkbox" id="seg2"><div>
+        <b>Leg Press 45° – 4x10–12</b>
+        <div class="sub">Pé mais alto • Não travar joelho • Descer controlando</div>
+        <div class="links"><a href="https://www.youtube.com/results?search_query=leg+press+45+execução+correta+português" target="_blank">▶ Ver vídeo (PT)</a></div>
+      </div></div>
+
+      <div class="item"><input type="checkbox" id="seg3"><div>
+        <b>Cadeira Abdutora – 3x15</b>
+        <div class="sub">Inclina levemente para frente • Segura 1s aberta</div>
+        <div class="links"><a href="https://www.youtube.com/results?search_query=cadeira+abdutora+execução+correta+academia" target="_blank">▶ Ver vídeo (PT)</a></div>
+      </div></div>
+
+      <div class="item"><input type="checkbox" id="seg4"><div>
+        <b>Stiff com Halter – 3x10</b>
+        <div class="sub">Coluna neutra • Descer devagar • Alongar posterior</div>
+        <div class="links"><a href="https://www.youtube.com/results?search_query=stiff+halter+execução+correta+português" target="_blank">▶ Ver vídeo (PT)</a></div>
+      </div></div>
+
+      <div class="item"><input type="checkbox" id="seg5"><div>
+        <b>Prancha – 3x40s</b>
+        <div class="links"><a href="https://www.youtube.com/results?search_query=prancha+abdominal+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
+      </div></div>
+
+      <div class="actions">
+        <button class="actionBtn" onclick="salvarChecklist('seg')">Salvar ✅</button>
+        <button class="actionBtn secondary" onclick="limparChecklist('seg')">Zerar</button>
+      </div>
+      <div id="toast-seg" class="toast">Salvo!</div>
+    </div>
+
+    <!-- TERÇA -->
+    <div id="ter" class="card">
+      <h2>🔵 Terça – Costas + Cintura</h2>
+
+      <div class="item"><input type="checkbox" id="ter1"><div>
+        <b>Puxada Frente – 3x12</b>
+        <div class="links"><a href="https://www.youtube.com/results?search_query=puxada+frente+polia+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
+      </div></div>
+
+      <div class="item"><input type="checkbox" id="ter2"><div>
+        <b>Remada Baixa – 3x12</b>
+        <div class="links"><a href="https://www.youtube.com/results?search_query=remada+baixa+máquina+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
+      </div></div>
+
+      <div class="item"><input type="checkbox" id="ter3"><div>
+        <b>Remada Unilateral – 3x10</b>
+        <div class="links"><a href="https://www.youtube.com/results?search_query=remada+unilateral+halter+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
+      </div></div>
+
+      <div class="item"><input type="checkbox" id="ter4"><div>
+        <b>Elevação Lateral – 3x12</b>
+        <div class="links"><a href="https://www.youtube.com/results?search_query=elevação+lateral+halter+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
+      </div></div>
+
+      <div class="item"><input type="checkbox" id="ter5"><div>
+        <b>Prancha Lateral – 3x30s</b>
+        <div class="links"><a href="https://www.youtube.com/results?search_query=prancha+lateral+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
+      </div></div>
+
+      <div class="item"><input type="checkbox" id="ter6"><div>
+        <b>Vacuum – 4x20s</b>
+        <div class="links"><a href="https://www.youtube.com/results?search_query=vacuum+abdominal+como+fazer" target="_blank">▶ Ver vídeo (PT)</a></div>
+      </div></div>
+
+      <div class="actions">
+        <button class="actionBtn" onclick="salvarChecklist('ter')">Salvar ✅</button>
+        <button class="actionBtn secondary" onclick="limparChecklist('ter')">Zerar</button>
+      </div>
+      <div id="toast-ter" class="toast">Salvo!</div>
+    </div>
+
+    <!-- QUINTA -->
+    <div id="qui" class="card">
+      <h2>🟣 Quinta – Posterior + Glúteo</h2>
+
+      <div class="item"><input type="checkbox" id="qui1"><div>
+        <b>Mesa Flexora – 4x12</b>
+        <div class="links"><a href="https://www.youtube.com/results?search_query=mesa+flexora+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
+      </div></div>
+
+      <div class="item"><input type="checkbox" id="qui2"><div>
+        <b>Afundo com Halter – 3x10 (cada perna)</b>
+        <div class="links"><a href="https://www.youtube.com/results?search_query=afundo+com+halter+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
+      </div></div>
+
+      <div class="item"><input type="checkbox" id="qui3"><div>
+        <b>Glúteo no Cabo – 3x12</b>
+        <div class="links"><a href="https://www.youtube.com/results?search_query=glúteo+no+cabo+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
+      </div></div>
+
+      <div class="item"><input type="checkbox" id="qui4"><div>
+        <b>Abdutora – 3x15</b>
+        <div class="links"><a href="https://www.youtube.com/results?search_query=cadeira+abdutora+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
+      </div></div>
+
+      <div class="item"><input type="checkbox" id="qui5"><div>
+        <b>Abdominal Infra – 3x15</b>
+        <div class="links"><a href="https://www.youtube.com/results?search_query=abdominal+infra+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
+      </div></div>
+
+      <div class="actions">
+        <button class="actionBtn" onclick="salvarChecklist('qui')">Salvar ✅</button>
+        <button class="actionBtn secondary" onclick="limparChecklist('qui')">Zerar</button>
+      </div>
+      <div id="toast-qui" class="toast">Salvo!</div>
+    </div>
+
+    <!-- SEXTA -->
+    <div id="sex" class="card">
+      <h2>🔴 Sexta – Glúteo + Postura</h2>
+
+      <div class="item"><input type="checkbox" id="sex1"><div>
+        <b>Agachamento Smith – 4x8–10</b>
+        <div class="links"><a href="https://www.youtube.com/results?search_query=agachamento+smith+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
+      </div></div>
+
+      <div class="item"><input type="checkbox" id="sex2"><div>
+        <b>Elevação Pélvica – 3x12</b>
+        <div class="links"><a href="https://www.youtube.com/results?search_query=hip+thrust+máquina+execução+correta+português" target="_blank">▶ Ver vídeo (PT)</a></div>
+      </div></div>
+
+      <div class="item"><input type="checkbox" id="sex3"><div>
+        <b>Cadeira Extensora – 3x12</b>
+        <div class="links"><a href="https://www.youtube.com/results?search_query=cadeira+extensora+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
+      </div></div>
+
+      <div class="item"><input type="checkbox" id="sex4"><div>
+        <b>Face Pull – 3x12</b>
+        <div class="links"><a href="https://www.youtube.com/results?search_query=face+pull+execução+correta+português" target="_blank">▶ Ver vídeo (PT)</a></div>
+      </div></div>
+
+      <div class="item"><input type="checkbox" id="sex5"><div>
+        <b>Esteira inclinada – 15 min</b>
+        <div class="sub">Velocidade confortável • Inclinação moderada</div>
+      </div></div>
+
+      <div class="actions">
+        <button class="actionBtn" onclick="salvarChecklist('sex')">Salvar ✅</button>
+        <button class="actionBtn secondary" onclick="limparChecklist('sex')">Zerar</button>
+      </div>
+      <div id="toast-sex" class="toast">Salvo!</div>
+    </div>
+
+    <!-- DIETA -->
+    <div id="dieta" class="card">
+      <h2>🥗 Dieta Econômica (sem tapioca)</h2>
+
+      <div class="item"><input type="checkbox" id="d1"><div><b>Café 6:50</b><div class="sub">2 ovos + pão 12 grãos + suco (se coar: 1 colher de chia)</div></div></div>
+      <div class="item"><input type="checkbox" id="d2"><div><b>9:40</b><div class="sub">Mamão + aveia OU ameixa</div></div></div>
+      <div class="item"><input type="checkbox" id="d3"><div><b>Almoço</b><div class="sub">3 colheres arroz + 3 feijão + salada + frango/carne</div></div></div>
+      <div class="item"><input type="checkbox" id="d4"><div><b>14:40</b><div class="sub">Fruta + iogurte OU 1 ovo</div></div></div>
+      <div class="item"><input type="checkbox" id="d5"><div><b>Jantar 20:30</b><div class="sub">Salada + 150g frango (se treino pesado: +2 colheres arroz)</div></div></div>
+
+      <div class="actions">
+        <button class="actionBtn" onclick="salvarChecklist('dieta')">Salvar ✅</button>
+        <button class="actionBtn secondary" onclick="limparChecklist('dieta')">Zerar</button>
+      </div>
+      <div id="toast-dieta" class="toast">Salvo!</div>
+    </div>
+
+    <div class="footer">Feito para Miriã 💛 • Projeto Ampulheta 🍑</div>
+  </div>
+
+<script>
+  function abrir(id){
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    carregarChecklists();
+  }
+
+  function salvarChecklist(sec){
+    const ids = Array.from(document.querySelectorAll(`#${sec} input[type="checkbox"]`)).map(x=>x.id);
+    const estado = {};
+    ids.forEach(i => estado[i] = document.getElementById(i).checked);
+    localStorage.setItem(`check_${sec}`, JSON.stringify(estado));
+    toast(`toast-${sec}`);
+  }
+
+  function limparChecklist(sec){
+    Array.from(document.querySelectorAll(`#${sec} input[type="checkbox"]`)).forEach(x=>x.checked=false);
+    localStorage.removeItem(`check_${sec}`);
+  }
+
+  function carregarChecklists(){
+    ['seg','ter','qui','sex','dieta'].forEach(sec=>{
+      const data = localStorage.getItem(`check_${sec}`);
+      if(!data) return;
+      const estado = JSON.parse(data);
+      Object.keys(estado).forEach(id=>{
+        const el = document.getElementById(id);
+        if(el) el.checked = !!estado[id];
+      });
+    });
+  }
+
+  function toast(id){
+    const t = document.getElementById(id);
+    if(!t) return;
+    t.style.display='block';
+    setTimeout(()=>t.style.display='none', 1200);
+  }
+
+  carregarChecklists();
+  abrir('seg');
+</script>
+</body>
+</html>
