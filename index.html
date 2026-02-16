@@ -1,425 +1,973 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!doctype html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Projeto Ampulheta - Miriã</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>🍑 Projeto Ampulheta</title>
+  <meta name="theme-color" content="#ff2d83" />
+
+  <!-- Fonte -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Chart.js (gráficos) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
   <style>
     :root{
-      --bg:#fff3f7;
+      --bg:#fff2f6;
       --card:#ffffff;
-      --primary:#ff2d7a;
-      --primary2:#c2185b;
-      --text:#1f1f1f;
+      --pink:#ff2d83;
+      --pink2:#ff5aa5;
+      --text:#1c1c1c;
       --muted:#6b6b6b;
-      --ok:#1b9c5a;
-      --shadow:0 8px 22px rgba(0,0,0,0.08);
-      --radius:16px;
+      --line:#f0d5df;
+      --ok:#17a34a;
+      --warn:#f59e0b;
     }
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, var(--bg), #ffffff);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background: radial-gradient(1200px 400px at 50% 0%, #ffe1ec, var(--bg));
       color:var(--text);
     }
+    .wrap{max-width:980px;margin:0 auto;padding:18px}
     header{
-      padding:18px 18px 10px 18px;
-      text-align:center;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; margin:8px 0 14px;
     }
-    header h1{
-      margin:0;
-      font-size:22px;
-      color:var(--primary2);
-      font-weight:800;
+    .brand{
+      display:flex; flex-direction:column; gap:2px;
     }
-    header p{
-      margin:6px 0 0 0;
-      font-size:13px;
-      color:var(--muted);
-    }
-    .container{
-      max-width:720px;
-      margin:0 auto;
-      padding:12px 14px 26px 14px;
+    .brand h1{margin:0;font-size:28px;letter-spacing:-.5px}
+    .brand p{margin:0;color:var(--muted);font-size:13px}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 12px;border-radius:999px;background:#fff; border:1px solid var(--line);
+      font-size:13px;color:var(--muted);
     }
     .grid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-      margin-top:12px;
+      display:grid; grid-template-columns: repeat(12, 1fr);
+      gap:14px;
     }
-    @media (max-width:520px){
-      .grid{grid-template-columns:1fr}
-    }
-    .btn{
-      width:100%;
-      border:none;
-      cursor:pointer;
-      padding:14px 14px;
-      background: var(--primary);
-      color:#fff;
-      border-radius: 14px;
-      font-size:15px;
-      font-weight:700;
-      box-shadow: var(--shadow);
-      transition: transform .05s ease;
-      text-align:left;
-    }
-    .btn:active{transform: scale(0.99)}
-    .btn small{display:block; font-weight:400; opacity:.9; margin-top:2px}
     .card{
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding:14px;
-      margin-top:14px;
-      display:none;
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.06);
+      overflow:hidden;
     }
-    .card.active{display:block;}
-    .card h2{
-      margin:0 0 10px 0;
-      font-size:18px;
-      color:var(--primary2);
+    .card .hd{
+      padding:14px 14px 10px;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+      border-bottom:1px solid #f6e6ee;
     }
-    .meta{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-bottom:10px;
+    .card .hd h2{margin:0;font-size:16px}
+    .card .hd small{color:var(--muted)}
+    .card .bd{padding:14px}
+    .btnrow{display:flex;flex-wrap:wrap;gap:10px}
+    button, .btn{
+      border:0; cursor:pointer;
+      padding:11px 12px; border-radius:12px;
+      background:var(--pink);
+      color:#fff; font-weight:700;
+      transition:.15s transform;
+      font-family:inherit;
     }
-    .chip{
-      background:#ffe0ea;
-      color:var(--primary2);
-      padding:6px 10px;
-      border-radius:999px;
-      font-size:12px;
+    button:active{transform:scale(.98)}
+    .btn-ghost{
+      background:#fff; color:var(--pink);
+      border:1px solid var(--line);
       font-weight:700;
+    }
+    .btn-warn{
+      background:#fff7ed; color:#9a3412;
+      border:1px solid #fed7aa;
+      font-weight:800;
+    }
+    .tabs{
+      display:flex; flex-wrap:wrap; gap:10px;
+      margin:10px 0 0;
+    }
+    .tab{
+      background:#fff;
+      border:1px solid var(--line);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:999px;
+      font-weight:800;
+      cursor:pointer;
+    }
+    .tab.active{
+      background: linear-gradient(135deg, var(--pink), var(--pink2));
+      color:#fff;
+      border-color:transparent;
+    }
+    .two{
+      display:grid; grid-template-columns: 1fr 1fr; gap:12px;
+    }
+    @media (max-width: 820px){
+      .two{grid-template-columns:1fr}
+      header{flex-direction:column;align-items:flex-start}
+    }
+    .kpi{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px;
+    }
+    .kpi .box{
+      background:#fff; border:1px solid var(--line);
+      border-radius:14px; padding:10px;
+    }
+    .kpi .box b{display:block;font-size:16px}
+    .kpi .box span{color:var(--muted);font-size:12px}
+    .list{
+      display:flex; flex-direction:column; gap:10px;
     }
     .item{
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-      padding:10px 0;
-      border-top:1px solid #f2f2f2;
-    }
-    .item:first-of-type{border-top:none}
-    input[type="checkbox"]{
-      width:20px;
-      height:20px;
-      margin-top:2px;
-      accent-color: var(--ok);
-      cursor:pointer;
-    }
-    .item b{display:block; margin-bottom:4px}
-    .item .sub{
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.35;
-    }
-    .links a{
-      display:inline-block;
-      margin-top:6px;
-      font-size:12px;
-      color: var(--primary2);
-      text-decoration:none;
-      font-weight:700;
-    }
-    .links a:hover{text-decoration:underline}
-    .row{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-      margin-top:10px;
-    }
-    @media (max-width:520px){
-      .row{grid-template-columns:1fr}
-    }
-    .field label{
-      display:block;
-      font-size:12px;
-      color:var(--muted);
-      margin-bottom:4px;
-      font-weight:700;
-    }
-    .field input{
-      width:100%;
-      padding:10px 10px;
-      border:1px solid #e9e9e9;
-      border-radius:12px;
-      font-size:14px;
-    }
-    .actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:12px;
-    }
-    .actionBtn{
-      border:none;
-      cursor:pointer;
-      padding:12px 14px;
+      border:1px solid var(--line);
       border-radius:14px;
-      font-weight:800;
-      background:#222;
-      color:#fff;
+      padding:12px;
+      background:#fff;
     }
-    .actionBtn.secondary{
-      background:#f3f3f3;
-      color:#222;
+    .item .top{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
     }
-    .toast{
-      margin-top:10px;
+    .item .top b{font-size:14px}
+    .item .meta{color:var(--muted);font-size:12px;margin-top:4px}
+    .item a{color:var(--pink);font-weight:800;text-decoration:none}
+    .row{
+      display:grid;grid-template-columns:1fr 130px 130px;gap:10px;margin-top:10px;
+    }
+    @media (max-width:560px){
+      .row{grid-template-columns:1fr 1fr; }
+      .row .full{grid-column:1/-1}
+    }
+    input, select, textarea{
+      width:100%;
+      padding:10px 11px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      font-family:inherit;
+      outline:none;
+      background:#fff;
+    }
+    textarea{min-height:92px; resize:vertical}
+    .hint{color:var(--muted);font-size:12px;margin-top:6px}
+    .badge{
+      display:inline-flex;align-items:center;gap:6px;
       font-size:12px;
-      color:var(--ok);
-      font-weight:800;
-      display:none;
+      padding:6px 10px;border-radius:999px;
+      background:#fff; border:1px solid var(--line);
+      color:var(--muted);
     }
-    .footer{
-      text-align:center;
-      font-size:11px;
-      color:#888;
-      margin-top:18px;
-    }
+    .ok{color:var(--ok);font-weight:800}
+    .small{font-size:12px;color:var(--muted)}
+    .hr{height:1px;background:#f6e6ee;margin:12px 0}
+    .footer{margin:18px 0 6px;color:var(--muted);font-size:12px}
   </style>
 </head>
 
 <body>
-  <header>
-    <h1>🍑 Projeto Ampulheta </h1>
-    <p>Treino + cargas + medidas (salva automaticamente no navegador)</p>
-  </header>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <h1>🍑 Projeto Ampulheta</h1>
+        <p>Treino + cargas + medidas + dieta econômica (salva automaticamente no navegador)</p>
+      </div>
+      <div class="pill" id="statusPill">📌 Pronta pra evoluir hoje, Miriã 💛</div>
+    </header>
 
-  <div class="container">
+    <!-- Atalhos -->
     <div class="grid">
-      <button class="btn" onclick="abrir('seg')">Segunda – Glúteo Pesado <small>Hip Thrust + Leg Press</small></button>
-      <button class="btn" onclick="abrir('ter')">Terça – Costas + Cintura <small>Postura + Core</small></button>
-      <button class="btn" onclick="abrir('qui')">Quinta – Posterior + Glúteo <small>Afundo + Cabo</small></button>
-      <button class="btn" onclick="abrir('sex')">Sexta – Glúteo + Postura <small>Smith + Face Pull</small></button>
-      <button class="btn" onclick="abrir('cargas')">📈 Registrar Cargas <small>Salvar pesos e repetições</small></button>
-      <button class="btn" onclick="abrir('medidas')">📏 Medidas + Check-in <small>Cintura / Abdômen / Glúteo</small></button>
-      <button class="btn" onclick="abrir('dieta')">🥗 Dieta Econômica <small>Sem tapioca</small></button>
-    </div>
-
-    <!-- SEGUNDA -->
-    <div id="seg" class="card">
-      <h2>🟣 Segunda – Glúteo Pesado</h2>
-      <div class="meta">
-        <span class="chip">Descanso: 1m30 (principais)</span>
-        <span class="chip">Acessórios: 45s–1m</span>
+      <div class="card" style="grid-column: span 12;">
+        <div class="hd">
+          <div>
+            <h2>📅 Menu rápido</h2>
+            <small>Clique e role até a seção</small>
+          </div>
+          <div class="badge">✨ v2 painel + gráficos + backup</div>
+        </div>
+        <div class="bd btnrow">
+          <button class="btn" onclick="go('treinos')">📌 Treinos (4x)</button>
+          <button class="btn" onclick="go('registrar')">🧾 Registrar carga</button>
+          <button class="btn" onclick="go('medidas')">📏 Medidas + check-in</button>
+          <button class="btn" onclick="go('graficos')">📊 Gráficos</button>
+          <button class="btn" onclick="go('dieta')">🥗 Dieta econômica</button>
+          <button class="btn-ghost" onclick="go('backup')">🛡️ Backup</button>
+        </div>
       </div>
 
-      <div class="item"><input type="checkbox" id="seg1"><div>
-        <b>Hip Thrust (máquina) – 4x8–10</b>
-        <div class="sub">Queixo para baixo • Calcanhar firme • Segurar 1s no topo • Sem arquear lombar</div>
-        <div class="links"><a href="https://www.youtube.com/results?search_query=hip+thrust+máquina+execução+correta+português" target="_blank">▶ Ver vídeo (PT)</a></div>
-      </div></div>
-
-      <div class="item"><input type="checkbox" id="seg2"><div>
-        <b>Leg Press 45° – 4x10–12</b>
-        <div class="sub">Pé mais alto • Não travar joelho • Descer controlando</div>
-        <div class="links"><a href="https://www.youtube.com/results?search_query=leg+press+45+execução+correta+português" target="_blank">▶ Ver vídeo (PT)</a></div>
-      </div></div>
-
-      <div class="item"><input type="checkbox" id="seg3"><div>
-        <b>Cadeira Abdutora – 3x15</b>
-        <div class="sub">Inclina levemente para frente • Segura 1s aberta</div>
-        <div class="links"><a href="https://www.youtube.com/results?search_query=cadeira+abdutora+execução+correta+academia" target="_blank">▶ Ver vídeo (PT)</a></div>
-      </div></div>
-
-      <div class="item"><input type="checkbox" id="seg4"><div>
-        <b>Stiff com Halter – 3x10</b>
-        <div class="sub">Coluna neutra • Descer devagar • Alongar posterior</div>
-        <div class="links"><a href="https://www.youtube.com/results?search_query=stiff+halter+execução+correta+português" target="_blank">▶ Ver vídeo (PT)</a></div>
-      </div></div>
-
-      <div class="item"><input type="checkbox" id="seg5"><div>
-        <b>Prancha – 3x40s</b>
-        <div class="links"><a href="https://www.youtube.com/results?search_query=prancha+abdominal+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
-      </div></div>
-
-      <div class="actions">
-        <button class="actionBtn" onclick="salvarChecklist('seg')">Salvar ✅</button>
-        <button class="actionBtn secondary" onclick="limparChecklist('seg')">Zerar</button>
+      <!-- KPIs -->
+      <div class="card" style="grid-column: span 12;">
+        <div class="hd">
+          <div>
+            <h2>📌 Seu painel</h2>
+            <small>Resumo rápido pra manter o foco</small>
+          </div>
+          <div class="badge">Objetivo: glúteo 🍑 + cintura bem marcada ⏳</div>
+        </div>
+        <div class="bd">
+          <div class="kpi">
+            <div class="box">
+              <b id="kpiPeso">—</b>
+              <span>Peso atual</span>
+            </div>
+            <div class="box">
+              <b id="kpiCintura">—</b>
+              <span>Cintura</span>
+            </div>
+            <div class="box">
+              <b id="kpiGluteo">—</b>
+              <span>Glúteo</span>
+            </div>
+          </div>
+          <p class="hint">Dica ampulheta: mantenha costas/postura + core 2x/semana e glúteo 2x/semana com progressão.</p>
+        </div>
       </div>
-      <div id="toast-seg" class="toast">Salvo!</div>
-    </div>
 
-    <!-- TERÇA -->
-    <div id="ter" class="card">
-      <h2>🔵 Terça – Costas + Cintura</h2>
+      <!-- Treinos -->
+      <div class="card" id="treinos" style="grid-column: span 12;">
+        <div class="hd">
+          <div>
+            <h2>🏋️ Treinos (4x semana)</h2>
+            <small>Descanso: <b>Principais 1m30</b> • Acessórios 45s–1m</small>
+          </div>
+          <div class="badge">✅ foco glúteo + postura + cintura</div>
+        </div>
+        <div class="bd">
+          <div class="tabs" id="tabs">
+            <div class="tab active" data-tab="seg">Segunda • Glúteo Pesado</div>
+            <div class="tab" data-tab="ter">Terça • Costas + Cintura</div>
+            <div class="tab" data-tab="qui">Quinta • Posterior + Glúteo</div>
+            <div class="tab" data-tab="sex">Sexta • Glúteo + Postura</div>
+          </div>
 
-      <div class="item"><input type="checkbox" id="ter1"><div>
-        <b>Puxada Frente – 3x12</b>
-        <div class="links"><a href="https://www.youtube.com/results?search_query=puxada+frente+polia+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
-      </div></div>
+          <div class="hr"></div>
 
-      <div class="item"><input type="checkbox" id="ter2"><div>
-        <b>Remada Baixa – 3x12</b>
-        <div class="links"><a href="https://www.youtube.com/results?search_query=remada+baixa+máquina+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
-      </div></div>
+          <div id="tab-seg" class="tabpage">
+            <h3>Segunda — Glúteo Pesado 🍑</h3>
+            <div class="list" id="list-seg"></div>
+          </div>
 
-      <div class="item"><input type="checkbox" id="ter3"><div>
-        <b>Remada Unilateral – 3x10</b>
-        <div class="links"><a href="https://www.youtube.com/results?search_query=remada+unilateral+halter+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
-      </div></div>
+          <div id="tab-ter" class="tabpage" style="display:none">
+            <h3>Terça — Costas + Cintura (Postura + Core) ⏳</h3>
+            <p class="small">Cintura “B” vem muito de: postura, dorsais (costas), ombros e core profundo (transverso). Barriga chapada = déficit leve + proteína + intestino funcionando.</p>
+            <div class="list" id="list-ter"></div>
+          </div>
 
-      <div class="item"><input type="checkbox" id="ter4"><div>
-        <b>Elevação Lateral – 3x12</b>
-        <div class="links"><a href="https://www.youtube.com/results?search_query=elevação+lateral+halter+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
-      </div></div>
+          <div id="tab-qui" class="tabpage" style="display:none">
+            <h3>Quinta — Posterior + Glúteo 🍑</h3>
+            <div class="list" id="list-qui"></div>
+          </div>
 
-      <div class="item"><input type="checkbox" id="ter5"><div>
-        <b>Prancha Lateral – 3x30s</b>
-        <div class="links"><a href="https://www.youtube.com/results?search_query=prancha+lateral+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
-      </div></div>
+          <div id="tab-sex" class="tabpage" style="display:none">
+            <h3>Sexta — Glúteo + Postura 🔥</h3>
+            <div class="list" id="list-sex"></div>
+          </div>
 
-      <div class="item"><input type="checkbox" id="ter6"><div>
-        <b>Vacuum – 4x20s</b>
-        <div class="links"><a href="https://www.youtube.com/results?search_query=vacuum+abdominal+como+fazer" target="_blank">▶ Ver vídeo (PT)</a></div>
-      </div></div>
-
-      <div class="actions">
-        <button class="actionBtn" onclick="salvarChecklist('ter')">Salvar ✅</button>
-        <button class="actionBtn secondary" onclick="limparChecklist('ter')">Zerar</button>
+          <p class="footer">*Se ficar com dor forte (DOMS) como você sentiu: reduza 1 série dos principais na semana seguinte e aumente de novo quando recuperar. Dor ≠ treino bom, evolução constante = treino certo.</p>
+        </div>
       </div>
-      <div id="toast-ter" class="toast">Salvo!</div>
-    </div>
 
-    <!-- QUINTA -->
-    <div id="qui" class="card">
-      <h2>🟣 Quinta – Posterior + Glúteo</h2>
+      <!-- Registrar cargas -->
+      <div class="card" id="registrar" style="grid-column: span 12;">
+        <div class="hd">
+          <div>
+            <h2>🧾 Registrar carga (histórico por exercício)</h2>
+            <small>Salva automático • Use isso pra crescer glúteo mais rápido (progressão)</small>
+          </div>
+          <div class="badge">📈 regra: bateu reps com boa forma → sobe peso</div>
+        </div>
 
-      <div class="item"><input type="checkbox" id="qui1"><div>
-        <b>Mesa Flexora – 4x12</b>
-        <div class="links"><a href="https://www.youtube.com/results?search_query=mesa+flexora+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
-      </div></div>
+        <div class="bd">
+          <div class="two">
+            <div>
+              <label><b>Exercício</b></label>
+              <select id="exSelect"></select>
+              <div class="hint">Escolha o exercício e registre seu melhor set do dia.</div>
+            </div>
+            <div>
+              <label><b>Data</b></label>
+              <input id="exDate" type="date" />
+              <div class="hint">Deixe hoje ou ajuste.</div>
+            </div>
+          </div>
 
-      <div class="item"><input type="checkbox" id="qui2"><div>
-        <b>Afundo com Halter – 3x10 (cada perna)</b>
-        <div class="links"><a href="https://www.youtube.com/results?search_query=afundo+com+halter+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
-      </div></div>
+          <div class="row">
+            <div class="full">
+              <label><b>Observação (opcional)</b></label>
+              <input id="exObs" placeholder="Ex.: doeu um pouco, mas formei bem / senti mais glúteo" />
+            </div>
+            <div>
+              <label><b>Carga (kg)</b></label>
+              <input id="exKg" type="number" step="0.5" placeholder="Ex.: 18" />
+            </div>
+            <div>
+              <label><b>Reps</b></label>
+              <input id="exReps" type="number" step="1" placeholder="Ex.: 12" />
+            </div>
+          </div>
 
-      <div class="item"><input type="checkbox" id="qui3"><div>
-        <b>Glúteo no Cabo – 3x12</b>
-        <div class="links"><a href="https://www.youtube.com/results?search_query=glúteo+no+cabo+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
-      </div></div>
+          <div class="btnrow" style="margin-top:12px">
+            <button onclick="saveSet()">Salvar registro</button>
+            <button class="btn-ghost" onclick="clearForm()">Limpar</button>
+          </div>
 
-      <div class="item"><input type="checkbox" id="qui4"><div>
-        <b>Abdutora – 3x15</b>
-        <div class="links"><a href="https://www.youtube.com/results?search_query=cadeira+abdutora+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
-      </div></div>
-
-      <div class="item"><input type="checkbox" id="qui5"><div>
-        <b>Abdominal Infra – 3x15</b>
-        <div class="links"><a href="https://www.youtube.com/results?search_query=abdominal+infra+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
-      </div></div>
-
-      <div class="actions">
-        <button class="actionBtn" onclick="salvarChecklist('qui')">Salvar ✅</button>
-        <button class="actionBtn secondary" onclick="limparChecklist('qui')">Zerar</button>
+          <div class="hr"></div>
+          <h3>📚 Histórico do exercício</h3>
+          <div id="historyBox" class="list"></div>
+        </div>
       </div>
-      <div id="toast-qui" class="toast">Salvo!</div>
-    </div>
 
-    <!-- SEXTA -->
-    <div id="sex" class="card">
-      <h2>🔴 Sexta – Glúteo + Postura</h2>
+      <!-- Medidas -->
+      <div class="card" id="medidas" style="grid-column: span 12;">
+        <div class="hd">
+          <div>
+            <h2>📏 Medidas + Check-in</h2>
+            <small>Registre 1x por semana (ex.: domingo de manhã)</small>
+          </div>
+          <div class="badge">🎯 você: cintura 72 • abdômen 81 • glúteo 96</div>
+        </div>
+        <div class="bd">
+          <div class="row">
+            <div class="full">
+              <label><b>Data</b></label>
+              <input id="mDate" type="date"/>
+            </div>
+            <div>
+              <label><b>Peso (kg)</b></label>
+              <input id="mPeso" type="number" step="0.1" placeholder="Ex.: 56.9"/>
+            </div>
+            <div>
+              <label><b>Cintura (cm)</b></label>
+              <input id="mCintura" type="number" step="0.1" placeholder="Ex.: 72"/>
+            </div>
+            <div>
+              <label><b>Abdômen (cm)</b></label>
+              <input id="mAbdomen" type="number" step="0.1" placeholder="Ex.: 81"/>
+            </div>
+            <div>
+              <label><b>Glúteo (cm)</b></label>
+              <input id="mGluteo" type="number" step="0.1" placeholder="Ex.: 96"/>
+            </div>
+          </div>
 
-      <div class="item"><input type="checkbox" id="sex1"><div>
-        <b>Agachamento Smith – 4x8–10</b>
-        <div class="links"><a href="https://www.youtube.com/results?search_query=agachamento+smith+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
-      </div></div>
+          <div class="btnrow" style="margin-top:12px">
+            <button onclick="saveMeasures()">Salvar medidas</button>
+            <button class="btn-ghost" onclick="renderMeasures()">Atualizar painel</button>
+          </div>
 
-      <div class="item"><input type="checkbox" id="sex2"><div>
-        <b>Elevação Pélvica – 3x12</b>
-        <div class="links"><a href="https://www.youtube.com/results?search_query=hip+thrust+máquina+execução+correta+português" target="_blank">▶ Ver vídeo (PT)</a></div>
-      </div></div>
-
-      <div class="item"><input type="checkbox" id="sex3"><div>
-        <b>Cadeira Extensora – 3x12</b>
-        <div class="links"><a href="https://www.youtube.com/results?search_query=cadeira+extensora+execução+correta" target="_blank">▶ Ver vídeo (PT)</a></div>
-      </div></div>
-
-      <div class="item"><input type="checkbox" id="sex4"><div>
-        <b>Face Pull – 3x12</b>
-        <div class="links"><a href="https://www.youtube.com/results?search_query=face+pull+execução+correta+português" target="_blank">▶ Ver vídeo (PT)</a></div>
-      </div></div>
-
-      <div class="item"><input type="checkbox" id="sex5"><div>
-        <b>Esteira inclinada – 15 min</b>
-        <div class="sub">Velocidade confortável • Inclinação moderada</div>
-      </div></div>
-
-      <div class="actions">
-        <button class="actionBtn" onclick="salvarChecklist('sex')">Salvar ✅</button>
-        <button class="actionBtn secondary" onclick="limparChecklist('sex')">Zerar</button>
+          <div class="hr"></div>
+          <h3>📌 Últimos check-ins</h3>
+          <div id="measuresBox" class="list"></div>
+        </div>
       </div>
-      <div id="toast-sex" class="toast">Salvo!</div>
-    </div>
 
-    <!-- DIETA -->
-    <div id="dieta" class="card">
-      <h2>🥗 Dieta Econômica (sem tapioca)</h2>
+      <!-- Gráficos -->
+      <div class="card" id="graficos" style="grid-column: span 12;">
+        <div class="hd">
+          <div>
+            <h2>📊 Gráficos de evolução</h2>
+            <small>Escolha um exercício e veja a evolução do peso + reps</small>
+          </div>
+          <div class="badge">💡 consistência = cintura desenha + glúteo cresce</div>
+        </div>
+        <div class="bd">
+          <div class="two">
+            <div>
+              <label><b>Gráfico de exercício</b></label>
+              <select id="chartSelect"></select>
+              <div class="hint">Recomendo acompanhar: Hip Thrust / Leg Press / Smith</div>
+            </div>
+            <div>
+              <label><b>Gráfico de medidas</b></label>
+              <select id="measureChartSelect">
+                <option value="peso">Peso</option>
+                <option value="cintura">Cintura</option>
+                <option value="abdomen">Abdômen</option>
+                <option value="gluteo">Glúteo</option>
+              </select>
+              <div class="hint">1x por semana já muda tudo.</div>
+            </div>
+          </div>
 
-      <div class="item"><input type="checkbox" id="d1"><div><b>Café 6:50</b><div class="sub">2 ovos + pão 12 grãos + suco (se coar: 1 colher de chia)</div></div></div>
-      <div class="item"><input type="checkbox" id="d2"><div><b>9:40</b><div class="sub">Mamão + aveia OU ameixa</div></div></div>
-      <div class="item"><input type="checkbox" id="d3"><div><b>Almoço</b><div class="sub">3 colheres arroz + 3 feijão + salada + frango/carne</div></div></div>
-      <div class="item"><input type="checkbox" id="d4"><div><b>14:40</b><div class="sub">Fruta + iogurte OU 1 ovo</div></div></div>
-      <div class="item"><input type="checkbox" id="d5"><div><b>Jantar 20:30</b><div class="sub">Salada + 150g frango (se treino pesado: +2 colheres arroz)</div></div></div>
+          <div class="hr"></div>
 
-      <div class="actions">
-        <button class="actionBtn" onclick="salvarChecklist('dieta')">Salvar ✅</button>
-        <button class="actionBtn secondary" onclick="limparChecklist('dieta')">Zerar</button>
+          <div class="two">
+            <div class="card" style="box-shadow:none">
+              <div class="bd">
+                <b>📈 Exercício</b>
+                <canvas id="chartExercise" height="170"></canvas>
+              </div>
+            </div>
+
+            <div class="card" style="box-shadow:none">
+              <div class="bd">
+                <b>📏 Medidas</b>
+                <canvas id="chartMeasures" height="170"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div id="toast-dieta" class="toast">Salvo!</div>
-    </div>
 
-    <div class="footer">Feito para Miriã 💛 • Projeto Ampulheta 🍑</div>
+      <!-- Dieta -->
+      <div class="card" id="dieta" style="grid-column: span 12;">
+        <div class="hd">
+          <div>
+            <h2>🥗 Dieta econômica (sem tapioca)</h2>
+            <small>Com foco em barriga menos inchada + intestino funcionando + manter massa</small>
+          </div>
+          <div class="badge">🚽 foco: fibra + água + rotina</div>
+        </div>
+        <div class="bd">
+          <div class="two">
+            <div class="item">
+              <b>Regras simples (funciona de verdade)</b>
+              <div class="meta">
+                • Proteína em TODA refeição (ovos/frango/atum/iogurte).<br>
+                • Fruta SEMPRE sem coar (quando der) → a fibra ajuda o intestino.<br>
+                • 1 colher de sopa de chia OU linhaça por dia.<br>
+                • Legumes/salada em metade do prato no almoço/jantar.<br>
+                • 1–2 cafés ok, mas água continua sendo base.
+              </div>
+            </div>
+            <div class="item">
+              <b>Para intestino preso (semanal)</b>
+              <div class="meta">
+                • 2 kiwis/dia OU 4–6 ameixas secas/dia (testa 3 dias).<br>
+                • Iogurte natural + aveia + mamão (ótimo).<br>
+                • Caminhar 10 min depois do almoço ajuda MUITO.<br>
+                • Se ficar 3+ dias sem ir ao banheiro com dor: procure médico.
+              </div>
+            </div>
+          </div>
+
+          <div class="hr"></div>
+
+          <h3>🍽️ Modelo de dia (barato e prático)</h3>
+          <div class="list">
+            <div class="item">
+              <b>06:50 – Café</b>
+              <div class="meta">
+                2 ovos mexidos + 1 fatia pão 12 grãos + 1 fruta (se tiver) <br>
+                Suco: melhor SEM coar (quando possível). Se coar, coma a fibra em outro momento (mamão/aveia).
+              </div>
+            </div>
+            <div class="item">
+              <b>09:40 – Lanche</b>
+              <div class="meta">
+                Mamão + aveia (perfeito) OU iogurte natural + banana + aveia OU 2 ameixas + fruta.
+              </div>
+            </div>
+            <div class="item">
+              <b>11:30 – Almoço</b>
+              <div class="meta">
+                3 colheres arroz + 3 feijão + salada bastante + frango/carne. <br>
+                Dica barriga: come a salada primeiro + mastiga devagar.
+              </div>
+            </div>
+            <div class="item">
+              <b>14:40 – Lanche</b>
+              <div class="meta">
+                Fruta + castanhas (se couber) OU iogurte OU sanduíche simples de frango desfiado.
+              </div>
+            </div>
+            <div class="item">
+              <b>20:30 – Jantar</b>
+              <div class="meta">
+                Salada + 150g frango desfiado (ótimo). Se sentir fome: coloca 1 batata/mandioca pequena OU legumes cozidos.
+              </div>
+            </div>
+          </div>
+
+          <div class="hr"></div>
+          <h3>🛒 Lista de compras (econômica)</h3>
+          <div class="two">
+            <div class="item">
+              <b>Proteínas</b>
+              <div class="meta">
+                • Ovos <br>• Frango (peito/sobrecoxa) <br>• Atum/sardinha (lata) <br>• Iogurte natural
+              </div>
+            </div>
+            <div class="item">
+              <b>Carboidratos “do bem”</b>
+              <div class="meta">
+                • Arroz • Feijão • Aveia <br>
+                • Batata/mandioca (opcional) <br>
+                • Pão 12 grãos (o seu)
+              </div>
+            </div>
+            <div class="item">
+              <b>Fibras p/ intestino</b>
+              <div class="meta">
+                • Mamão • Banana • Maçã <br>
+                • Ameixa seca • Kiwi (quando der) <br>
+                • Chia ou linhaça
+              </div>
+            </div>
+            <div class="item">
+              <b>Verduras/legumes</b>
+              <div class="meta">
+                • Alface/ rúcula • Tomate • Pepino <br>
+                • Cenoura • Abobrinha • Brócolis (congelado é ok) <br>
+                • Couve (se você gosta)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Backup -->
+      <div class="card" id="backup" style="grid-column: span 12;">
+        <div class="hd">
+          <div>
+            <h2>🛡️ Backup (pra não perder seus dados)</h2>
+            <small>Exporta tudo (cargas + medidas) em 1 arquivo</small>
+          </div>
+          <div class="badge">✅ recomendado 1x por mês</div>
+        </div>
+        <div class="bd">
+          <div class="btnrow">
+            <button class="btn" onclick="exportData()">⬇️ Exportar backup</button>
+            <label class="btn-ghost btn" style="cursor:pointer">
+              ⬆️ Importar backup
+              <input id="importFile" type="file" accept="application/json" style="display:none" onchange="importData(event)" />
+            </label>
+            <button class="btn-warn" onclick="resetAll()">⚠️ Zerar tudo</button>
+          </div>
+          <p class="hint">Backup é um arquivo .json. Guarde no Drive/WhatsApp com você mesma.</p>
+        </div>
+      </div>
+
+    </div>
   </div>
 
 <script>
-  function abrir(id){
-    document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    carregarChecklists();
+  // -----------------------------
+  // DADOS (treinos + vídeos PT)
+  // -----------------------------
+  const EXERCISES = {
+    seg: [
+      { name:"Hip Thrust (máquina)", sets:"4×8–10", tips:"Queixo para baixo • Calcanhar firme • Segura 1s no topo • Sem arquear lombar",
+        video:"https://www.youtube.com/results?search_query=hip+thrust+execu%C3%A7%C3%A3o+certa+academia+portugu%C3%AAs"
+      },
+      { name:"Leg Press 45°", sets:"4×10–12", tips:"Pé mais alto • Não travar joelho • Descer controlando",
+        video:"https://www.youtube.com/results?search_query=leg+press+45+execu%C3%A7%C3%A3o+certa+portugu%C3%AAs"
+      },
+      { name:"Cadeira Abdutora", sets:"3×15", tips:"Inclina levemente para frente • Segura 1s aberta",
+        video:"https://www.youtube.com/results?search_query=cadeira+abdutora+execu%C3%A7%C3%A3o+certa+portugu%C3%AAs"
+      },
+      { name:"Stiff com halter", sets:"3×10", tips:"Coluna neutra • Descer devagar • Sente alongar posterior",
+        video:"https://www.youtube.com/results?search_query=stiff+com+halter+execu%C3%A7%C3%A3o+certa+portugu%C3%AAs"
+      },
+      { name:"Cardio inclinado", sets:"15–20 min", tips:"Esteira inclinada leve/moderada (conversa curta)",
+        video:"https://www.youtube.com/results?search_query=esteira+inclinada+para+emagrecer+portugu%C3%AAs"
+      },
+    ],
+    ter: [
+      { name:"Puxada frente (polia/máquina)", sets:"3×12", tips:"Peito aberto • Puxa com o cotovelo • Não encolher ombros",
+        video:"https://www.youtube.com/results?search_query=puxada+frente+polia+execu%C3%A7%C3%A3o+certa+portugu%C3%AAs"
+      },
+      { name:"Remada baixa (máquina)", sets:"3×12", tips:"Segura 1s atrás • Cotovelos para trás • Postura firme",
+        video:"https://www.youtube.com/results?search_query=remada+baixa+maquina+execu%C3%A7%C3%A3o+certa+portugu%C3%AAs"
+      },
+      { name:"Elevação lateral (halter)", sets:"3×12", tips:"Braço semi-flexionado • Sobe até linha do ombro",
+        video:"https://www.youtube.com/results?search_query=eleva%C3%A7%C3%A3o+lateral+halter+execu%C3%A7%C3%A3o+certa+portugu%C3%AAs"
+      },
+      { name:"Pallof Press (anti-rotação)", sets:"3×12 cada lado", tips:"Core travado • Não girar tronco • Controla",
+        video:"https://www.youtube.com/results?search_query=pallof+press+execu%C3%A7%C3%A3o+portugu%C3%AAs"
+      },
+      { name:"Prancha", sets:"3×30–45s", tips:"Barriga pra dentro • Glúteo firme • Sem cair lombar",
+        video:"https://www.youtube.com/results?search_query=prancha+execu%C3%A7%C3%A3o+certa+portugu%C3%AAs"
+      },
+    ],
+    qui: [
+      { name:"Mesa/Cadeira flexora", sets:"4×12–15", tips:"Desce controlando • Sente posterior • Não tirar quadril do banco",
+        video:"https://www.youtube.com/results?search_query=cadeira+flexora+mesa+flexora+execu%C3%A7%C3%A3o+portugu%C3%AAs"
+      },
+      { name:"Afundo andando (halter)", sets:"3×10 cada perna", tips:"Passo médio • Tronco levemente à frente • Joelho acompanha pé",
+        video:"https://www.youtube.com/results?search_query=afundo+andando+halter+execu%C3%A7%C3%A3o+certa+portugu%C3%AAs"
+      },
+      { name:"Coice no cabo (glúteo na polia)", sets:"3×12 cada perna", tips:"Quadril estável • Sobe e segura 1s • Não arquear lombar",
+        video:"https://www.youtube.com/results?search_query=coice+no+cabo+gluteo+polia+execu%C3%A7%C3%A3o+portugu%C3%AAs"
+      },
+      { name:"Cadeira abdutora", sets:"3×15", tips:"Inclina levemente à frente • Segura 1s aberta",
+        video:"https://www.youtube.com/results?search_query=cadeira+abdutora+execu%C3%A7%C3%A3o+certa+portugu%C3%AAs"
+      },
+      { name:"Cardio leve", sets:"10–15 min", tips:"Bike/esteira leve para recuperar",
+        video:"https://www.youtube.com/results?search_query=cardio+leve+p%C3%B3s+treino+portugu%C3%AAs"
+      },
+    ],
+    sex: [
+      { name:"Agachamento no Smith", sets:"4×8–10", tips:"Pé um pouco à frente • Desce controlando • Sobe empurrando pelo calcanhar",
+        video:"https://www.youtube.com/results?search_query=agachamento+no+smith+execu%C3%A7%C3%A3o+certa+portugu%C3%AAs"
+      },
+      { name:"Cadeira extensora", sets:"3×12", tips:"Sobe forte • Desce controlando • Não chutar",
+        video:"https://www.youtube.com/results?search_query=cadeira+extensora+execu%C3%A7%C3%A3o+certa+portugu%C3%AAs"
+      },
+      { name:"Hip Thrust (leve – contração)", sets:"3×12", tips:"Pausa de 2s no topo • Sente glúteo queimar",
+        video:"https://www.youtube.com/results?search_query=hip+thrust+contra%C3%A7%C3%A3o+no+topo+portugu%C3%AAs"
+      },
+      { name:"Face Pull (postura)", sets:"3×12–15", tips:"Cotovelos altos • Puxa para o rosto • Escápulas juntas",
+        video:"https://www.youtube.com/results?search_query=face+pull+execu%C3%A7%C3%A3o+certa+portugu%C3%AAs"
+      },
+      { name:"Abdominal infra (banco)", sets:"3×12–15", tips:"Movimento curto • Lombar colada • Sem embalo",
+        video:"https://www.youtube.com/results?search_query=abdominal+infra+no+banco+execu%C3%A7%C3%A3o+portugu%C3%AAs"
+      },
+    ],
+  };
+
+  // -----------------------------
+  // STORAGE
+  // -----------------------------
+  const LS = {
+    sets: "ampulheta_sets_v2",
+    measures:"ampulheta_measures_v2"
+  };
+
+  function load(key, fallback){
+    try{
+      const raw = localStorage.getItem(key);
+      if(!raw) return fallback;
+      return JSON.parse(raw);
+    }catch(e){ return fallback; }
+  }
+  function save(key, value){
+    localStorage.setItem(key, JSON.stringify(value));
   }
 
-  function salvarChecklist(sec){
-    const ids = Array.from(document.querySelectorAll(`#${sec} input[type="checkbox"]`)).map(x=>x.id);
-    const estado = {};
-    ids.forEach(i => estado[i] = document.getElementById(i).checked);
-    localStorage.setItem(`check_${sec}`, JSON.stringify(estado));
-    toast(`toast-${sec}`);
+  // -----------------------------
+  // RENDER TREINOS
+  // -----------------------------
+  function renderWorkout(dayKey, elId){
+    const box = document.getElementById(elId);
+    box.innerHTML = "";
+    EXERCISES[dayKey].forEach(ex => {
+      const div = document.createElement("div");
+      div.className = "item";
+      div.innerHTML = `
+        <div class="top">
+          <b>${ex.name}</b>
+          <span class="badge">${ex.sets}</span>
+        </div>
+        <div class="meta">${ex.tips}</div>
+        <div class="meta"><a href="${ex.video}" target="_blank" rel="noreferrer">▶ Ver vídeo (PT)</a></div>
+      `;
+      box.appendChild(div);
+    });
   }
 
-  function limparChecklist(sec){
-    Array.from(document.querySelectorAll(`#${sec} input[type="checkbox"]`)).forEach(x=>x.checked=false);
-    localStorage.removeItem(`check_${sec}`);
+  // -----------------------------
+  // SELECTS + HISTÓRICO
+  // -----------------------------
+  function allExerciseNames(){
+    const names = [];
+    Object.values(EXERCISES).forEach(list => list.forEach(x => names.push(x.name)));
+    return [...new Set(names)];
   }
 
-  function carregarChecklists(){
-    ['seg','ter','qui','sex','dieta'].forEach(sec=>{
-      const data = localStorage.getItem(`check_${sec}`);
-      if(!data) return;
-      const estado = JSON.parse(data);
-      Object.keys(estado).forEach(id=>{
-        const el = document.getElementById(id);
-        if(el) el.checked = !!estado[id];
+  function fillExerciseSelects(){
+    const names = allExerciseNames();
+    const exSelect = document.getElementById("exSelect");
+    const chartSelect = document.getElementById("chartSelect");
+
+    exSelect.innerHTML = "";
+    chartSelect.innerHTML = "";
+
+    names.forEach(n=>{
+      const o1 = document.createElement("option"); o1.value=n; o1.textContent=n;
+      const o2 = document.createElement("option"); o2.value=n; o2.textContent=n;
+      exSelect.appendChild(o1);
+      chartSelect.appendChild(o2);
+    });
+
+    exSelect.addEventListener("change", renderHistory);
+    chartSelect.addEventListener("change", renderExerciseChart);
+  }
+
+  function todayISO(){
+    const d = new Date();
+    const tz = new Date(d.getTime() - d.getTimezoneOffset()*60000);
+    return tz.toISOString().slice(0,10);
+  }
+
+  function clearForm(){
+    document.getElementById("exObs").value="";
+    document.getElementById("exKg").value="";
+    document.getElementById("exReps").value="";
+    document.getElementById("exDate").value=todayISO();
+  }
+
+  function saveSet(){
+    const name = document.getElementById("exSelect").value;
+    const date = document.getElementById("exDate").value || todayISO();
+    const kg = Number(document.getElementById("exKg").value || 0);
+    const reps = Number(document.getElementById("exReps").value || 0);
+    const obs = document.getElementById("exObs").value.trim();
+
+    if(!name || !kg || !reps){
+      alert("Preencha exercício, carga e reps 🙂");
+      return;
+    }
+
+    const data = load(LS.sets, []);
+    data.push({name,date,kg,reps,obs, createdAt: Date.now()});
+    data.sort((a,b)=> (a.date>b.date?1:-1));
+    save(LS.sets, data);
+
+    clearForm();
+    renderHistory();
+    renderExerciseChart();
+    setStatus("✅ Registro salvo! Boa, Miriã 💛");
+  }
+
+  function renderHistory(){
+    const name = document.getElementById("exSelect").value;
+    const box = document.getElementById("historyBox");
+    const data = load(LS.sets, []).filter(x=>x.name===name).slice().reverse();
+
+    if(data.length===0){
+      box.innerHTML = `<div class="item">Sem registros ainda para <b>${name}</b>. Registra hoje e começa sua evolução 👇</div>`;
+      return;
+    }
+
+    box.innerHTML = "";
+    data.slice(0,12).forEach(x=>{
+      const div = document.createElement("div");
+      div.className="item";
+      div.innerHTML = `
+        <div class="top">
+          <b>${x.date} • ${x.kg} kg × ${x.reps}</b>
+          <span class="badge">${x.obs ? "📝" : "📌"}</span>
+        </div>
+        ${x.obs ? `<div class="meta">${x.obs}</div>` : `<div class="meta">—</div>`}
+      `;
+      box.appendChild(div);
+    });
+  }
+
+  // -----------------------------
+  // MEDIDAS
+  // -----------------------------
+  function saveMeasures(){
+    const date = document.getElementById("mDate").value || todayISO();
+    const peso = Number(document.getElementById("mPeso").value || 0);
+    const cintura = Number(document.getElementById("mCintura").value || 0);
+    const abdomen = Number(document.getElementById("mAbdomen").value || 0);
+    const gluteo = Number(document.getElementById("mGluteo").value || 0);
+
+    if(!peso || !cintura || !abdomen || !gluteo){
+      alert("Preencha peso + cintura + abdômen + glúteo 🙂");
+      return;
+    }
+
+    const data = load(LS.measures, []);
+    data.push({date,peso,cintura,abdomen,gluteo, createdAt: Date.now()});
+    data.sort((a,b)=> (a.date>b.date?1:-1));
+    save(LS.measures, data);
+
+    renderMeasures();
+    renderMeasuresChart();
+    setStatus("✅ Medidas salvas! Seu painel atualizou 💛");
+  }
+
+  function renderMeasures(){
+    const box = document.getElementById("measuresBox");
+    const data = load(LS.measures, []).slice().reverse();
+
+    if(data.length===0){
+      box.innerHTML = `<div class="item">Ainda não tem check-in. Coloca sua medida atual e salva 🙂</div>`;
+      // painel com valores base que você me deu
+      document.getElementById("kpiPeso").textContent = "56,9 kg";
+      document.getElementById("kpiCintura").textContent = "72 cm";
+      document.getElementById("kpiGluteo").textContent = "96 cm";
+      return;
+    }
+
+    box.innerHTML = "";
+    data.slice(0,8).forEach(x=>{
+      const div = document.createElement("div");
+      div.className="item";
+      div.innerHTML = `
+        <div class="top">
+          <b>${x.date}</b>
+          <span class="badge">${x.peso} kg</span>
+        </div>
+        <div class="meta">Cintura: <b>${x.cintura}</b> • Abdômen: <b>${x.abdomen}</b> • Glúteo: <b>${x.gluteo}</b></div>
+      `;
+      box.appendChild(div);
+    });
+
+    const last = data[0];
+    document.getElementById("kpiPeso").textContent = `${last.peso} kg`;
+    document.getElementById("kpiCintura").textContent = `${last.cintura} cm`;
+    document.getElementById("kpiGluteo").textContent = `${last.gluteo} cm`;
+  }
+
+  // -----------------------------
+  // GRÁFICOS
+  // -----------------------------
+  let chartEx=null, chartMe=null;
+
+  function renderExerciseChart(){
+    const name = document.getElementById("chartSelect").value;
+    const data = load(LS.sets, []).filter(x=>x.name===name).slice();
+
+    const labels = data.map(x=>x.date);
+    const kg = data.map(x=>x.kg);
+    const reps = data.map(x=>x.reps);
+
+    const ctx = document.getElementById("chartExercise").getContext("2d");
+    if(chartEx) chartEx.destroy();
+
+    chartEx = new Chart(ctx, {
+      type:"line",
+      data:{
+        labels,
+        datasets:[
+          { label:"Carga (kg)", data:kg, tension:.35 },
+          { label:"Reps", data:reps, tension:.35 }
+        ]
+      },
+      options:{
+        responsive:true,
+        plugins:{ legend:{ position:"bottom" } },
+        scales:{ y:{ beginAtZero:true } }
+      }
+    });
+  }
+
+  function renderMeasuresChart(){
+    const mode = document.getElementById("measureChartSelect").value;
+    const data = load(LS.measures, []).slice();
+
+    const labels = data.map(x=>x.date);
+    const series = data.map(x=>x[mode]);
+
+    const ctx = document.getElementById("chartMeasures").getContext("2d");
+    if(chartMe) chartMe.destroy();
+
+    chartMe = new Chart(ctx, {
+      type:"line",
+      data:{
+        labels,
+        datasets:[
+          { label: modeLabel(mode), data: series, tension:.35 }
+        ]
+      },
+      options:{
+        responsive:true,
+        plugins:{ legend:{ position:"bottom" } },
+        scales:{ y:{ beginAtZero:false } }
+      }
+    });
+  }
+
+  function modeLabel(m){
+    if(m==="peso") return "Peso (kg)";
+    if(m==="cintura") return "Cintura (cm)";
+    if(m==="abdomen") return "Abdômen (cm)";
+    return "Glúteo (cm)";
+  }
+
+  // -----------------------------
+  // BACKUP
+  // -----------------------------
+  function exportData(){
+    const payload = {
+      exportedAt: new Date().toISOString(),
+      sets: load(LS.sets, []),
+      measures: load(LS.measures, [])
+    };
+    const blob = new Blob([JSON.stringify(payload,null,2)], {type:"application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "backup-projeto-ampulheta.json";
+    a.click();
+    setStatus("⬇️ Backup baixado! Guarda com carinho 💛");
+  }
+
+  function importData(event){
+    const file = event.target.files?.[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const payload = JSON.parse(reader.result);
+        if(payload.sets) save(LS.sets, payload.sets);
+        if(payload.measures) save(LS.measures, payload.measures);
+        renderAll();
+        setStatus("⬆️ Backup importado! Tá tudo aqui de novo 💛");
+      }catch(e){
+        alert("Arquivo inválido 😕");
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  function resetAll(){
+    if(!confirm("Tem certeza que quer apagar TUDO?")){
+      return;
+    }
+    localStorage.removeItem(LS.sets);
+    localStorage.removeItem(LS.measures);
+    renderAll();
+    setStatus("⚠️ Tudo zerado. Quando quiser, recomeça 💛");
+  }
+
+  // -----------------------------
+  // UI helpers
+  // -----------------------------
+  function go(id){
+    document.getElementById(id).scrollIntoView({behavior:"smooth", block:"start"});
+  }
+  function setStatus(txt){
+    document.getElementById("statusPill").textContent = txt;
+    setTimeout(()=>{ document.getElementById("statusPill").textContent = "📌 Pronta pra evoluir hoje, Miriã 💛"; }, 4500);
+  }
+
+  // Tabs
+  function setupTabs(){
+    const tabs = document.querySelectorAll(".tab");
+    tabs.forEach(t=>{
+      t.addEventListener("click", ()=>{
+        tabs.forEach(x=>x.classList.remove("active"));
+        t.classList.add("active");
+        const key = t.dataset.tab;
+        ["seg","ter","qui","sex"].forEach(k=>{
+          document.getElementById("tab-"+k).style.display = (k===key) ? "block" : "none";
+        });
       });
     });
   }
 
-  function toast(id){
-    const t = document.getElementById(id);
-    if(!t) return;
-    t.style.display='block';
-    setTimeout(()=>t.style.display='none', 1200);
+  function renderAll(){
+    // default dates
+    document.getElementById("exDate").value = todayISO();
+    document.getElementById("mDate").value = todayISO();
+
+    // render lists
+    renderWorkout("seg","list-seg");
+    renderWorkout("ter","list-ter");
+    renderWorkout("qui","list-qui");
+    renderWorkout("sex","list-sex");
+
+    fillExerciseSelects();
+    clearForm();
+    renderHistory();
+    renderMeasures();
+
+    // charts
+    document.getElementById("measureChartSelect").addEventListener("change", renderMeasuresChart);
+    renderExerciseChart();
+    renderMeasuresChart();
+    setupTabs();
   }
 
-  carregarChecklists();
-  abrir('seg');
+  // init
+  renderAll();
 </script>
 </body>
 </html>
