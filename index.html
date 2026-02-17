@@ -7,220 +7,204 @@
 
 <style>
 body{
-font-family:Arial;
-background:#ffe6f2;
 margin:0;
+font-family:Arial;
+background:#fff0f6;
+}
+
+header{
+background:#ff2d83;
+color:white;
+padding:15px;
+text-align:center;
+font-weight:bold;
+}
+
+.section{
+display:none;
 padding:20px;
 }
 
-h1{
-text-align:center;
-color:#d6006e;
+.section.active{
+display:block;
 }
 
 .card{
 background:white;
 padding:15px;
-margin:15px auto;
-max-width:750px;
 border-radius:12px;
-box-shadow:0 4px 12px rgba(0,0,0,0.1);
+margin-bottom:15px;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
 
 button{
-background:#ff4da6;
+background:#ff2d83;
 color:white;
 border:none;
 padding:8px 12px;
 border-radius:8px;
-margin:4px;
+margin-top:5px;
 cursor:pointer;
-}
-
-button:hover{
-background:#e60073;
 }
 
 input,select{
 width:100%;
 padding:6px;
-margin:4px 0;
+margin:5px 0;
+}
+
+.nav{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:white;
+display:flex;
+justify-content:space-around;
+padding:10px 0;
+box-shadow:0 -2px 10px rgba(0,0,0,0.1);
+}
+
+.nav button{
+background:none;
+color:#ff2d83;
+font-weight:bold;
 }
 
 .progress{
-background:#ffd6eb;
-height:15px;
-border-radius:20px;
+background:#ffd1e6;
+height:10px;
+border-radius:10px;
 overflow:hidden;
-margin-top:10px;
+margin-top:8px;
 }
 
 .bar{
-background:#ff1493;
+background:#ff2d83;
 height:100%;
 width:0%;
-transition:0.3s;
 }
-
-.small{
-font-size:12px;
-color:#555;
-}
-
-a{
-font-size:12px;
-color:#ff1493;
-}
+.small{font-size:12px;color:#666;}
 </style>
 </head>
 
 <body>
 
-<h1>🍑 Projeto Corpo Ampulheta</h1>
+<header>🍑 Projeto Corpo Ampulheta</header>
 
+<div id="treino" class="section active">
 <div class="card">
-<h2>🏋️ Treino Segunda a Sexta</h2>
-<div id="treino"></div>
+<h3>🏋️ Treino Segunda a Sexta</h3>
+<div id="listaTreino"></div>
+</div>
 </div>
 
+<div id="agua" class="section">
 <div class="card">
-<h2>💧 Água</h2>
-<label>Meta diária (ml)</label>
-<input type="number" id="meta" value="2500">
-
-<label>Adicionar manual (ml)</label>
-<input type="number" id="manual">
-
+<h3>💧 Água</h3>
+<input type="number" id="meta" value="2500" placeholder="Meta diária ml">
+<input type="number" id="manual" placeholder="Adicionar ml">
 <button onclick="addManual()">Somar</button>
 <button onclick="addAgua(470)">+470</button>
 <button onclick="addAgua(250)">+250</button>
-<button onclick="desfazer()">Desfazer</button>
-
-<div class="progress">
-<div class="bar" id="bar"></div>
-</div>
-
+<div class="progress"><div class="bar" id="bar"></div></div>
 <div id="statusAgua"></div>
 <div id="media7" class="small"></div>
 </div>
+</div>
 
+<div id="intestino" class="section">
 <div class="card">
-<h2>🚽 Intestino</h2>
-
-<select id="intestino">
+<h3>🚽 Intestino</h3>
+<select id="intStatus">
 <option value="Não fui">Não fui</option>
 <option value="Fui">Fui</option>
 <option value="Pouco">Pouco</option>
 </select>
-
-<label>
-<input type="checkbox" id="chia"> Tomei água morna + chia
-</label>
-
+<label><input type="checkbox" id="chia"> Tomei água morna + chia</label>
 <button onclick="salvarIntestino()">Salvar</button>
-
 <div id="histIntestino" class="small"></div>
 </div>
+</div>
 
+<div id="medidas" class="section">
 <div class="card">
-<h2>📏 Medidas</h2>
-
+<h3>📏 Medidas</h3>
 <input type="number" id="peso" placeholder="Peso">
 <input type="number" id="cintura" placeholder="Cintura">
 <input type="number" id="abdomen" placeholder="Abdômen">
 <input type="number" id="gluteo" placeholder="Glúteo">
-
 <button onclick="salvarMedidas()">Salvar</button>
-
 <div id="ultimaMedida" class="small"></div>
+</div>
+</div>
+
+<div id="fotos" class="section">
+<div class="card">
+<h3>📸 Antes e Depois</h3>
+<input type="text" id="linkFoto" placeholder="Cole link da foto">
+<button onclick="salvarFoto()">Salvar</button>
+<div id="listaFotos" class="small"></div>
+</div>
+</div>
+
+<div class="nav">
+<button onclick="show('treino')">Treino</button>
+<button onclick="show('agua')">Água</button>
+<button onclick="show('intestino')">Intestino</button>
+<button onclick="show('medidas')">Medidas</button>
+<button onclick="show('fotos')">Fotos</button>
 </div>
 
 <script>
 
-const treinos = {
-"SEGUNDA":[
-"Cadeira Flexora 3x12",
-"Stiff 3x12",
-"Hip Thrust 4x10",
-"Abdutora 3x15"
-],
-"TERÇA":[
-"Supino inclinado 3x12",
-"Crucifixo 3x12",
-"Elevação lateral 3x12",
-"Desenvolvimento ombro 3x10",
-"Vácuo abdominal 3x20s"
-],
-"QUARTA":[
-"Leg Press 4x12",
-"Agachamento Smith 3x10",
-"Extensora 3x12",
-"Abdutora 3x15"
-],
-"QUINTA":[
-"Puxada frente 3x12",
-"Remada baixa 3x12",
-"Face Pull 3x15",
-"Prancha 3x40s"
-],
-"SEXTA":[
-"Hip Thrust pesado 4x8",
-"Stiff 3x12",
-"Afundo 3x10",
-"Abdutora 4x15",
-"Vácuo 3x20s"
-]
+function show(sec){
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.getElementById(sec).classList.add('active');
+}
+
+const treinos={
+"SEG":[ "Flexora 3x12","Stiff 3x12","Hip Thrust 4x10","Abdutora 3x15"],
+"TER":[ "Supino 3x12","Crucifixo 3x12","Elevação lateral 3x12","Desenvolvimento 3x10","Vácuo 3x20s"],
+"QUA":[ "Leg Press 4x12","Smith 3x10","Extensora 3x12","Abdutora 3x15"],
+"QUI":[ "Puxada 3x12","Remada 3x12","Face Pull 3x15","Prancha 3x40s"],
+"SEX":[ "Hip Thrust pesado 4x8","Stiff 3x12","Afundo 3x10","Abdutora 4x15","Vácuo 3x20s"]
 };
-
-let dados = JSON.parse(localStorage.getItem("app_ampulheta")) || {
-agua:{},
-intestino:{},
-medidas:[]
-};
-
-function hoje(){
-return new Date().toISOString().split("T")[0];
-}
-
-if(!dados.agua[hoje()]){
-dados.agua[hoje()]={total:0,pilha:[]};
-}
-
-function salvar(){
-localStorage.setItem("app_ampulheta",JSON.stringify(dados));
-}
 
 function renderTreino(){
 let html="";
-for(let dia in treinos){
-html+="<b>"+dia+"</b><br>";
-treinos[dia].forEach(e=> html+="• "+e+"<br>");
+for(let d in treinos){
+html+="<b>"+d+"</b><br>";
+treinos[d].forEach(e=>html+="• "+e+"<br>");
 html+="<br>";
 }
-document.getElementById("treino").innerHTML=html;
+document.getElementById("listaTreino").innerHTML=html;
 }
+
+let dados=JSON.parse(localStorage.getItem("ampulheta_app"))||{agua:{},intestino:{},medidas:[],fotos:[]};
+
+function hoje(){return new Date().toISOString().split("T")[0];}
+
+if(!dados.agua[hoje()]) dados.agua[hoje()]={total:0,pilha:[]};
+
+function salvar(){localStorage.setItem("ampulheta_app",JSON.stringify(dados));}
 
 function atualizarAgua(){
 let meta=Number(document.getElementById("meta").value);
 let total=dados.agua[hoje()].total;
-document.getElementById("statusAgua").innerHTML="Hoje: "+total+" ml";
 let pct=(total/meta)*100;
 if(pct>100)pct=100;
 document.getElementById("bar").style.width=pct+"%";
+document.getElementById("statusAgua").innerHTML="Hoje: "+total+" ml";
 
-let soma=0;
-let dias=0;
+let soma=0;let dias=0;
 for(let i=0;i<7;i++){
-let d=new Date();
-d.setDate(d.getDate()-i);
-let key=d.toISOString().split("T")[0];
-if(dados.agua[key]){
-soma+=dados.agua[key].total;
-dias++;
-}
+let d=new Date();d.setDate(d.getDate()-i);
+let k=d.toISOString().split("T")[0];
+if(dados.agua[k]){soma+=dados.agua[k].total;dias++;}
 }
 let media=dias?Math.round(soma/dias):0;
-document.getElementById("media7").innerHTML="Média últimos 7 dias: "+media+" ml";
+document.getElementById("media7").innerHTML="Média 7 dias: "+media+" ml";
 }
 
 function addAgua(v){
@@ -232,46 +216,22 @@ atualizarAgua();
 
 function addManual(){
 let v=Number(document.getElementById("manual").value);
-if(v>0){
-addAgua(v);
-document.getElementById("manual").value="";
-}
-}
-
-function desfazer(){
-let ult=dados.agua[hoje()].pilha.pop();
-if(ult){
-dados.agua[hoje()].total-=ult;
-}
-salvar();
-atualizarAgua();
+if(v>0){addAgua(v);document.getElementById("manual").value="";}
 }
 
 function salvarIntestino(){
-dados.intestino[hoje()]={
-status:document.getElementById("intestino").value,
-chia:document.getElementById("chia").checked
-};
+dados.intestino[hoje()]={status:document.getElementById("intStatus").value,chia:document.getElementById("chia").checked};
 salvar();
 renderIntestino();
 }
 
 function renderIntestino(){
-let ultimos=Object.entries(dados.intestino)
-.slice(-5)
-.map(([d,v])=>d+" - "+v.status+(v.chia?" + chia":""))
-.join("<br>");
-document.getElementById("histIntestino").innerHTML=ultimos;
+let ult=Object.entries(dados.intestino).slice(-5).map(([d,v])=>d+" - "+v.status+(v.chia?" + chia":"")).join("<br>");
+document.getElementById("histIntestino").innerHTML=ult;
 }
 
 function salvarMedidas(){
-dados.medidas.push({
-data:hoje(),
-peso:document.getElementById("peso").value,
-cintura:document.getElementById("cintura").value,
-abdomen:document.getElementById("abdomen").value,
-gluteo:document.getElementById("gluteo").value
-});
+dados.medidas.push({data:hoje(),peso:peso.value,cintura:cintura.value,abdomen:abdomen.value,gluteo:gluteo.value});
 salvar();
 renderMedidas();
 }
@@ -279,15 +239,29 @@ renderMedidas();
 function renderMedidas(){
 if(dados.medidas.length){
 let u=dados.medidas[dados.medidas.length-1];
-document.getElementById("ultimaMedida").innerHTML=
-u.data+" | Peso: "+u.peso+" | Cintura: "+u.cintura+" | Abdômen: "+u.abdomen+" | Glúteo: "+u.gluteo;
+ultimaMedida.innerHTML=u.data+" | "+u.peso+"kg | Cint "+u.cintura+" | Abd "+u.abdomen+" | Glúteo "+u.gluteo;
 }
+}
+
+function salvarFoto(){
+let link=linkFoto.value;
+if(link){
+dados.fotos.push({data:hoje(),link});
+salvar();
+renderFotos();
+linkFoto.value="";
+}
+}
+
+function renderFotos(){
+listaFotos.innerHTML=dados.fotos.map(f=>f.data+" - <a href='"+f.link+"' target='_blank'>Ver</a>").join("<br>");
 }
 
 renderTreino();
 atualizarAgua();
 renderIntestino();
 renderMedidas();
+renderFotos();
 
 </script>
 
