@@ -3,175 +3,292 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ampulheta - Miriã</title>
-
-<link rel="manifest" href="manifest.json">
-
-<meta name="theme-color" content="#ff2d83">
+<title>Projeto Ampulheta - Miriã</title>
 
 <style>
 body{
+font-family:Arial;
+background:#ffe6f2;
 margin:0;
-font-family:'Segoe UI',sans-serif;
-background:linear-gradient(180deg,#fff0f6,#ffe6f2);
-}
-
-header{
-background:#ff2d83;
-color:white;
-padding:18px;
-text-align:center;
-font-size:20px;
-font-weight:bold;
-}
-
-.section{
-display:none;
 padding:20px;
-animation:fade 0.3s ease;
 }
 
-.section.active{
-display:block;
-}
-
-@keyframes fade{
-from{opacity:0;transform:translateY(10px);}
-to{opacity:1;transform:translateY(0);}
+h1{
+text-align:center;
+color:#d6006e;
 }
 
 .card{
 background:white;
-padding:18px;
-border-radius:15px;
-margin-bottom:15px;
-box-shadow:0 8px 20px rgba(0,0,0,0.1);
+padding:15px;
+margin:15px auto;
+max-width:750px;
+border-radius:12px;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
 }
 
 button{
-background:#ff2d83;
+background:#ff4da6;
 color:white;
 border:none;
-padding:10px 15px;
-border-radius:12px;
+padding:8px 12px;
+border-radius:8px;
+margin:4px;
 cursor:pointer;
-margin-top:8px;
-font-weight:bold;
 }
 
-.nav{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-background:white;
-display:flex;
-justify-content:space-around;
-padding:10px 0;
-box-shadow:0 -5px 15px rgba(0,0,0,0.1);
+button:hover{
+background:#e60073;
 }
 
-.nav button{
-background:none;
-color:#ff2d83;
-font-weight:bold;
+input,select{
+width:100%;
+padding:6px;
+margin:4px 0;
 }
 
 .progress{
-background:#ffd1e6;
-height:12px;
-border-radius:12px;
+background:#ffd6eb;
+height:15px;
+border-radius:20px;
 overflow:hidden;
 margin-top:10px;
 }
 
 .bar{
-background:#ff2d83;
+background:#ff1493;
 height:100%;
 width:0%;
 transition:0.3s;
+}
+
+.small{
+font-size:12px;
+color:#555;
+}
+
+a{
+font-size:12px;
+color:#ff1493;
 }
 </style>
 </head>
 
 <body>
 
-<header>🍑 Ampulheta Premium - Miriã</header>
+<h1>🍑 Projeto Corpo Ampulheta</h1>
 
-<div id="home" class="section active">
 <div class="card">
-<h3>💎 Bem-vinda ao seu App Premium</h3>
-<p>Controle total do seu corpo ampulheta.</p>
-</div>
+<h2>🏋️ Treino Segunda a Sexta</h2>
+<div id="treino"></div>
 </div>
 
-<div id="agua" class="section">
 <div class="card">
-<h3>💧 Água</h3>
+<h2>💧 Água</h2>
+<label>Meta diária (ml)</label>
 <input type="number" id="meta" value="2500">
-<input type="number" id="manual" placeholder="Adicionar ml">
+
+<label>Adicionar manual (ml)</label>
+<input type="number" id="manual">
+
 <button onclick="addManual()">Somar</button>
-<div class="progress"><div class="bar" id="bar"></div></div>
-<div id="status"></div>
-</div>
+<button onclick="addAgua(470)">+470</button>
+<button onclick="addAgua(250)">+250</button>
+<button onclick="desfazer()">Desfazer</button>
+
+<div class="progress">
+<div class="bar" id="bar"></div>
 </div>
 
-<div id="medidas" class="section">
+<div id="statusAgua"></div>
+<div id="media7" class="small"></div>
+</div>
+
 <div class="card">
-<h3>📏 Medidas</h3>
+<h2>🚽 Intestino</h2>
+
+<select id="intestino">
+<option value="Não fui">Não fui</option>
+<option value="Fui">Fui</option>
+<option value="Pouco">Pouco</option>
+</select>
+
+<label>
+<input type="checkbox" id="chia"> Tomei água morna + chia
+</label>
+
+<button onclick="salvarIntestino()">Salvar</button>
+
+<div id="histIntestino" class="small"></div>
+</div>
+
+<div class="card">
+<h2>📏 Medidas</h2>
+
 <input type="number" id="peso" placeholder="Peso">
 <input type="number" id="cintura" placeholder="Cintura">
+<input type="number" id="abdomen" placeholder="Abdômen">
 <input type="number" id="gluteo" placeholder="Glúteo">
-<button onclick="salvarMedidas()">Salvar</button>
-<div id="ultima"></div>
-</div>
-</div>
 
-<div class="nav">
-<button onclick="show('home')">🏠</button>
-<button onclick="show('agua')">💧</button>
-<button onclick="show('medidas')">📏</button>
+<button onclick="salvarMedidas()">Salvar</button>
+
+<div id="ultimaMedida" class="small"></div>
 </div>
 
 <script>
 
-function show(sec){
-document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-document.getElementById(sec).classList.add('active');
+const treinos = {
+"SEGUNDA":[
+"Cadeira Flexora 3x12",
+"Stiff 3x12",
+"Hip Thrust 4x10",
+"Abdutora 3x15"
+],
+"TERÇA":[
+"Supino inclinado 3x12",
+"Crucifixo 3x12",
+"Elevação lateral 3x12",
+"Desenvolvimento ombro 3x10",
+"Vácuo abdominal 3x20s"
+],
+"QUARTA":[
+"Leg Press 4x12",
+"Agachamento Smith 3x10",
+"Extensora 3x12",
+"Abdutora 3x15"
+],
+"QUINTA":[
+"Puxada frente 3x12",
+"Remada baixa 3x12",
+"Face Pull 3x15",
+"Prancha 3x40s"
+],
+"SEXTA":[
+"Hip Thrust pesado 4x8",
+"Stiff 3x12",
+"Afundo 3x10",
+"Abdutora 4x15",
+"Vácuo 3x20s"
+]
+};
+
+let dados = JSON.parse(localStorage.getItem("app_ampulheta")) || {
+agua:{},
+intestino:{},
+medidas:[]
+};
+
+function hoje(){
+return new Date().toISOString().split("T")[0];
 }
 
-let dados=JSON.parse(localStorage.getItem("premium_app"))||{agua:0,medidas:[]};
+if(!dados.agua[hoje()]){
+dados.agua[hoje()]={total:0,pilha:[]};
+}
 
-function salvar(){localStorage.setItem("premium_app",JSON.stringify(dados));}
+function salvar(){
+localStorage.setItem("app_ampulheta",JSON.stringify(dados));
+}
+
+function renderTreino(){
+let html="";
+for(let dia in treinos){
+html+="<b>"+dia+"</b><br>";
+treinos[dia].forEach(e=> html+="• "+e+"<br>");
+html+="<br>";
+}
+document.getElementById("treino").innerHTML=html;
+}
+
+function atualizarAgua(){
+let meta=Number(document.getElementById("meta").value);
+let total=dados.agua[hoje()].total;
+document.getElementById("statusAgua").innerHTML="Hoje: "+total+" ml";
+let pct=(total/meta)*100;
+if(pct>100)pct=100;
+document.getElementById("bar").style.width=pct+"%";
+
+let soma=0;
+let dias=0;
+for(let i=0;i<7;i++){
+let d=new Date();
+d.setDate(d.getDate()-i);
+let key=d.toISOString().split("T")[0];
+if(dados.agua[key]){
+soma+=dados.agua[key].total;
+dias++;
+}
+}
+let media=dias?Math.round(soma/dias):0;
+document.getElementById("media7").innerHTML="Média últimos 7 dias: "+media+" ml";
+}
+
+function addAgua(v){
+dados.agua[hoje()].total+=v;
+dados.agua[hoje()].pilha.push(v);
+salvar();
+atualizarAgua();
+}
 
 function addManual(){
-let v=Number(manual.value);
+let v=Number(document.getElementById("manual").value);
 if(v>0){
-dados.agua+=v;
-salvar();
-update();
-manual.value="";
+addAgua(v);
+document.getElementById("manual").value="";
 }
 }
 
-function update(){
-status.innerHTML="Hoje: "+dados.agua+" ml";
-let pct=(dados.agua/meta.value)*100;
-if(pct>100)pct=100;
-bar.style.width=pct+"%";
+function desfazer(){
+let ult=dados.agua[hoje()].pilha.pop();
+if(ult){
+dados.agua[hoje()].total-=ult;
+}
+salvar();
+atualizarAgua();
+}
+
+function salvarIntestino(){
+dados.intestino[hoje()]={
+status:document.getElementById("intestino").value,
+chia:document.getElementById("chia").checked
+};
+salvar();
+renderIntestino();
+}
+
+function renderIntestino(){
+let ultimos=Object.entries(dados.intestino)
+.slice(-5)
+.map(([d,v])=>d+" - "+v.status+(v.chia?" + chia":""))
+.join("<br>");
+document.getElementById("histIntestino").innerHTML=ultimos;
 }
 
 function salvarMedidas(){
-dados.medidas.push({peso:peso.value,cintura:cintura.value,gluteo:gluteo.value});
+dados.medidas.push({
+data:hoje(),
+peso:document.getElementById("peso").value,
+cintura:document.getElementById("cintura").value,
+abdomen:document.getElementById("abdomen").value,
+gluteo:document.getElementById("gluteo").value
+});
 salvar();
-ultima.innerHTML="Última: "+peso.value+"kg";
+renderMedidas();
 }
 
-update();
-
-if('serviceWorker' in navigator){
-navigator.serviceWorker.register('sw.js');
+function renderMedidas(){
+if(dados.medidas.length){
+let u=dados.medidas[dados.medidas.length-1];
+document.getElementById("ultimaMedida").innerHTML=
+u.data+" | Peso: "+u.peso+" | Cintura: "+u.cintura+" | Abdômen: "+u.abdomen+" | Glúteo: "+u.gluteo;
 }
+}
+
+renderTreino();
+atualizarAgua();
+renderIntestino();
+renderMedidas();
+
 </script>
 
 </body>
