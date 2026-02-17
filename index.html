@@ -1,690 +1,295 @@
-<!doctype html>
-<html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>🍑 Projeto Ampulheta da Miriã</title>
-  <meta name="theme-color" content="#ff2d83"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projeto Ampulheta - Miriã</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+body{
+font-family:Arial;
+background:#ffe6f2;
+margin:0;
+padding:20px;
+}
 
-  <!-- Gráfico (se não carregar, o app continua funcionando) -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+h1{
+text-align:center;
+color:#d6006e;
+}
 
-  <style>
-    :root{
-      --bg1:#fff1f6;
-      --bg2:#fff7fb;
-      --card:#ffffff;
-      --ink:#1c1c1c;
-      --muted:#6b6b6b;
-      --pink:#ff2d83;
-      --pink2:#ff5aa5;
-      --line:#f1d8e3;
-      --shadow: 0 14px 30px rgba(28,28,28,.10);
-      --radius: 18px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--ink);
-      background: radial-gradient(1200px 800px at 20% -10%, #ffd2e6 0%, transparent 55%),
-                  radial-gradient(1000px 700px at 90% 0%, #ffd7f0 0%, transparent 50%),
-                  linear-gradient(180deg, var(--bg1), var(--bg2));
-      min-height:100vh;
-    }
-    .wrap{max-width:1100px; margin:0 auto; padding:22px 14px 90px;}
-    header{
-      display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap;
-      margin-bottom:14px;
-    }
-    .brand{display:flex; gap:12px; align-items:center;}
-    .logo{
-      width:46px; height:46px; border-radius:14px;
-      background:linear-gradient(135deg, var(--pink), var(--pink2));
-      display:grid; place-items:center;
-      box-shadow: var(--shadow);
-      color:#fff; font-weight:800;
-    }
-    h1{font-size:22px; margin:0;}
-    .sub{color:var(--muted); font-size:13px; margin-top:2px;}
-    .pillbar{display:flex; gap:10px; flex-wrap:wrap;}
-    .pill{
-      background:#fff; border:1px solid var(--line);
-      padding:8px 10px; border-radius:999px; font-size:12px;
-      box-shadow: 0 8px 20px rgba(28,28,28,.06);
-      display:flex; gap:8px; align-items:center;
-    }
-    .pill b{font-weight:700}
-    .cardsTop{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:10px;
-    }
-    @media(min-width:720px){
-      .cardsTop{grid-template-columns: 1fr 1fr;}
-    }
-    .btnCard{
-      border:0;
-      background:linear-gradient(135deg, var(--pink), var(--pink2));
-      color:#fff;
-      padding:14px 14px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      cursor:pointer;
-      text-align:left;
-      transition: transform .08s ease;
-    }
-    .btnCard:active{transform: scale(.99);}
-    .btnCard .t{font-weight:800; font-size:14px;}
-    .btnCard .s{opacity:.95; font-size:12px; margin-top:2px;}
+.card{
+background:white;
+padding:15px;
+margin:15px auto;
+max-width:750px;
+border-radius:12px;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
 
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:14px;
-      margin-top:14px;
-    }
-    @media(min-width:960px){
-      .grid{grid-template-columns: 0.95fr 1.05fr;}
-    }
-    .card{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding:14px;
-    }
-    .card h2{margin:0 0 10px; font-size:16px;}
-    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
-    .muted{color:var(--muted); font-size:12px;}
-    .chip{
-      background:#fff1f6;
-      border:1px solid #ffd0e3;
-      color:#b10a4f;
-      padding:7px 10px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:700;
-    }
-    .sep{height:1px; background:var(--line); margin:12px 0;}
-    .list{display:flex; flex-direction:column; gap:10px;}
-    .ex{
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:10px;
-      background:#fff;
-    }
-    .exTop{display:flex; gap:10px; align-items:flex-start; justify-content:space-between;}
-    .exTitle{font-weight:800;}
-    .exMeta{font-size:12px; color:var(--muted); margin-top:4px;}
-    .ex a{color:#b10a4f; text-decoration:none; font-weight:700; font-size:12px;}
-    .ex a:hover{text-decoration:underline;}
-    .check{display:flex; gap:10px; align-items:flex-start;}
-    input[type="checkbox"]{width:18px; height:18px; margin-top:2px;}
-    .mini{
-      display:grid; gap:8px;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    @media(min-width:720px){
-      .mini{grid-template-columns: repeat(4, minmax(0, 1fr));}
-    }
-    label{font-size:12px; color:var(--muted);}
-    input, select, textarea{
-      width:100%;
-      padding:10px 10px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      outline:none;
-      font-family:inherit;
-      background:#fff;
-    }
-    textarea{min-height:90px; resize:vertical;}
-    .btn{
-      border:0;
-      background:linear-gradient(135deg, var(--pink), var(--pink2));
-      color:#fff;
-      padding:11px 12px;
-      border-radius:14px;
-      font-weight:800;
-      cursor:pointer;
-      box-shadow: 0 14px 30px rgba(255,45,131,.18);
-    }
-    .btnGhost{
-      border:1px solid var(--line);
-      background:#fff;
-      color:var(--ink);
-      padding:10px 12px;
-      border-radius:14px;
-      font-weight:800;
-      cursor:pointer;
-    }
-    .btnSmall{padding:8px 10px; border-radius:12px; font-size:12px;}
-    .note{
-      font-size:12px;
-      background:#fff7ed;
-      border:1px solid #fed7aa;
-      padding:10px;
-      border-radius:14px;
-      color:#7c2d12;
-    }
-    .ok{
-      font-size:12px;
-      background:#ecfdf5;
-      border:1px solid #bbf7d0;
-      padding:10px;
-      border-radius:14px;
-      color:#065f46;
-    }
-    .warn{
-      font-size:12px;
-      background:#fef3c7;
-      border:1px solid #fde68a;
-      padding:10px;
-      border-radius:14px;
-      color:#78350f;
-    }
-    .tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;}
-    .tab{
-      border:1px solid var(--line);
-      background:#fff;
-      padding:9px 10px;
-      border-radius:999px;
-      font-weight:800;
-      font-size:12px;
-      cursor:pointer;
-    }
-    .tab.active{
-      background:#fff1f6;
-      border-color:#ffd0e3;
-      color:#b10a4f;
-    }
-    .kpi{
-      display:grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap:10px;
-    }
-    .kpi .box{
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:10px;
-      background:#fff;
-    }
-    .kpi .n{font-size:18px; font-weight:900;}
-    .kpi .l{font-size:12px; color:var(--muted); margin-top:2px;}
-    footer{margin-top:16px; color:var(--muted); font-size:12px; text-align:center;}
-    .smallLink{color:#b10a4f; text-decoration:none; font-weight:800;}
-    .smallLink:hover{text-decoration:underline;}
-    .imgGrid{
-      display:grid; gap:10px;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    @media(min-width:720px){
-      .imgGrid{grid-template-columns: repeat(4, minmax(0, 1fr));}
-    }
-    .ph{
-      border:1px solid var(--line);
-      border-radius:14px;
-      overflow:hidden;
-      background:#fff;
-    }
-    .ph img{width:100%; height:170px; object-fit:cover; display:block;}
-    .ph .cap{padding:8px; font-size:12px; color:var(--muted);}
-    .dangerZone{border:1px dashed #fecaca; background:#fff; border-radius:14px; padding:12px;}
+button{
+background:#ff4da6;
+color:white;
+border:none;
+padding:8px 12px;
+border-radius:8px;
+margin:4px;
+cursor:pointer;
+}
 
-    /* Água - barra */
-    .progressWrap{
-      margin-top:10px;
-      background:#ffe9f3;
-      border:1px solid #f2c6d8;
-      border-radius:999px;
-      overflow:hidden;
-      height:14px;
-    }
-    .bar{
-      height:100%;
-      width:0%;
-      background:linear-gradient(90deg,#ff2d83,#ff7ab0);
-      transition: width .2s ease;
-    }
-  </style>
+button:hover{
+background:#e60073;
+}
+
+input,select{
+width:100%;
+padding:6px;
+margin:4px 0;
+}
+
+.progress{
+background:#ffd6eb;
+height:15px;
+border-radius:20px;
+overflow:hidden;
+margin-top:10px;
+}
+
+.bar{
+background:#ff1493;
+height:100%;
+width:0%;
+transition:0.3s;
+}
+
+.small{
+font-size:12px;
+color:#555;
+}
+
+a{
+font-size:12px;
+color:#ff1493;
+}
+</style>
 </head>
 
 <body>
-<div class="wrap">
-  <header>
-    <div class="brand">
-      <div class="logo">🍑</div>
-      <div>
-        <h1>Projeto Ampulheta da Miriã</h1>
-        <div class="sub">Treino + cargas + medidas + água + intestino + fotos (offline e gratuito)</div>
-      </div>
-    </div>
-    <div class="pillbar">
-      <div class="pill">🎯 Objetivo: <b>Glúteo + Cintura B</b></div>
-      <div class="pill">🏋️ 4x/semana <b>Smart Fit</b></div>
-      <div class="pill">💾 Salva <b>no seu celular/PC</b></div>
-    </div>
-  </header>
 
-  <div class="cardsTop">
-    <button class="btnCard" onclick="scrollToId('treinos')">
-      <div class="t">📅 Treinos (4x)</div>
-      <div class="s">Seg/ Ter/ Qui/ Sex — ampulheta</div>
-    </button>
-    <button class="btnCard" onclick="scrollToId('registrar')">
-      <div class="t">📝 Registrar cargas</div>
-      <div class="s">Salvar peso + reps e ver o último</div>
-    </button>
-    <button class="btnCard" onclick="scrollToId('medidas')">
-      <div class="t">📏 Medidas + Gráfico</div>
-      <div class="s">Peso / Cintura / Abdômen / Glúteo</div>
-    </button>
-    <button class="btnCard" onclick="scrollToId('agua')">
-      <div class="t">💧 Água (meta + histórico 7 dias)</div>
-      <div class="s">Soma automático e média</div>
-    </button>
-    <button class="btnCard" onclick="scrollToId('intestino')">
-      <div class="t">🚽 Chia + Intestino</div>
-      <div class="s">Checklist diário + evolução</div>
-    </button>
-    <button class="btnCard" onclick="scrollToId('antesdepois')">
-      <div class="t">🖼️ Antes e Depois</div>
-      <div class="s">Salvar fotos/links com data</div>
-    </button>
-  </div>
+<h1>🍑 Projeto Corpo Ampulheta</h1>
 
-  <div class="grid">
-    <!-- COLUNA ESQUERDA -->
-    <div class="card">
-      <h2 id="treinos">📅 Treinos (ampulheta B) — prontos</h2>
-      <div class="row">
-        <span class="chip">Descanso: 1m30 (principais)</span>
-        <span class="chip">Acessórios: 45s–1m</span>
-        <span class="chip">Cardio: 15–20min (opcional)</span>
-      </div>
-      <div class="sep"></div>
+<div class="card">
+<h2>🏋️ Treino Segunda a Sexta</h2>
+<div id="treino"></div>
+</div>
 
-      <div class="tabs">
-        <button class="tab active" data-tab="seg" onclick="showTab('seg')">🟣 Segunda — Glúteo Pesado</button>
-        <button class="tab" data-tab="ter" onclick="showTab('ter')">🔵 Terça — Costas + Cintura</button>
-        <button class="tab" data-tab="qui" onclick="showTab('qui')">🟣 Quinta — Posterior + Glúteo</button>
-        <button class="tab" data-tab="sex" onclick="showTab('sex')">🔴 Sexta — Glúteo + Postura</button>
-      </div>
+<div class="card">
+<h2>💧 Água</h2>
+<label>Meta diária (ml)</label>
+<input type="number" id="meta" value="2500">
 
-      <div id="tab-seg" class="tabPane">
-        <div class="list" id="list-seg"></div>
-        <div class="sep"></div>
-        <div class="ok">✅ Dica glúteo: pare 1–2 reps antes da falha (RIR 1–2). Se sobrar força, sobe carga na próxima semana.</div>
-      </div>
+<label>Adicionar manual (ml)</label>
+<input type="number" id="manual">
 
-      <div id="tab-ter" class="tabPane" style="display:none;">
-        <div class="list" id="list-ter"></div>
-        <div class="sep"></div>
-        <div class="note">✨ Para cintura ampulheta: construir <b>ombro + costas</b> e fazer <b>core anti-rotação</b> (Pallof). Evite lateral com peso pesado.</div>
-      </div>
+<button onclick="addManual()">Somar</button>
+<button onclick="addAgua(470)">+470</button>
+<button onclick="addAgua(250)">+250</button>
+<button onclick="desfazer()">Desfazer</button>
 
-      <div id="tab-qui" class="tabPane" style="display:none;">
-        <div class="list" id="list-qui"></div>
-        <div class="sep"></div>
-        <div class="warn">🔥 Se dor forte (principalmente escada): reduza 15–25% a carga por 1 treino e foque execução lenta.</div>
-      </div>
+<div class="progress">
+<div class="bar" id="bar"></div>
+</div>
 
-      <div id="tab-sex" class="tabPane" style="display:none;">
-        <div class="list" id="list-sex"></div>
-        <div class="sep"></div>
-        <div class="ok">💖 Silicone/colo: treino não é milagre, mas melhora muito com <b>postura + peitoral + ombro</b>. Por isso tem supino + face pull.</div>
-      </div>
+<div id="statusAgua"></div>
+<div id="media7" class="small"></div>
+</div>
 
-      <div class="sep"></div>
-      <h2>📈 Estratégia de evolução (8 semanas) 🍑</h2>
-      <div class="note">
-        <b>Regra simples:</b><br>
-        • Se bateu o topo da faixa e sobrou força → <b>+2kg</b> (ou +5%).<br>
-        • Se não bateu o mínimo → mantém ou reduz 5–10%.<br>
-        • Prioridade: <b>Hip Thrust</b> → <b>Agachamento/Smith</b> → <b>Leg Press</b>.
-      </div>
-    </div>
+<div class="card">
+<h2>🚽 Intestino</h2>
 
-    <!-- COLUNA DIREITA -->
-    <div class="card">
-      <h2 id="registrar">📝 Registrar cargas</h2>
+<select id="intestino">
+<option value="Não fui">Não fui</option>
+<option value="Fui">Fui</option>
+<option value="Pouco">Pouco</option>
+</select>
 
-      <div class="mini">
-        <div>
-          <label>📅 Data</label>
-          <input id="logDate" type="date">
-        </div>
-        <div>
-          <label>📌 Qual treino?</label>
-          <select id="logDay" onchange="renderLogForm()">
-            <option value="seg">Segunda — Glúteo Pesado</option>
-            <option value="ter">Terça — Costas + Cintura</option>
-            <option value="qui">Quinta — Posterior + Glúteo</option>
-            <option value="sex">Sexta — Glúteo + Postura</option>
-          </select>
-        </div>
-        <div>
-          <label>⏱️ Cardio</label>
-          <select id="logCardio">
-            <option value="0">Hoje não</option>
-            <option value="15">15 min</option>
-            <option value="20">20 min</option>
-            <option value="30">30 min</option>
-          </select>
-        </div>
-        <div>
-          <label>😊 Como foi?</label>
-          <select id="logFeel">
-            <option value="ok">OK</option>
-            <option value="facil">Fácil (subir carga)</option>
-            <option value="pesado">Pesado (cansada)</option>
-            <option value="dor">Com dor (reduzir)</option>
-          </select>
-        </div>
-      </div>
+<label>
+<input type="checkbox" id="chia"> Tomei água morna + chia
+</label>
 
-      <div class="sep"></div>
-      <div id="logForm"></div>
+<button onclick="salvarIntestino()">Salvar</button>
 
-      <div class="row" style="margin-top:10px;">
-        <button class="btn" onclick="saveWorkoutLog()">✅ Salvar treino</button>
-        <button class="btnGhost" onclick="exportBackup()">⬇️ Exportar backup</button>
-        <button class="btnGhost" onclick="importBackup()">⬆️ Importar backup</button>
-      </div>
+<div id="histIntestino" class="small"></div>
+</div>
 
-      <div class="sep"></div>
-      <h2 id="medidas">📏 Medidas + Gráfico</h2>
+<div class="card">
+<h2>📏 Medidas</h2>
 
-      <div class="mini">
-        <div>
-          <label>📅 Data</label>
-          <input id="mDate" type="date">
-        </div>
-        <div>
-          <label>⚖️ Peso (kg)</label>
-          <input id="mPeso" type="number" step="0.1" placeholder="ex: 56.9">
-        </div>
-        <div>
-          <label>📌 Cintura (cm)</label>
-          <input id="mCintura" type="number" step="0.1" placeholder="ex: 72">
-        </div>
-        <div>
-          <label>📌 Abdômen (cm)</label>
-          <input id="mAbdomen" type="number" step="0.1" placeholder="ex: 81">
-        </div>
-      </div>
+<input type="number" id="peso" placeholder="Peso">
+<input type="number" id="cintura" placeholder="Cintura">
+<input type="number" id="abdomen" placeholder="Abdômen">
+<input type="number" id="gluteo" placeholder="Glúteo">
 
-      <div class="mini" style="margin-top:8px;">
-        <div>
-          <label>🍑 Glúteo (cm)</label>
-          <input id="mGluteo" type="number" step="0.1" placeholder="ex: 96">
-        </div>
-        <div>
-          <label>📝 Observação</label>
-          <input id="mObs" type="text" placeholder="ex: inchada no fim do dia">
-        </div>
-        <div class="row" style="align-items:flex-end;">
-          <button class="btn btnSmall" onclick="saveMeasurement()">✅ Salvar medida</button>
-        </div>
-      </div>
+<button onclick="salvarMedidas()">Salvar</button>
 
-      <div class="sep"></div>
-      <div class="kpi" id="kpiBox"></div>
-
-      <div class="sep"></div>
-      <div id="chartArea">
-        <canvas id="chart" height="160"></canvas>
-        <div class="muted" id="chartHint" style="margin-top:8px;"></div>
-      </div>
-
-      <!-- ÁGUA -->
-      <div class="sep"></div>
-      <h2 id="agua">💧 Água — soma + meta + histórico (7 dias)</h2>
-
-      <div class="mini">
-        <div>
-          <label>🎯 Meta diária (ml)</label>
-          <input id="waterGoal" type="number" step="50" value="2500">
-        </div>
-        <div>
-          <label>➕ Adicionar manualmente (ml)</label>
-          <input id="waterAddManual" type="number" step="10" placeholder="ex: 300">
-        </div>
-        <div style="display:flex; gap:8px; align-items:flex-end;">
-          <button class="btn btnSmall" onclick="addWaterManual()">➕ Somar</button>
-        </div>
-      </div>
-
-      <div class="row" style="margin-top:8px;">
-        <button class="btnGhost btnSmall" type="button" onclick="addWater(470)">➕ +470 ml</button>
-        <button class="btnGhost btnSmall" type="button" onclick="addWater(250)">➕ +250 ml</button>
-        <button class="btnGhost btnSmall" type="button" onclick="undoWater()">↩️ Desfazer</button>
-        <button class="btnGhost btnSmall" type="button" onclick="resetWaterToday()">🧹 Zerar hoje</button>
-      </div>
-
-      <div class="progressWrap" aria-label="progresso de água">
-        <div class="bar" id="barAgua"></div>
-      </div>
-
-      <div id="waterTotal" class="ok" style="margin-top:10px;"></div>
-      <div id="water7" class="note" style="margin-top:10px;"></div>
-
-      <!-- INTESTINO -->
-      <div class="sep"></div>
-      <h2 id="intestino">🚽 Chia + Intestino (acompanhar)</h2>
-      <div class="note">
-        Rotina: <b>1 copo de água morna + 1 colher de chia</b> (hidratar 10 min) em jejum ✅
-      </div>
-
-      <div class="mini" style="margin-top:10px;">
-        <div>
-          <label>📅 Data</label>
-          <input id="bDate" type="date">
-        </div>
-        <div>
-          <label>💩 Fui ao banheiro?</label>
-          <select id="bPoop">
-            <option value="nao">Não</option>
-            <option value="sim">Sim</option>
-            <option value="pouco">Sim (pouquinho)</option>
-          </select>
-        </div>
-        <div>
-          <label>📌 Escala (1–7)</label>
-          <select id="bBristol">
-            <option value="">—</option>
-            <option value="1">1 (muito preso)</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4 (ideal)</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7 (diarreia)</option>
-          </select>
-        </div>
-        <div class="row" style="align-items:flex-end;">
-          <label style="display:flex; gap:8px; align-items:center; color:var(--muted); font-size:12px;">
-            <input id="bChia" type="checkbox"> Tomei água morna + chia ✅
-          </label>
-        </div>
-      </div>
-
-      <div class="row" style="margin-top:10px;">
-        <button class="btn btnSmall" onclick="saveBowel()">✅ Salvar dia</button>
-        <button class="btnGhost btnSmall" onclick="clearTodayBowel()">🧹 Limpar</button>
-      </div>
-
-      <div class="sep"></div>
-      <div id="bowelSummary" class="ok"></div>
-
-      <!-- FOTOS -->
-      <div class="sep"></div>
-      <h2 id="antesdepois">🖼️ Antes e Depois (fotos/links)</h2>
-      <div class="warn">
-        ⚠️ Fotos grandes podem lotar o armazenamento do navegador.<br>
-        ✅ Melhor: salvar como <b>link</b> (Google Fotos/Drive) ou enviar imagens pequenas.
-      </div>
-
-      <div class="mini" style="margin-top:10px;">
-        <div>
-          <label>📅 Data</label>
-          <input id="pDate" type="date">
-        </div>
-        <div>
-          <label>🏷️ Tipo</label>
-          <select id="pType">
-            <option value="antes">Antes</option>
-            <option value="depois">Depois</option>
-            <option value="checkin">Check-in</option>
-          </select>
-        </div>
-        <div>
-          <label>🔗 Link (recomendado)</label>
-          <input id="pLink" type="text" placeholder="cole o link aqui (opcional)">
-        </div>
-        <div>
-          <label>📷 Ou enviar imagem (opcional)</label>
-          <input id="pFile" type="file" accept="image/*">
-        </div>
-      </div>
-
-      <div style="margin-top:8px;">
-        <label>📝 Observação</label>
-        <input id="pObs" type="text" placeholder="ex: 2 doses / menos inchaço">
-      </div>
-
-      <div class="row" style="margin-top:10px;">
-        <button class="btn btnSmall" onclick="savePhoto()">✅ Salvar</button>
-        <button class="btnGhost btnSmall" onclick="renderPhotos()">🔄 Atualizar</button>
-      </div>
-
-      <div class="sep"></div>
-      <div class="imgGrid" id="photoGrid"></div>
-
-      <div class="sep"></div>
-      <div class="dangerZone">
-        <b>⚠️ Reset</b><br>
-        <span class="muted">Apaga tudo do app neste dispositivo.</span>
-        <div class="sep"></div>
-        <button class="btnGhost btnSmall" onclick="resetAll()">🧨 Apagar tudo</button>
-      </div>
-    </div>
-  </div>
-
-  <footer>
-    Feito pra você acompanhar com constância 💗 •
-    <a class="smallLink" href="#" onclick="scrollToId('registrar');return false;">Registrar treino</a> •
-    <a class="smallLink" href="#" onclick="scrollToId('agua');return false;">Água</a> •
-    <a class="smallLink" href="#" onclick="scrollToId('medidas');return false;">Medidas</a>
-  </footer>
+<div id="ultimaMedida" class="small"></div>
 </div>
 
 <script>
-  // =========================
-  // TREINOS
-  // =========================
-  const workouts = {
-    seg: {
-      exercises: [
-        ex("Hip Thrust (máquina ou banco)", "4x8–10", "Queixo pra baixo • 1s no topo • Não arquear lombar", yt("hip thrust execução correta academia")),
-        ex("Leg Press 45°", "4x10–12", "Pé mais alto • Não travar joelho • Descer controlando", yt("leg press 45 como fazer correto")),
-        ex("Cadeira Abdutora", "3x15", "Inclina levemente pra frente • Segura 1s aberta", yt("cadeira abdutora como fazer correto")),
-        ex("Stiff com halter", "3x10", "Coluna neutra • Desce devagar • Sente alongar posterior", yt("stiff com halter como fazer")),
-        ex("Abdominal máquina (opcional)", "3x12–15", "Controla, sem puxar pescoço", yt("abdominal maquina como fazer")),
-      ]
-    },
-    ter: {
-      exercises: [
-        ex("Supino inclinado (máquina)", "3x10–12", "Peito alto • Ombro pra trás • Desce controlando", yt("supino inclinado maquina como fazer")),
-        ex("Crucifixo (peck deck/máquina)", "3x12", "Abre sem forçar ombro • Aperta no meio", yt("crucifixo maquina como fazer")),
-        ex("Puxada frente (polia/máquina)", "3x12", "Puxa pro peito • Cotovelos pra baixo", yt("puxada frente na polia como fazer")),
-        ex("Remada baixa (polia/máquina)", "3x12", "Peito aberto • Não balançar tronco", yt("remada baixa na polia como fazer")),
-        ex("Elevação lateral com halter", "3x12", "Sobe até linha do ombro • Sem jogar corpo", yt("elevacao lateral halter como fazer")),
-        ex("Face Pull (polia)", "3x12–15", "Puxa na altura do rosto • Cotovelos abertos", yt("face pull na polia como fazer")),
-        ex("Prancha", "3x30–45s", "Barriga dura • Glúteo contraído", yt("prancha abdominal como fazer")),
-        ex("Pallof Press (polia)", "3x10 cada lado", "Resistir rotação • Controle total", yt("pallof press polia como fazer"))
-      ]
-    },
-    qui: {
-      exercises: [
-        ex("Cadeira/Mesa Flexora", "4x12", "Segura 1s embaixo • Volta controlando", yt("cadeira flexora como fazer correto")),
-        ex("Afundo andando com halter", "3x10 cada perna", "Passo médio • Tronco levemente inclinado", yt("afundo andando com halter como fazer")),
-        ex("Coice no cabo (glúteo na polia)", "3x12 cada perna", "Sem girar quadril • Segura 1s no topo", yt("coice no cabo gluteo como fazer")),
-        ex("Cadeira Abdutora", "3x15", "Inclina pra frente • 1s aberta", yt("abdutora maquina como usar")),
-        ex("Hiperextensão lombar (leve)", "3x12", "Sobe até alinhar • Não hiperestender", yt("hiperextensao lombar como fazer"))
-      ]
-    },
-    sex: {
-      exercises: [
-        ex("Agachamento no Smith", "4x8–10", "Pés à frente • Desce controlando • Sobe forte", yt("agachamento no smith como fazer")),
-        ex("Cadeira Extensora", "3x12", "Sobe controlando • Desce devagar", yt("cadeira extensora como fazer")),
-        ex("Hip Thrust (leve, contração máxima)", "3x12", "1–2s no topo • foco no glúteo", yt("elevação pélvica como fazer")),
-        ex("Abdominal infra (banco)", "3x12–15", "Lento • não balançar", yt("abdominal infra no banco como fazer")),
-        ex("Face Pull (polia)", "3x12–15", "Postura do colo/ombro", yt("face pull na polia como fazer"))
-      ]
-    }
-  };
 
-  function yt(q){ return "https://www.youtube.com/results?search_query=" + encodeURIComponent(q + " em português"); }
-  function ex(name, sets, cues, link){ return {name, sets, cues, link}; }
+const treinos = {
+"SEGUNDA":[
+"Cadeira Flexora 3x12",
+"Stiff 3x12",
+"Hip Thrust 4x10",
+"Abdutora 3x15"
+],
+"TERÇA":[
+"Supino inclinado 3x12",
+"Crucifixo 3x12",
+"Elevação lateral 3x12",
+"Desenvolvimento ombro 3x10",
+"Vácuo abdominal 3x20s"
+],
+"QUARTA":[
+"Leg Press 4x12",
+"Agachamento Smith 3x10",
+"Extensora 3x12",
+"Abdutora 3x15"
+],
+"QUINTA":[
+"Puxada frente 3x12",
+"Remada baixa 3x12",
+"Face Pull 3x15",
+"Prancha 3x40s"
+],
+"SEXTA":[
+"Hip Thrust pesado 4x8",
+"Stiff 3x12",
+"Afundo 3x10",
+"Abdutora 4x15",
+"Vácuo 3x20s"
+]
+};
 
-  // =========================
-  // STATE
-  // =========================
-  const KEY = "ampulheta_miria_full_v2";
-  const state = loadState();
+let dados = JSON.parse(localStorage.getItem("app_ampulheta")) || {
+agua:{},
+intestino:{},
+medidas:[]
+};
 
-  function loadState(){
-    try{
-      const raw = localStorage.getItem(KEY);
-      if(!raw) return { logs: [], measures: [], bowel: [], photos: [], water: { today:{date:today(), ml:0, stack:[]}, history:[], goal:2500 } };
-      const obj = JSON.parse(raw);
-      obj.logs ||= []; obj.measures ||= []; obj.bowel ||= []; obj.photos ||= [];
-      obj.water ||= { today:{date:today(), ml:0, stack:[]}, history:[], goal:2500 };
-      return obj;
-    }catch(e){
-      return { logs: [], measures: [], bowel: [], photos: [], water: { today:{date:today(), ml:0, stack:[]}, history:[], goal:2500 } };
-    }
-  }
-  function saveState(){ localStorage.setItem(KEY, JSON.stringify(state)); }
+function hoje(){
+return new Date().toISOString().split("T")[0];
+}
 
-  // =========================
-  // TABS
-  // =========================
-  function showTab(key){
-    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-    document.querySelectorAll(".tabPane").forEach(p=>p.style.display="none");
-    document.querySelector(.tab[data-tab="${key}"]).classList.add("active");
-    document.getElementById("tab-"+key).style.display="block";
-  }
+if(!dados.agua[hoje()]){
+dados.agua[hoje()]={total:0,pilha:[]};
+}
 
-  // =========================
-  // RENDER TREINOS
-  // =========================
-  function renderWorkoutLists(){
-    renderList("list-seg", workouts.seg.exercises);
-    renderList("list-ter", workouts.ter.exercises);
-    renderList("list-qui", workouts.qui.exercises);
-    renderList("list-sex", workouts.sex.exercises);
-  }
-  function renderList(containerId, exercises){
-    const el = document.getElementById(containerId);
-    el.innerHTML = "";
-    exercises.forEach((e) => {
-      const last = getLastExerciseLog(e.name);
-      const lastTxt = last ? Último: ${last.weight ?? "—"} kg • ${last.reps || "—"} (${formatDate(last.date)}) : "Último: —";
-      el.innerHTML += `
-        <div class="ex">
-          <div class="check">
-            <input type="checkbox" onchange="toggleCheck(this)">
-            <div style="flex:1">
-              <div class="exTop">
-                <div>
-                  <div class="exTitle">${escapeHtml(e.name)} — ${escapeHtml(e.sets)}</div>
-                  <div class="exMeta">${escapeHtml(e.cues)}</div>
-                </div>
-                <div class="muted" style="text-align:right; min-width:160px;">
+function salvar(){
+localStorage.setItem("app_ampulheta",JSON.stringify(dados));
+}
+
+function renderTreino(){
+let html="";
+for(let dia in treinos){
+html+="<b>"+dia+"</b><br>";
+treinos[dia].forEach(e=> html+="• "+e+"<br>");
+html+="<br>";
+}
+document.getElementById("treino").innerHTML=html;
+}
+
+function atualizarAgua(){
+let meta=Number(document.getElementById("meta").value);
+let total=dados.agua[hoje()].total;
+document.getElementById("statusAgua").innerHTML="Hoje: "+total+" ml";
+let pct=(total/meta)*100;
+if(pct>100)pct=100;
+document.getElementById("bar").style.width=pct+"%";
+
+let soma=0;
+let dias=0;
+for(let i=0;i<7;i++){
+let d=new Date();
+d.setDate(d.getDate()-i);
+let key=d.toISOString().split("T")[0];
+if(dados.agua[key]){
+soma+=dados.agua[key].total;
+dias++;
+}
+}
+let media=dias?Math.round(soma/dias):0;
+document.getElementById("media7").innerHTML="Média últimos 7 dias: "+media+" ml";
+}
+
+function addAgua(v){
+dados.agua[hoje()].total+=v;
+dados.agua[hoje()].pilha.push(v);
+salvar();
+atualizarAgua();
+}
+
+function addManual(){
+let v=Number(document.getElementById("manual").value);
+if(v>0){
+addAgua(v);
+document.getElementById("manual").value="";
+}
+}
+
+function desfazer(){
+let ult=dados.agua[hoje()].pilha.pop();
+if(ult){
+dados.agua[hoje()].total-=ult;
+}
+salvar();
+atualizarAgua();
+}
+
+function salvarIntestino(){
+dados.intestino[hoje()]={
+status:document.getElementById("intestino").value,
+chia:document.getElementById("chia").checked
+};
+salvar();
+renderIntestino();
+}
+
+function renderIntestino(){
+let ultimos=Object.entries(dados.intestino)
+.slice(-5)
+.map(([d,v])=>d+" - "+v.status+(v.chia?" + chia":""))
+.join("<br>");
+document.getElementById("histIntestino").innerHTML=ultimos;
+}
+
+function salvarMedidas(){
+dados.medidas.push({
+data:hoje(),
+peso:document.getElementById("peso").value,
+cintura:document.getElementById("cintura").value,
+abdomen:document.getElementById("abdomen").value,
+gluteo:document.getElementById("gluteo").value
+});
+salvar();
+renderMedidas();
+}
+
+function renderMedidas(){
+if(dados.medidas.length){
+let u=dados.medidas[dados.medidas.length-1];
+document.getElementById("ultimaMedida").innerHTML=
+u.data+" | Peso: "+u.peso+" | Cintura: "+u.cintura+" | Abdômen: "+u.abdomen+" | Glúteo: "+u.gluteo;
+}
+}
+
+renderTreino();
+atualizarAgua();
+renderIntestino();
+renderMedidas();
+
+</script>
+
+</body>
+</html>
