@@ -1,718 +1,598 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>🍑 Projeto Ampulheta - Miriã</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>🍑 Projeto Ampulheta da Miriã</title>
 
-  <meta name="theme-color" content="#ff2d7a" />
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-
-  <style>
-    :root{
-      --bg1:#fff0f6;
-      --bg2:#ffe6f0;
-      --card:#ffffff;
-      --pink:#ff2d7a;
-      --pink2:#ff5aa5;
-      --text:#1c1c1c;
-      --muted:#6b6b6b;
-      --shadow2: 0 10px 24px rgba(0,0,0,.08);
-      --radius: 18px;
-    }
-    *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      font-family: Inter, Arial, sans-serif;
-      color:var(--text);
-      background: radial-gradient(1200px 700px at 50% -200px, #ffffff 0%, var(--bg1) 40%, var(--bg2) 100%);
-      padding: 18px 14px 92px;
-    }
-    .wrap{ max-width: 980px; margin: 0 auto; }
-    header{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:12px;
-      margin: 10px 0 16px;
-    }
-    .brand{ display:flex; gap:10px; align-items:center; }
-    .logo{
-      width:44px; height:44px; border-radius:14px;
-      display:grid; place-items:center;
-      background: linear-gradient(135deg, var(--pink) 0%, var(--pink2) 100%);
-      color:white; font-weight:800;
-      box-shadow: 0 14px 40px rgba(255,45,122,.18);
-    }
-    h1{ margin:0; font-size: 18px; line-height:1.1; }
-    .subtitle{ margin: 2px 0 0; color: var(--muted); font-size: 12px; }
-    .pill{
-      padding:10px 12px; border-radius: 999px;
-      background: rgba(255,45,122,.12);
-      color: var(--pink);
-      font-weight: 700;
-      font-size: 12px;
-      border: 1px solid rgba(255,45,122,.18);
-      white-space: nowrap;
-    }
-    .grid{ display:grid; grid-template-columns: 1fr; gap: 12px; }
-    @media (min-width: 900px){
-      .grid{ grid-template-columns: 1.05fr .95fr; align-items:start; }
-    }
-    .card{
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow2);
-      border: 1px solid rgba(0,0,0,.04);
-      overflow:hidden;
-    }
-    .cardHead{
-      padding: 14px 14px 0;
-      display:flex; align-items:flex-start; justify-content:space-between;
-      gap:12px;
-    }
-    .cardTitle{ margin:0; font-size: 15px; font-weight: 800; letter-spacing: .2px; }
-    .cardNote{ margin: 6px 0 0; font-size: 12px; color: var(--muted); }
-    .cardBody{ padding: 14px; padding-top: 10px; }
-    .row{ display:grid; grid-template-columns: 1fr; gap: 10px; margin: 10px 0; }
-    @media (min-width: 560px){
-      .row2{ grid-template-columns: 1fr 1fr; }
-      .row3{ grid-template-columns: 1fr 1fr 1fr; }
-    }
-    label{ font-size: 12px; color: var(--muted); display:block; margin-bottom: 6px; }
-    input, select, textarea{
-      width: 100%;
-      padding: 10px 10px;
-      border-radius: 12px;
-      border: 1px solid rgba(0,0,0,.10);
-      outline: none;
-      font-family: inherit;
-      background: #fff;
-    }
-    .btnRow{ display:flex; flex-wrap:wrap; gap: 8px; margin-top: 10px; }
-    button{
-      background: linear-gradient(135deg, var(--pink) 0%, var(--pink2) 100%);
-      color:white;
-      border:none;
-      padding: 10px 12px;
-      border-radius: 12px;
-      cursor:pointer;
-      font-weight: 800;
-      font-size: 13px;
-      box-shadow: 0 10px 22px rgba(255,45,122,.22);
-    }
-    button.secondary{
-      background: rgba(0,0,0,.04);
-      color: #1f1f1f;
-      box-shadow:none;
-      border: 1px solid rgba(0,0,0,.06);
-      font-weight: 700;
-    }
-    button.ghost{
-      background: transparent;
-      color: var(--pink);
-      box-shadow: none;
-      border: 1px solid rgba(255,45,122,.22);
-      font-weight: 800;
-    }
-    .progress{
-      background: rgba(255,45,122,.12);
-      border-radius: 999px;
-      height: 14px;
-      overflow:hidden;
-      border: 1px solid rgba(255,45,122,.18);
-      margin: 10px 0 6px;
-    }
-    .bar{
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--pink) 0%, var(--pink2) 100%);
-      transition: .25s ease;
-    }
-    .small{ font-size: 12px; color: var(--muted); }
-    .strong{ font-weight: 800; color: #1a1a1a; }
-    .divider{ height:1px; background: rgba(0,0,0,.06); margin: 12px 0; }
-    .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top: 8px; }
-    .chip{
-      padding: 8px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      background: rgba(255,45,122,.10);
-      color: var(--pink);
-      border: 1px solid rgba(255,45,122,.16);
-      font-weight: 700;
-    }
-    .nav{
-      position: fixed; left: 0; right: 0; bottom: 0;
-      background: rgba(255,255,255,.92);
-      backdrop-filter: blur(10px);
-      border-top: 1px solid rgba(0,0,0,.08);
-      padding: 10px 10px 12px;
-      z-index: 999;
-    }
-    .navInner{
-      max-width: 980px;
-      margin: 0 auto;
-      display:flex;
-      justify-content:space-around;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .navBtn{
-      flex: 1;
-      text-align:center;
-      padding: 10px 8px;
-      border-radius: 14px;
-      border: 1px solid rgba(0,0,0,.06);
-      background: rgba(0,0,0,.02);
-      color: #1b1b1b;
-      font-weight: 900;
-      font-size: 12px;
-      cursor:pointer;
-      user-select:none;
-      min-width: 110px;
-    }
-    .navBtn.active{
-      background: linear-gradient(135deg, var(--pink) 0%, var(--pink2) 100%);
-      color: white;
-      border-color: rgba(255,45,122,.25);
-      box-shadow: 0 12px 28px rgba(255,45,122,.22);
-    }
-    .section{ display:none; }
-    .section.active{ display:block; }
-
-    /* proteína - linha por item */
-    .protItem{
-      border: 1px solid rgba(0,0,0,.06);
-      border-radius: 16px;
-      padding: 10px;
-      background: #fff;
-    }
-    .protTop{
-      display:flex;
-      justify-content: space-between;
-      align-items:center;
-      gap:10px;
-      margin-bottom: 8px;
-    }
-    .toggle{
-      display:flex; align-items:center; gap:8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      background: rgba(255,45,122,.09);
-      border: 1px solid rgba(255,45,122,.16);
-      color: var(--pink);
-      font-weight: 800;
-      font-size: 12px;
-      cursor:pointer;
-      user-select:none;
-    }
-    .toggle input{ width:18px; height:18px; }
-    .protOut{
-      margin-top: 6px;
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .protOut b{ color:#1a1a1a; }
-  </style>
+<style>
+  body{font-family:Arial,sans-serif;background:#ffe6f0;margin:0;padding:18px}
+  h1{margin:10px 0 6px;text-align:center;color:#d63384}
+  .sub{margin:0 0 16px;text-align:center;color:#7a3350;font-size:13px}
+  .card{background:#fff;padding:14px;margin:12px auto;border-radius:16px;box-shadow:0 4px 15px rgba(0,0,0,.10);max-width:760px}
+  h2{margin:0 0 10px;color:#d63384;font-size:18px}
+  label{display:block;margin:10px 0 6px;font-size:13px;color:#333}
+  input,select,textarea{width:100%;padding:10px;border:1px solid #ffd1e6;border-radius:12px;box-sizing:border-box}
+  textarea{min-height:70px}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .row > div{flex:1;min-width:160px}
+  .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  button{background:#ff4d88;color:#fff;border:none;padding:10px 12px;border-radius:12px;cursor:pointer}
+  button:hover{background:#e6005c}
+  .ghost{background:#fff0f6;color:#a1003f;border:1px dashed #ff4d88}
+  .danger{background:#111;color:#fff}
+  .small{font-size:12px;color:#555;line-height:1.35}
+  .kpi{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .pill{background:#fff0f6;border:1px solid #ffd1e6;border-radius:999px;padding:6px 10px;font-size:12px;color:#8b2a52}
+  .progress{background:#ffd1e6;border-radius:999px;height:14px;margin-top:10px;overflow:hidden}
+  .bar{background:#ff4d88;height:100%;width:0%;transition:.25s}
+  .divider{height:1px;background:#ffe1ec;margin:12px 0}
+  .list{margin-top:8px}
+  .list a{color:#d63384;text-decoration:none}
+  .list a:hover{text-decoration:underline}
+  .tag{display:inline-block;background:#ffe1ec;color:#7a3350;padding:3px 8px;border-radius:999px;font-size:12px;margin-right:6px}
+</style>
 </head>
 
 <body>
-  <div class="wrap">
-    <header>
-      <div class="brand">
-        <div class="logo">🍑</div>
-        <div>
-          <h1>Projeto Ampulheta da <span style="color:var(--pink)">Miriã</span></h1>
-          <div class="subtitle">Treino + medidas + água + intestino + proteína</div>
-        </div>
-      </div>
-      <div class="pill">✨ Versão App</div>
-    </header>
+<h1>🍑 Projeto Ampulheta da Miriã</h1>
+<p class="sub">Treino + água + proteína + medidas + intestino + fotos (salva no seu celular)</p>
 
-    <!-- SEÇÕES -->
-    <div class="card section active" id="secAgua">
-      <div class="cardHead">
-        <div>
-          <h2 class="cardTitle">💧 Água (ml)</h2>
-          <p class="cardNote">Você soma manualmente e vê a média dos últimos 7 dias.</p>
-        </div>
-        <div class="chips">
-          <span class="chip">📊 7 dias</span>
-          <span class="chip">✅ Meta</span>
-        </div>
-      </div>
+<!-- ====== ÁGUA ====== -->
+<div class="card">
+  <h2>💧 Controle de Água</h2>
 
-      <div class="cardBody">
-        <div class="row row2">
-          <div>
-            <label>🎯 Meta diária (ml)</label>
-            <input type="number" id="metaAgua" value="2500" />
-          </div>
-          <div>
-            <label>➕ Adicionar manualmente (ml)</label>
-            <input type="number" id="aguaManual" placeholder="Ex: 300" />
-          </div>
-        </div>
-
-        <div class="btnRow">
-          <button onclick="addManual()">➕ Somar</button>
-          <button class="ghost" onclick="addAgua(470)">+470 ml</button>
-          <button class="ghost" onclick="addAgua(250)">+250 ml</button>
-          <button class="secondary" onclick="desfazerAgua()">↩️ Desfazer</button>
-          <button class="secondary" onclick="zerarAgua()">🧹 Zerar hoje</button>
-        </div>
-
-        <div class="progress"><div class="bar" id="barAgua"></div></div>
-        <div id="statusAgua" class="small"></div>
-        <div id="media7" class="small"></div>
-      </div>
+  <div class="row">
+    <div>
+      <label>🎯 Meta diária (ml)</label>
+      <input type="number" id="metaAgua" value="2500" />
     </div>
-
-    <!-- PROTEÍNA (DO JEITO QUE VOCÊ QUER) -->
-    <div class="card section" id="secProteina" style="margin-top:12px;">
-      <div class="cardHead">
-        <div>
-          <h2 class="cardTitle">🍽️ Proteína automática (você escolhe + digita quantidade)</h2>
-          <p class="cardNote">Marque o que você comeu hoje e informe a quantidade. O app soma sozinho.</p>
-        </div>
-        <div class="chips">
-          <span class="chip">🎯 Meta</span>
-          <span class="chip">➕ Soma</span>
-        </div>
-      </div>
-
-      <div class="cardBody">
-        <div class="row row2">
-          <div>
-            <label>🎯 Meta de proteína (g/dia)</label>
-            <input type="number" id="metaProt" value="100" />
-          </div>
-          <div>
-            <label>📅 Hoje</label>
-            <input type="text" id="dataProt" disabled />
-          </div>
-        </div>
-
-        <div class="divider"></div>
-
-        <!-- Itens -->
-        <div class="row row2">
-          <!-- Frango -->
-          <div class="protItem">
-            <div class="protTop">
-              <div class="strong">🍗 Frango</div>
-              <label class="toggle" style="margin:0;">
-                <input type="checkbox" id="useFrango" onchange="calcProteinaLive()">
-                usar
-              </label>
-            </div>
-            <label>Quantidade (g)</label>
-            <input type="number" id="qFrango" placeholder="Ex: 150" oninput="calcProteinaLive()" />
-            <div class="protOut">Regra: <b>31g</b> a cada <b>100g</b> • Proteína: <b id="outFrango">0g</b></div>
-          </div>
-
-          <!-- Carne -->
-          <div class="protItem">
-            <div class="protTop">
-              <div class="strong">🥩 Carne</div>
-              <label class="toggle" style="margin:0;">
-                <input type="checkbox" id="useCarne" onchange="calcProteinaLive()">
-                usar
-              </label>
-            </div>
-            <label>Quantidade (g)</label>
-            <input type="number" id="qCarne" placeholder="Ex: 120" oninput="calcProteinaLive()" />
-            <div class="protOut">Regra: <b>26g</b> a cada <b>100g</b> • Proteína: <b id="outCarne">0g</b></div>
-          </div>
-        </div>
-
-        <div class="row row2">
-          <!-- Ovo -->
-          <div class="protItem">
-            <div class="protTop">
-              <div class="strong">🥚 Ovo</div>
-              <label class="toggle" style="margin:0;">
-                <input type="checkbox" id="useOvo" onchange="calcProteinaLive()">
-                usar
-              </label>
-            </div>
-            <label>Quantidade (unidades)</label>
-            <input type="number" id="qOvo" placeholder="Ex: 2" oninput="calcProteinaLive()" />
-            <div class="protOut">Regra: <b>6g</b> por unidade • Proteína: <b id="outOvo">0g</b></div>
-          </div>
-
-          <!-- Iogurte -->
-          <div class="protItem">
-            <div class="protTop">
-              <div class="strong">🥛 Iogurte</div>
-              <label class="toggle" style="margin:0;">
-                <input type="checkbox" id="useIog" onchange="calcProteinaLive()">
-                usar
-              </label>
-            </div>
-            <label>Quantidade (unidade)</label>
-            <input type="number" id="qIog" placeholder="Ex: 1" oninput="calcProteinaLive()" />
-            <div class="protOut">Regra: <b>10g</b> por unidade • Proteína: <b id="outIog">0g</b></div>
-          </div>
-        </div>
-
-        <div class="row row2">
-          <!-- Queijo -->
-          <div class="protItem">
-            <div class="protTop">
-              <div class="strong">🧀 Queijo</div>
-              <label class="toggle" style="margin:0;">
-                <input type="checkbox" id="useQueijo" onchange="calcProteinaLive()">
-                usar
-              </label>
-            </div>
-            <label>Quantidade (g)</label>
-            <input type="number" id="qQueijo" placeholder="Ex: 30" oninput="calcProteinaLive()" />
-            <div class="protOut">Regra: <b>25g</b> a cada <b>100g</b> • Proteína: <b id="outQueijo">0g</b></div>
-          </div>
-
-          <!-- Whey -->
-          <div class="protItem">
-            <div class="protTop">
-              <div class="strong">🥤 Whey</div>
-              <label class="toggle" style="margin:0;">
-                <input type="checkbox" id="useWhey" onchange="calcProteinaLive()">
-                usar
-              </label>
-            </div>
-            <label>Quantidade (scoop)</label>
-            <input type="number" id="qWhey" placeholder="Ex: 1" oninput="calcProteinaLive()" />
-            <div class="protOut">Regra: <b>20g</b> por scoop • Proteína: <b id="outWhey">0g</b></div>
-          </div>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="btnRow">
-          <button onclick="salvarProteinaHoje()">💾 Salvar proteína do dia</button>
-          <button class="secondary" onclick="limparProteina()">🧹 Limpar tudo</button>
-        </div>
-
-        <div class="progress"><div class="bar" id="barProt"></div></div>
-        <div id="statusProt" class="small"></div>
-        <div id="histProt" class="small"></div>
-      </div>
-    </div>
-
-    <!-- INTESTINO -->
-    <div class="card section" id="secIntestino" style="margin-top:12px;">
-      <div class="cardHead">
-        <div>
-          <h2 class="cardTitle">🚽 Intestino + Chia</h2>
-          <p class="cardNote">Acompanhar se água morna + chia está ajudando.</p>
-        </div>
-        <div class="chips">
-          <span class="chip">🌿 chia</span>
-          <span class="chip">🗓️ diário</span>
-        </div>
-      </div>
-
-      <div class="cardBody">
-        <div class="row row2">
-          <div>
-            <label>Hoje fui ao banheiro?</label>
-            <select id="intestinoSel">
-              <option value="nao">Não</option>
-              <option value="sim">Sim</option>
-              <option value="pouco">Pouquinho</option>
-            </select>
-          </div>
-          <div>
-            <label>
-              <input type="checkbox" id="chiaCheck" style="width:18px;height:18px;vertical-align:middle;">
-              Tomei água morna + chia (10 min em jejum)
-            </label>
-          </div>
-        </div>
-
-        <div class="btnRow">
-          <button onclick="salvarIntestino()">💾 Salvar</button>
-          <button class="secondary" onclick="limparIntestinoHoje()">🧹 Limpar hoje</button>
-        </div>
-
-        <div id="historicoIntestino" class="small" style="margin-top:10px;"></div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- MENU -->
-  <div class="nav">
-    <div class="navInner">
-      <div class="navBtn active" data-go="secAgua">💧 Água</div>
-      <div class="navBtn" data-go="secProteina">🍽️ Proteína</div>
-      <div class="navBtn" data-go="secIntestino">🚽 Intestino</div>
+    <div>
+      <label>➕ Adicionar manualmente (ml)</label>
+      <input type="number" id="aguaManual" placeholder="Ex: 300" />
     </div>
   </div>
+
+  <div class="btns">
+    <button onclick="aguaSomarManual()">➕ Somar</button>
+    <button class="ghost" onclick="aguaSomar(470)">+470 ml</button>
+    <button class="ghost" onclick="aguaSomar(250)">+250 ml</button>
+    <button class="ghost" onclick="aguaDesfazer()">↩️ Desfazer</button>
+    <button class="danger" onclick="aguaZerar()">🧹 Zerar hoje</button>
+  </div>
+
+  <div class="progress"><div class="bar" id="barAgua"></div></div>
+  <div class="kpi">
+    <div class="pill" id="aguaHojeKpi">Hoje: 0 ml</div>
+    <div class="pill" id="aguaMedia7Kpi">Média 7 dias: 0 ml</div>
+  </div>
+  <p class="small">Dica: manter a água alta ajuda intestino e desinchar até o fim do dia.</p>
+</div>
+
+<!-- ====== PROTEÍNA AUTOMÁTICA ====== -->
+<div class="card">
+  <h2>🍽 Proteína do dia (automática)</h2>
+  <p class="small">Você escolhe o alimento e coloca a quantidade. O app calcula e soma sozinho. ✅</p>
+
+  <div class="row">
+    <div>
+      <label>🎯 Meta de proteína (g/dia)</label>
+      <input type="number" id="metaProt" value="95" />
+    </div>
+    <div>
+      <label>📅 Data</label>
+      <input type="text" id="dataProt" disabled />
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="row">
+    <div>
+      <label>🍗 Frango (g) — 31g/100g</label>
+      <input type="number" id="prot_frango" placeholder="Ex: 150" oninput="protRecalcular()" />
+    </div>
+    <div>
+      <label>🥩 Carne (g) — 26g/100g</label>
+      <input type="number" id="prot_carne" placeholder="Ex: 120" oninput="protRecalcular()" />
+    </div>
+    <div>
+      <label>🥚 Ovos (un) — 6g/un</label>
+      <input type="number" id="prot_ovo" placeholder="Ex: 2" oninput="protRecalcular()" />
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <label>🥛 Iogurte (un) — 10g/un</label>
+      <input type="number" id="prot_iog" placeholder="Ex: 1" oninput="protRecalcular()" />
+    </div>
+    <div>
+      <label>🧀 Queijo (g) — 25g/100g</label>
+      <input type="number" id="prot_queijo" placeholder="Ex: 30" oninput="protRecalcular()" />
+    </div>
+    <div>
+      <label>🥤 Whey (scoop) — 20g/scoop</label>
+      <input type="number" id="prot_whey" placeholder="Ex: 1" oninput="protRecalcular()" />
+    </div>
+  </div>
+
+  <div class="btns">
+    <button onclick="protSalvar()">💾 Salvar hoje</button>
+    <button class="danger" onclick="protZerar()">🧹 Zerar hoje</button>
+  </div>
+
+  <div class="kpi">
+    <div class="pill" id="protHojeKpi">Proteína hoje: 0 g</div>
+    <div class="pill" id="protMetaKpi">Meta: 95 g</div>
+    <div class="pill" id="protFaltaKpi">Faltam: 95 g</div>
+  </div>
+  <div class="small" id="protMedia7Kpi">📊 Média 7 dias: 0 g</div>
+</div>
+
+<!-- ====== INTESTINO + CHIA ====== -->
+<div class="card">
+  <h2>🚽 Intestino + Chia</h2>
+  <p class="small">
+    Rotina que te ajudou: <b>1 copo de água morna + 1 colher de chia</b> (hidratar ~10 min) em jejum. ✅
+  </p>
+
+  <label>Hoje você foi ao banheiro?</label>
+  <select id="intestinoSel">
+    <option value="nao">Não</option>
+    <option value="sim">Sim</option>
+    <option value="pouco">Pouquinho</option>
+  </select>
+
+  <label>
+    <input type="checkbox" id="chiaCheck" />
+    Tomei água morna + chia hoje
+  </label>
+
+  <div class="btns">
+    <button onclick="intSalvar()">💾 Salvar</button>
+    <button class="danger" onclick="intLimpar()">🧹 Limpar hoje</button>
+  </div>
+
+  <div class="small list" id="intHistorico"></div>
+</div>
+
+<!-- ====== MEDIDAS + AMPULHETA ====== -->
+<div class="card">
+  <h2>📏 Medidas + Proporção Ampulheta</h2>
+  <p class="small">
+    📸 <b>Fotos:</b> a cada <b>14 dias</b> (mesma luz/posição).<br>
+    📏 <b>Medidas:</b> a cada <b>7 dias</b> (manhã, em jejum).
+  </p>
+
+  <div class="row">
+    <div>
+      <label>Peso (kg)</label>
+      <input type="number" id="m_peso" placeholder="Ex: 56.9" />
+    </div>
+    <div>
+      <label>Cintura (cm)</label>
+      <input type="number" id="m_cintura" placeholder="Ex: 72" />
+    </div>
+    <div>
+      <label>Abdômen (cm)</label>
+      <input type="number" id="m_abdomen" placeholder="Ex: 81" />
+    </div>
+    <div>
+      <label>Glúteo (cm)</label>
+      <input type="number" id="m_gluteo" placeholder="Ex: 96" />
+    </div>
+  </div>
+
+  <div class="btns">
+    <button onclick="medSalvar()">💾 Salvar medida</button>
+    <button class="danger" onclick="medLimparTudo()">🧨 Apagar histórico</button>
+  </div>
+
+  <div class="kpi">
+    <div class="pill" id="kpiAmp">Ampulheta: --</div>
+    <div class="pill" id="kpiNota">Nota: --</div>
+  </div>
+
+  <div class="small list" id="medUltima"></div>
+</div>
+
+<!-- ====== FOTOS ANTES/DEPOIS ====== -->
+<div class="card">
+  <h2>📸 Fotos (Antes/Depois)</h2>
+  <p class="small">
+    Cole aqui o link da sua foto (Google Fotos/Drive/onde você preferir) + uma observação.
+    Assim você acompanha evolução dentro do app. ✅
+  </p>
+
+  <div class="row">
+    <div>
+      <label>Tipo</label>
+      <select id="fotoTipo">
+        <option value="antes">Antes</option>
+        <option value="depois">Depois</option>
+        <option value="check">Check-in</option>
+      </select>
+    </div>
+    <div>
+      <label>Data</label>
+      <input type="text" id="fotoData" disabled />
+    </div>
+  </div>
+
+  <label>Link da foto (URL)</label>
+  <input type="text" id="fotoUrl" placeholder="Cole o link aqui" />
+
+  <label>Observação (opcional)</label>
+  <textarea id="fotoObs" placeholder="Ex: senti menos inchaço / cintura mais marcada"></textarea>
+
+  <div class="btns">
+    <button onclick="fotoSalvar()">💾 Salvar foto</button>
+    <button class="danger" onclick="fotoLimparTudo()">🧨 Apagar fotos</button>
+  </div>
+
+  <div class="small list" id="fotoLista"></div>
+</div>
+
+<!-- ====== TREINO (SEG–SEX) ====== -->
+<div class="card">
+  <h2>🏋️ Treino (Segunda a Sexta)</h2>
+  <p class="small">
+    🎯 Foco Ampulheta (B): <b>glúteo + postura + core (vácuo/prancha)</b> = cintura mais marcada com corpo firme.
+  </p>
+
+  <div class="list" id="treinoLista"></div>
+</div>
 
 <script>
-  // ===== PWA SW (se tiver sw.js no repo, ele registra) =====
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./sw.js").catch(()=>{});
-    });
+/* ========= BASE ========= */
+function hojeISO(){ return new Date().toISOString().split("T")[0]; }
+function fmtBR(iso){
+  const [y,m,d] = iso.split("-");
+  return `${d}/${m}/${y}`;
+}
+const KEY = "app_miria_ampulheta_v2";
+
+let dados = JSON.parse(localStorage.getItem(KEY)) || {
+  agua:{}, intestino:{}, medidas:[], fotos:[],
+  proteina:{}
+};
+
+function salvar(){ localStorage.setItem(KEY, JSON.stringify(dados)); }
+
+/* ========= ÁGUA ========= */
+function initAgua(){
+  if(!dados.agua[hojeISO()]) dados.agua[hojeISO()] = {total:0, pilha:[]};
+}
+function aguaSomar(v){
+  initAgua();
+  dados.agua[hojeISO()].total += v;
+  dados.agua[hojeISO()].pilha.push(v);
+  salvar(); aguaRender();
+}
+function aguaSomarManual(){
+  const v = Number(document.getElementById("aguaManual").value || 0);
+  if(v>0){ aguaSomar(v); document.getElementById("aguaManual").value=""; }
+}
+function aguaDesfazer(){
+  initAgua();
+  const ultimo = dados.agua[hojeISO()].pilha.pop();
+  if(ultimo) dados.agua[hojeISO()].total -= ultimo;
+  salvar(); aguaRender();
+}
+function aguaZerar(){
+  dados.agua[hojeISO()] = {total:0, pilha:[]};
+  salvar(); aguaRender();
+}
+function aguaRender(){
+  initAgua();
+  const meta = Number(document.getElementById("metaAgua").value || 2500);
+  const total = dados.agua[hojeISO()].total;
+
+  document.getElementById("aguaHojeKpi").innerHTML = `Hoje: <b>${total} ml</b>`;
+
+  let pct = meta>0 ? (total/meta)*100 : 0;
+  if(pct>100) pct=100;
+  document.getElementById("barAgua").style.width = pct + "%";
+
+  let soma=0, dias=0;
+  for(let i=0;i<7;i++){
+    const d = new Date();
+    d.setDate(d.getDate()-i);
+    const k = d.toISOString().split("T")[0];
+    if(dados.agua[k]){
+      soma += dados.agua[k].total;
+      dias++;
+    }
+  }
+  const media = dias? Math.round(soma/dias) : 0;
+  document.getElementById("aguaMedia7Kpi").innerHTML = `Média 7 dias: <b>${media} ml</b>`;
+}
+
+/* ========= PROTEÍNA AUTOMÁTICA ========= */
+const fatores = {
+  frango:{tipo:"g", por:100, prot:31},
+  carne:{tipo:"g", por:100, prot:26},
+  ovo:{tipo:"un", por:1, prot:6},
+  iog:{tipo:"un", por:1, prot:10},
+  queijo:{tipo:"g", por:100, prot:25},
+  whey:{tipo:"sc", por:1, prot:20}
+};
+
+function protCalcItem(qtd, cfg){
+  qtd = Number(qtd || 0);
+  if(qtd<=0) return 0;
+  if(cfg.por===1) return qtd * cfg.prot;
+  return (qtd/cfg.por) * cfg.prot;
+}
+
+function protRecalcular(){
+  const fr = protCalcItem(document.getElementById("prot_frango").value, fatores.frango);
+  const ca = protCalcItem(document.getElementById("prot_carne").value, fatores.carne);
+  const ov = protCalcItem(document.getElementById("prot_ovo").value, fatores.ovo);
+  const io = protCalcItem(document.getElementById("prot_iog").value, fatores.iog);
+  const qu = protCalcItem(document.getElementById("prot_queijo").value, fatores.queijo);
+  const wh = protCalcItem(document.getElementById("prot_whey").value, fatores.whey);
+
+  const total = Math.round(fr+ca+ov+io+qu+wh);
+  const meta = Number(document.getElementById("metaProt").value || 0);
+  const falta = Math.max(0, meta-total);
+
+  document.getElementById("protHojeKpi").innerHTML = `Proteína hoje: <b>${total} g</b>`;
+  document.getElementById("protMetaKpi").innerHTML = `Meta: <b>${meta} g</b>`;
+  document.getElementById("protFaltaKpi").innerHTML = `Faltam: <b>${falta} g</b>`;
+}
+
+function protSalvar(){
+  const k = hojeISO();
+  dados.proteina[k] = {
+    meta: Number(document.getElementById("metaProt").value || 0),
+    frango: Number(document.getElementById("prot_frango").value || 0),
+    carne: Number(document.getElementById("prot_carne").value || 0),
+    ovo: Number(document.getElementById("prot_ovo").value || 0),
+    iog: Number(document.getElementById("prot_iog").value || 0),
+    queijo: Number(document.getElementById("prot_queijo").value || 0),
+    whey: Number(document.getElementById("prot_whey").value || 0)
+  };
+  salvar(); protRender();
+}
+
+function protZerar(){
+  const k = hojeISO();
+  delete dados.proteina[k];
+  document.getElementById("prot_frango").value="";
+  document.getElementById("prot_carne").value="";
+  document.getElementById("prot_ovo").value="";
+  document.getElementById("prot_iog").value="";
+  document.getElementById("prot_queijo").value="";
+  document.getElementById("prot_whey").value="";
+  salvar(); protRender();
+}
+
+function protTotalDoDia(k){
+  const d = dados.proteina[k];
+  if(!d) return 0;
+  return Math.round(
+    protCalcItem(d.frango, fatores.frango)+
+    protCalcItem(d.carne, fatores.carne)+
+    protCalcItem(d.ovo, fatores.ovo)+
+    protCalcItem(d.iog, fatores.iog)+
+    protCalcItem(d.queijo, fatores.queijo)+
+    protCalcItem(d.whey, fatores.whey)
+  );
+}
+
+function protRender(){
+  const k = hojeISO();
+  document.getElementById("dataProt").value = fmtBR(k);
+
+  const hoje = dados.proteina[k];
+  if(hoje){
+    document.getElementById("metaProt").value = hoje.meta || 95;
+    document.getElementById("prot_frango").value = hoje.frango || "";
+    document.getElementById("prot_carne").value = hoje.carne || "";
+    document.getElementById("prot_ovo").value = hoje.ovo || "";
+    document.getElementById("prot_iog").value = hoje.iog || "";
+    document.getElementById("prot_queijo").value = hoje.queijo || "";
+    document.getElementById("prot_whey").value = hoje.whey || "";
   }
 
-  // ===== UTIL =====
-  function hoje(){ return new Date().toISOString().split("T")[0]; }
-  function fmtDataBR(iso){ const [y,m,d] = iso.split("-"); return `${d}/${m}/${y}`; }
-  function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
+  protRecalcular();
 
-  // ===== STORAGE =====
-  let dados = JSON.parse(localStorage.getItem("app_miria_ampulheta")) || {
-    agua: {},
-    intestino: {},
-    proteina: {}
+  // média 7 dias
+  let soma=0, dias=0;
+  for(let i=0;i<7;i++){
+    const d = new Date();
+    d.setDate(d.getDate()-i);
+    const key = d.toISOString().split("T")[0];
+    if(dados.proteina[key]){
+      soma += protTotalDoDia(key);
+      dias++;
+    }
+  }
+  const media = dias? Math.round(soma/dias) : 0;
+  document.getElementById("protMedia7Kpi").innerHTML = `📊 Média 7 dias: <b>${media} g</b>`;
+}
+
+/* ========= INTESTINO ========= */
+function intSalvar(){
+  dados.intestino[hojeISO()] = {
+    foi: document.getElementById("intestinoSel").value,
+    chia: document.getElementById("chiaCheck").checked
   };
-  function salvarAll(){ localStorage.setItem("app_miria_ampulheta", JSON.stringify(dados)); }
+  salvar(); intRender();
+}
+function intLimpar(){
+  delete dados.intestino[hojeISO()];
+  salvar(); intRender();
+}
+function intRender(){
+  // set campos de hoje
+  const d = dados.intestino[hojeISO()];
+  if(d){
+    document.getElementById("intestinoSel").value = d.foi;
+    document.getElementById("chiaCheck").checked = !!d.chia;
+  }else{
+    document.getElementById("intestinoSel").value = "nao";
+    document.getElementById("chiaCheck").checked = false;
+  }
 
-  // ===== NAV =====
-  document.querySelectorAll(".navBtn").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      document.querySelectorAll(".navBtn").forEach(b=>b.classList.remove("active"));
-      btn.classList.add("active");
-      const id = btn.getAttribute("data-go");
-      document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
-      document.getElementById(id).classList.add("active");
+  const entries = Object.entries(dados.intestino).sort((a,b)=>a[0].localeCompare(b[0]));
+  const ult = entries.slice(-10).reverse().map(([data,val])=>{
+    const foiTxt = val.foi==="sim" ? "✅ Sim" : (val.foi==="pouco" ? "🟡 Pouquinho" : "❌ Não");
+    const chiaTxt = val.chia ? " + 🌿 chia" : "";
+    return `<div>📅 <b>${fmtBR(data)}</b> — ${foiTxt}${chiaTxt}</div>`;
+  }).join("");
+  document.getElementById("intHistorico").innerHTML = ult || "Sem registros ainda.";
+}
+
+/* ========= MEDIDAS ========= */
+function ampNota(r){
+  if(!isFinite(r) || r<=0) return {nota:"--", txt:"--"};
+  if(r>=1.35) return {nota:"A+", txt:"🔥 Muito marcada"};
+  if(r>=1.30) return {nota:"A", txt:"🍑 Ampulheta forte"};
+  if(r>=1.25) return {nota:"B", txt:"✨ Boa (em construção)"};
+  return {nota:"C", txt:"📈 Vamos marcar mais"};
+}
+
+function medSalvar(){
+  const item = {
+    data: hojeISO(),
+    peso: Number(document.getElementById("m_peso").value || 0),
+    cintura: Number(document.getElementById("m_cintura").value || 0),
+    abdomen: Number(document.getElementById("m_abdomen").value || 0),
+    gluteo: Number(document.getElementById("m_gluteo").value || 0)
+  };
+  dados.medidas.push(item);
+  salvar(); medRender();
+}
+function medLimparTudo(){
+  if(confirm("Quer apagar TODO o histórico de medidas?")){
+    dados.medidas = [];
+    salvar(); medRender();
+  }
+}
+function medRender(){
+  const last = dados.medidas.length ? dados.medidas[dados.medidas.length-1] : null;
+  if(!last){
+    document.getElementById("medUltima").innerHTML = "Sem medidas salvas ainda.";
+    document.getElementById("kpiAmp").innerHTML = "Ampulheta: --";
+    document.getElementById("kpiNota").innerHTML = "Nota: --";
+    return;
+  }
+  const r = last.cintura>0 ? (last.gluteo/last.cintura) : 0;
+  const rTxt = r ? r.toFixed(2) : "--";
+  const an = ampNota(r);
+
+  document.getElementById("kpiAmp").innerHTML = `Ampulheta: <b>${rTxt}</b> (glúteo ÷ cintura)`;
+  document.getElementById("kpiNota").innerHTML = `Nota: <b>${an.nota}</b> — ${an.txt}`;
+
+  document.getElementById("medUltima").innerHTML =
+    `<div><span class="tag">Última</span> <b>${fmtBR(last.data)}</b></div>
+     <div>Peso: <b>${last.peso}</b> kg • Cintura: <b>${last.cintura}</b> cm • Abdômen: <b>${last.abdomen}</b> cm • Glúteo: <b>${last.gluteo}</b> cm</div>`;
+}
+
+/* ========= FOTOS ========= */
+function fotoSalvar(){
+  const item = {
+    data: hojeISO(),
+    tipo: document.getElementById("fotoTipo").value,
+    url: (document.getElementById("fotoUrl").value || "").trim(),
+    obs: (document.getElementById("fotoObs").value || "").trim()
+  };
+  if(!item.url){
+    alert("Cole um link da foto (URL).");
+    return;
+  }
+  dados.fotos.push(item);
+  document.getElementById("fotoUrl").value="";
+  document.getElementById("fotoObs").value="";
+  salvar(); fotoRender();
+}
+function fotoLimparTudo(){
+  if(confirm("Quer apagar TODAS as fotos salvas?")){
+    dados.fotos = [];
+    salvar(); fotoRender();
+  }
+}
+function fotoRender(){
+  document.getElementById("fotoData").value = fmtBR(hojeISO());
+  const items = dados.fotos.slice().reverse().slice(0,20).map(f=>{
+    const emoji = f.tipo==="antes" ? "🟣" : (f.tipo==="depois" ? "🟢" : "📸");
+    const obs = f.obs ? ` — <i>${f.obs}</i>` : "";
+    return `<div>${emoji} <b>${fmtBR(f.data)}</b> • ${f.tipo.toUpperCase()} • <a href="${f.url}" target="_blank">abrir</a>${obs}</div>`;
+  }).join("");
+  document.getElementById("fotoLista").innerHTML = items || "Sem fotos salvas ainda.";
+}
+
+/* ========= TREINO (SEG–SEX) ========= */
+const treinos = {
+  "Segunda – Glúteo/Posterior 🍑": [
+    {n:"1️⃣ Cadeira Flexora", s:"3×12", w:"20–25kg", t:"Controle total. Sem tirar o quadril do banco.", v:"https://www.youtube.com/results?search_query=cadeira+flexora+como+fazer+correto"},
+    {n:"2️⃣ Stiff com Halter", s:"3×12", w:"6–8kg cada lado", t:"Coluna neutra. Desce devagar. Sente alongar posterior.", v:"https://www.youtube.com/results?search_query=stiff+com+halter+como+fazer"},
+    {n:"3️⃣ Elevação pélvica (Hip Thrust)", s:"4×10", w:"20kg (meta evoluir)", t:"Pausa 1s no topo. Não arquear lombar.", v:"https://www.youtube.com/results?search_query=eleva%C3%A7%C3%A3o+p%C3%A9lvica+como+fazer"},
+    {n:"4️⃣ Abdutora máquina", s:"3×15", w:"30–35kg", t:"Inclina levemente pra frente e segura 1s aberta.", v:"https://www.youtube.com/results?search_query=abdutora+m%C3%A1quina+como+usar"},
+    {n:"🚶‍♀️ Cardio (opcional)", s:"12 min", w:"esteira inclinada", t:"Leve/moderado pra ajudar barriga sem perder glúteo.", v:"https://www.youtube.com/results?search_query=esteira+inclinada+como+fazer"}
+  ],
+  "Terça – Peito + Ombro + Core ✨": [
+    {n:"1️⃣ Supino inclinado (máquina)", s:"3×12", w:"15–20kg", t:"Peito aberto. Ombros pra baixo.", v:"https://www.youtube.com/results?search_query=supino+inclinado+m%C3%A1quina+como+fazer"},
+    {n:"2️⃣ Crucifixo (máquina)", s:"3×12", w:"15kg", t:"Controlado. Não esticar demais.", v:"https://www.youtube.com/results?search_query=crucifixo+m%C3%A1quina+como+fazer"},
+    {n:"3️⃣ Elevação lateral (halter)", s:"3×12", w:"4kg", t:"Sobe até linha do ombro. Sem balançar.", v:"https://www.youtube.com/results?search_query=eleva%C3%A7%C3%A3o+lateral+halter+como+fazer"},
+    {n:"4️⃣ Desenvolvimento ombro (halter)", s:"3×10", w:"6kg", t:"Controle. Sem forçar lombar.", v:"https://www.youtube.com/results?search_query=desenvolvimento+ombro+halter+como+fazer"},
+    {n:"⏳ Vácuo abdominal", s:"3×20s", w:"cintura", t:"Solta o ar e puxa o umbigo pra dentro.", v:"https://www.youtube.com/results?search_query=vacuum+abdominal+como+fazer"}
+  ],
+  "Quarta – Quadríceps + Glúteo 🍑": [
+    {n:"1️⃣ Leg Press", s:"4×12", w:"80kg (meta 100–110kg)", t:"Pé um pouco mais alto. Não travar joelho.", v:"https://www.youtube.com/results?search_query=leg+press+como+fazer+correto"},
+    {n:"2️⃣ Agachamento no Smith", s:"3×10", w:"10kg cada lado", t:"Pés levemente à frente. Desce controlado.", v:"https://www.youtube.com/results?search_query=agachamento+no+smith+como+fazer"},
+    {n:"3️⃣ Cadeira Extensora", s:"3×12", w:"25kg", t:"Sobe forte e desce controlando.", v:"https://www.youtube.com/results?search_query=cadeira+extensora+como+fazer"},
+    {n:"4️⃣ Abdutora", s:"3×15", w:"30–35kg", t:"Foco glúteo lateral (ajuda ampulheta).", v:"https://www.youtube.com/results?search_query=abdutora+m%C3%A1quina+como+usar"}
+  ],
+  "Quinta – Costas + Postura 🧍‍♀️": [
+    {n:"1️⃣ Puxada frente", s:"3×12", w:"25kg", t:"Puxa com cotovelos. Ombros pra baixo.", v:"https://www.youtube.com/results?search_query=puxada+frente+na+polia+como+fazer"},
+    {n:"2️⃣ Remada baixa", s:"3×12", w:"25kg", t:"Segura 1s atrás. Postura firme.", v:"https://www.youtube.com/results?search_query=remada+baixa+na+polia+como+fazer"},
+    {n:"3️⃣ Face Pull", s:"3×15", w:"leve/médio", t:"Postura + parte de cima mais firme.", v:"https://www.youtube.com/results?search_query=face+pull+como+fazer"},
+    {n:"4️⃣ Prancha", s:"3×40s", w:"core", t:"Barriga pra dentro. Sem cair lombar.", v:"https://www.youtube.com/results?search_query=prancha+abdominal+como+fazer"}
+  ],
+  "Sexta – Glúteo foco 🍑🔥": [
+    {n:"1️⃣ Elevação pélvica (pesado)", s:"4×8", w:"30kg (meta 45kg)", t:"Forma perfeita. Pausa no topo.", v:"https://www.youtube.com/results?search_query=hip+thrust+como+fazer"},
+    {n:"2️⃣ Stiff", s:"3×12", w:"8kg cada lado", t:"Controle, coluna neutra.", v:"https://www.youtube.com/results?search_query=stiff+com+halter+como+fazer"},
+    {n:"3️⃣ Afundo andando", s:"3×10 cada perna", w:"4–6kg", t:"Tronco levemente à frente, calcanhar empurra.", v:"https://www.youtube.com/results?search_query=afundo+andando+como+fazer"},
+    {n:"4️⃣ Abdutora", s:"4×15", w:"35–40kg", t:"Segura 1s aberta. Glúteo lateral.", v:"https://www.youtube.com/results?search_query=abdutora+m%C3%A1quina+como+usar"},
+    {n:"⏳ Vácuo abdominal", s:"3×20s", w:"cintura", t:"Consistência 3x/semana.", v:"https://www.youtube.com/results?search_query=vacuum+abdominal+como+fazer"}
+  ]
+};
+
+function treinoRender(){
+  let html = "";
+  Object.entries(treinos).forEach(([dia,lista])=>{
+    html += `<div style="margin:10px 0 6px"><b>${dia}</b></div>`;
+    lista.forEach(ex=>{
+      html += `
+        <div style="padding:10px;border:1px solid #ffe1ec;border-radius:14px;margin:8px 0">
+          <div><b>${ex.n}</b> — <span class="tag">${ex.s}</span> <span class="tag">${ex.w}</span></div>
+          <div class="small">${ex.t}</div>
+          <div class="small">▶️ <a href="${ex.v}" target="_blank">Ver vídeo (PT)</a></div>
+        </div>
+      `;
     });
   });
+  document.getElementById("treinoLista").innerHTML = html;
+}
 
-  // ===== ÁGUA =====
-  if(!dados.agua[hoje()]) dados.agua[hoje()] = {total:0, pilha:[]};
+/* ========= INIT ========= */
+document.getElementById("dataProt").value = fmtBR(hojeISO());
+document.getElementById("fotoData").value = fmtBR(hojeISO());
 
-  function atualizarAgua(){
-    const meta = Number(document.getElementById("metaAgua").value || 0);
-    const total = (dados.agua[hoje()]?.total) || 0;
+initAgua(); aguaRender();
+protRender();
+intRender();
+medRender();
+fotoRender();
+treinoRender();
 
-    document.getElementById("statusAgua").innerHTML =
-      `💧 Hoje: <b>${total} ml</b> • Meta: <b>${meta} ml</b>`;
-
-    let pct = meta>0 ? (total/meta)*100 : 0;
-    pct = clamp(pct, 0, 100);
-    document.getElementById("barAgua").style.width = pct + "%";
-
-    let soma = 0, dias = 0;
-    for(let i=0;i<7;i++){
-      const d = new Date(); d.setDate(d.getDate()-i);
-      const key = d.toISOString().split("T")[0];
-      if(dados.agua[key]){ soma += dados.agua[key].total || 0; dias++; }
-    }
-    const media = dias ? Math.round(soma/dias) : 0;
-    document.getElementById("media7").innerHTML = `📊 Média últimos 7 dias: <b>${media} ml</b>`;
-    salvarAll();
-  }
-  document.getElementById("metaAgua").addEventListener("input", atualizarAgua);
-
-  function addAgua(valor){
-    if(!dados.agua[hoje()]) dados.agua[hoje()] = {total:0, pilha:[]};
-    dados.agua[hoje()].total += valor;
-    dados.agua[hoje()].pilha.push(valor);
-    salvarAll(); atualizarAgua();
-  }
-  function addManual(){
-    const val = Number(document.getElementById("aguaManual").value);
-    if(val > 0){
-      addAgua(val);
-      document.getElementById("aguaManual").value = "";
-    }
-  }
-  function desfazerAgua(){
-    const stack = dados.agua[hoje()]?.pilha || [];
-    const ultimo = stack.pop();
-    if(ultimo){
-      dados.agua[hoje()].total -= ultimo;
-      if(dados.agua[hoje()].total < 0) dados.agua[hoje()].total = 0;
-    }
-    salvarAll(); atualizarAgua();
-  }
-  function zerarAgua(){
-    dados.agua[hoje()] = {total:0, pilha:[]};
-    salvarAll(); atualizarAgua();
-  }
-
-  // ===== INTESTINO =====
-  function salvarIntestino(){
-    dados.intestino[hoje()] = {
-      foi: document.getElementById("intestinoSel").value,
-      chia: document.getElementById("chiaCheck").checked
-    };
-    salvarAll(); atualizarIntestino();
-  }
-  function limparIntestinoHoje(){
-    delete dados.intestino[hoje()];
-    salvarAll(); atualizarIntestino();
-  }
-  function atualizarIntestino(){
-    const entries = Object.entries(dados.intestino).sort((a,b)=> b[0].localeCompare(a[0])).slice(0,10);
-    const html = entries.map(([data,val])=>{
-      const foiTxt = val.foi === "sim" ? "✅ Sim" : (val.foi==="pouco" ? "🟡 Pouquinho" : "❌ Não");
-      const chiaTxt = val.chia ? " + 🌿 chia" : "";
-      return `<b>${fmtDataBR(data)}</b> — ${foiTxt}${chiaTxt}`;
-    }).join("<br>");
-    document.getElementById("historicoIntestino").innerHTML = html || "Sem registros ainda.";
-
-    if(dados.intestino[hoje()]){
-      document.getElementById("intestinoSel").value = dados.intestino[hoje()].foi;
-      document.getElementById("chiaCheck").checked = !!dados.intestino[hoje()].chia;
-    } else {
-      document.getElementById("intestinoSel").value = "nao";
-      document.getElementById("chiaCheck").checked = false;
-    }
-  }
-
-  // ===== PROTEÍNA (ESCOLHER + QUANTIDADE + SOMA) =====
-  document.getElementById("dataProt").value = fmtDataBR(hoje());
-
-  const fatores = {
-    frango: { tipo:"g",  por:100, prot:31 }, // 31g a cada 100g
-    carne:  { tipo:"g",  por:100, prot:26 },
-    ovo:    { tipo:"un", por:1,   prot:6  },
-    iog:    { tipo:"un", por:1,   prot:10 },
-    queijo: { tipo:"g",  por:100, prot:25 },
-    whey:   { tipo:"sc", por:1,   prot:20 }
-  };
-
-  function calcItem(qtd, cfg){
-    qtd = Number(qtd || 0);
-    if(qtd <= 0) return 0;
-    if(cfg.por === 1) return qtd * cfg.prot;
-    return (qtd / cfg.por) * cfg.prot;
-  }
-
-  function calcProteinaLive(){
-    // só soma se estiver marcado "usar"
-    const useFrango = document.getElementById("useFrango").checked;
-    const useCarne  = document.getElementById("useCarne").checked;
-    const useOvo    = document.getElementById("useOvo").checked;
-    const useIog    = document.getElementById("useIog").checked;
-    const useQueijo = document.getElementById("useQueijo").checked;
-    const useWhey   = document.getElementById("useWhey").checked;
-
-    const qFrango = document.getElementById("qFrango").value;
-    const qCarne  = document.getElementById("qCarne").value;
-    const qOvo    = document.getElementById("qOvo").value;
-    const qIog    = document.getElementById("qIog").value;
-    const qQueijo = document.getElementById("qQueijo").value;
-    const qWhey   = document.getElementById("qWhey").value;
-
-    const pFrango = useFrango ? calcItem(qFrango, fatores.frango) : 0;
-    const pCarne  = useCarne  ? calcItem(qCarne,  fatores.carne)  : 0;
-    const pOvo    = useOvo    ? calcItem(qOvo,    fatores.ovo)    : 0;
-    const pIog    = useIog    ? calcItem(qIog,    fatores.iog)    : 0;
-    const pQueijo = useQueijo ? calcItem(qQueijo, fatores.queijo) : 0;
-    const pWhey   = useWhey   ? calcItem(qWhey,   fatores.whey)   : 0;
-
-    document.getElementById("outFrango").innerText = Math.round(pFrango) + "g";
-    document.getElementById("outCarne").innerText  = Math.round(pCarne)  + "g";
-    document.getElementById("outOvo").innerText    = Math.round(pOvo)    + "g";
-    document.getElementById("outIog").innerText    = Math.round(pIog)    + "g";
-    document.getElementById("outQueijo").innerText = Math.round(pQueijo) + "g";
-    document.getElementById("outWhey").innerText   = Math.round(pWhey)   + "g";
-
-    const total = Math.round(pFrango + pCarne + pOvo + pIog + pQueijo + pWhey);
-    const meta = Number(document.getElementById("metaProt").value || 0);
-    const falta = meta - total;
-
-    const pct = meta>0 ? clamp((total/meta)*100, 0, 100) : 0;
-    document.getElementById("barProt").style.width = pct + "%";
-
-    document.getElementById("statusProt").innerHTML =
-      `Proteína hoje: <b>${total}g</b> • Meta: <b>${meta}g</b> • ` +
-      (falta>0 ? `Faltam <b>${falta}g</b>` : `<b>Meta batida! 🔥</b>`);
-  }
-
-  function salvarProteinaHoje(){
-    // salva o que foi marcado + quantidades + total
-    const meta = Number(document.getElementById("metaProt").value || 0);
-
-    const payload = {
-      meta,
-      useFrango: document.getElementById("useFrango").checked,
-      useCarne:  document.getElementById("useCarne").checked,
-      useOvo:    document.getElementById("useOvo").checked,
-      useIog:    document.getElementById("useIog").checked,
-      useQueijo: document.getElementById("useQueijo").checked,
-      useWhey:   document.getElementById("useWhey").checked,
-      qFrango: Number(document.getElementById("qFrango").value||0),
-      qCarne:  Number(document.getElementById("qCarne").value||0),
-      qOvo:    Number(document.getElementById("qOvo").value||0),
-      qIog:    Number(document.getElementById("qIog").value||0),
-      qQueijo: Number(document.getElementById("qQueijo").value||0),
-      qWhey:   Number(document.getElementById("qWhey").value||0),
-    };
-
-    // calcula total igual ao live
-    const pFrango = payload.useFrango ? calcItem(payload.qFrango, fatores.frango) : 0;
-    const pCarne  = payload.useCarne  ? calcItem(payload.qCarne,  fatores.carne)  : 0;
-    const pOvo    = payload.useOvo    ? calcItem(payload.qOvo,    fatores.ovo)    : 0;
-    const pIog    = payload.useIog    ? calcItem(payload.qIog,    fatores.iog)    : 0;
-    const pQueijo = payload.useQueijo ? calcItem(payload.qQueijo, fatores.queijo) : 0;
-    const pWhey   = payload.useWhey   ? calcItem(payload.qWhey,   fatores.whey)   : 0;
-
-    payload.total = Math.round(pFrango+pCarne+pOvo+pIog+pQueijo+pWhey);
-
-    dados.proteina[hoje()] = payload;
-    salvarAll();
-    atualizarHistoricoProteina();
-    calcProteinaLive();
-  }
-
-  function limparProteina(){
-    ["useFrango","useCarne","useOvo","useIog","useQueijo","useWhey"].forEach(id=>document.getElementById(id).checked=false);
-    ["qFrango","qCarne","qOvo","qIog","qQueijo","qWhey"].forEach(id=>document.getElementById(id).value="");
-    calcProteinaLive();
-  }
-
-  function carregarProteinaHoje(){
-    const reg = dados.proteina[hoje()];
-    if(!reg) { calcProteinaLive(); atualizarHistoricoProteina(); return; }
-
-    document.getElementById("metaProt").value = reg.meta || 100;
-
-    document.getElementById("useFrango").checked = !!reg.useFrango;
-    document.getElementById("useCarne").checked  = !!reg.useCarne;
-    document.getElementById("useOvo").checked    = !!reg.useOvo;
-    document.getElementById("useIog").checked    = !!reg.useIog;
-    document.getElementById("useQueijo").checked = !!reg.useQueijo;
-    document.getElementById("useWhey").checked   = !!reg.useWhey;
-
-    document.getElementById("qFrango").value = reg.qFrango || "";
-    document.getElementById("qCarne").value  = reg.qCarne  || "";
-    document.getElementById("qOvo").value    = reg.qOvo    || "";
-    document.getElementById("qIog").value    = reg.qIog    || "";
-    document.getElementById("qQueijo").value = reg.qQueijo || "";
-    document.getElementById("qWhey").value   = reg.qWhey   || "";
-
-    calcProteinaLive();
-    atualizarHistoricoProteina();
-  }
-
-  function atualizarHistoricoProteina(){
-    const entries = Object.entries(dados.proteina).sort((a,b)=> b[0].localeCompare(a[0])).slice(0,7);
-    document.getElementById("histProt").innerHTML = entries.length ? entries.map(([data,val])=>{
-      const ok = (val.total||0) >= (val.meta||0) && (val.meta||0) > 0;
-      return `${ok ? "✅" : "⏳"} <b>${fmtDataBR(data)}</b> — ${val.total||0}g (meta ${val.meta||0}g)`;
-    }).join("<br>") : "Sem histórico ainda.";
-  }
-
-  // ===== INIT =====
-  function init(){
-    atualizarAgua();
-    atualizarIntestino();
-    carregarProteinaHoje();
-  }
-  init();
+// recalcular ao mudar metas
+document.getElementById("metaAgua").addEventListener("input", aguaRender);
+document.getElementById("metaProt").addEventListener("input", protRecalcular);
 </script>
 </body>
 </html>
