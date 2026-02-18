@@ -1,1795 +1,244 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🍑 Projeto Ampulheta da Miriã</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>🍑 Projeto Ampulheta - Miriã</title>
+<link rel='manifest' href='manifest.webmanifest'>
+<meta name='theme-color' content='#ff2d7a'>
 
-  <!-- PWA -->
-  <link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#ff2d7d">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Fonte -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Chart.js (gráfico real) -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-
-  <style>
-    :root{
-      --bg1:#0b0b12;
-      --bg2:#141428;
-      --glass:rgba(255,255,255,.08);
-      --glass2:rgba(255,255,255,.12);
-      --stroke:rgba(255,255,255,.16);
-      --txt:#f7f7fb;
-      --muted:rgba(255,255,255,.72);
-      --muted2:rgba(255,255,255,.55);
-      --pink:#ff2d7d;
-      --pink2:#ff5aa5;
-      --lime:#35ff9a;
-      --warn:#ffd166;
-      --danger:#ff5c7a;
-      --shadow: 0 18px 50px rgba(0,0,0,.45);
-      --radius: 18px;
-    }
-
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--txt);
-      background:
-        radial-gradient(1200px 700px at 20% -10%, rgba(255,45,125,.35), transparent 60%),
-        radial-gradient(1000px 700px at 110% 10%, rgba(53,255,154,.18), transparent 55%),
-        radial-gradient(900px 600px at 50% 110%, rgba(255,209,102,.18), transparent 55%),
-        linear-gradient(160deg, var(--bg1), var(--bg2));
-      min-height:100vh;
-      padding-bottom:92px; /* espaço do menu inferior */
-    }
-
-    .wrap{
-      max-width:980px;
-      margin:0 auto;
-      padding:18px 14px 18px;
-    }
-
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin:8px 0 14px;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-
-    .logo{
-      width:44px;height:44px;border-radius:14px;
-      background: linear-gradient(135deg, var(--pink), var(--pink2));
-      box-shadow: 0 12px 30px rgba(255,45,125,.25);
-      display:grid;place-items:center;
-      border:1px solid rgba(255,255,255,.18);
-    }
-    .logo span{font-size:22px}
-
-    .title{
-      line-height:1.05;
-    }
-    .title h1{
-      margin:0;
-      font-size:18px;
-      letter-spacing:.2px;
-      font-weight:800;
-    }
-    .title p{
-      margin:3px 0 0;
-      color:var(--muted2);
-      font-size:12px;
-    }
-
-    .pill{
-      padding:10px 12px;
-      border-radius:999px;
-      background: rgba(255,255,255,.08);
-      border:1px solid var(--stroke);
-      display:flex;
-      align-items:center;
-      gap:8px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.25);
-      user-select:none;
-      cursor:pointer;
-      transition: transform .12s ease;
-    }
-    .pill:active{transform: scale(.98)}
-    .pill b{font-size:12px}
-    .pill small{color:var(--muted2);font-size:11px}
-
-    .grid{
-      display:grid;
-      grid-template-columns: 1.25fr .75fr;
-      gap:14px;
-    }
-    @media (max-width: 940px){
-      .grid{grid-template-columns: 1fr; }
-    }
-
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
-      border:1px solid var(--stroke);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .card .hd{
-      padding:14px 14px 10px;
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .card .hd h2{
-      margin:0;
-      font-size:14px;
-      letter-spacing:.2px;
-      font-weight:800;
-    }
-    .card .hd p{
-      margin:4px 0 0;
-      font-size:12px;
-      color: var(--muted2);
-    }
-    .card .bd{padding:0 14px 14px}
-    .row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-
-    .btn{
-      background: linear-gradient(135deg, var(--pink), var(--pink2));
-      color:white;
-      border:none;
-      padding:10px 12px;
-      border-radius:12px;
-      cursor:pointer;
-      font-weight:800;
-      letter-spacing:.2px;
-      box-shadow: 0 14px 30px rgba(255,45,125,.25);
-      transition: transform .12s ease, filter .12s ease;
-      user-select:none;
-    }
-    .btn:active{transform: scale(.98)}
-    .btn.secondary{
-      background: rgba(255,255,255,.08);
-      border:1px solid var(--stroke);
-      box-shadow:none;
-      font-weight:700;
-    }
-    .btn.ghost{
-      background: transparent;
-      border:1px dashed rgba(255,255,255,.22);
-      box-shadow:none;
-      font-weight:700;
-      color:var(--txt);
-    }
-
-    .chips{
-      display:flex; flex-wrap:wrap; gap:8px;
-      margin-top:8px;
-    }
-    .chip{
-      font-size:11px;
-      color:var(--muted);
-      background: rgba(255,255,255,.07);
-      border:1px solid rgba(255,255,255,.12);
-      padding:6px 10px;
-      border-radius:999px;
-    }
-
-    .field{
-      display:grid;
-      gap:6px;
-      margin-top:10px;
-    }
-    .field label{
-      font-size:12px;
-      color:var(--muted);
-      font-weight:700;
-    }
-    .field input, .field select, .field textarea{
-      width:100%;
-      padding:12px 12px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(0,0,0,.20);
-      color:var(--txt);
-      outline:none;
-    }
-    .field input::placeholder, .field textarea::placeholder{color:rgba(255,255,255,.35)}
-    .field textarea{min-height:70px; resize: vertical;}
-
-    .divider{
-      height:1px;
-      background: rgba(255,255,255,.10);
-      margin:12px 0;
-    }
-
-    .kpis{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:10px;
-      margin-top:10px;
-    }
-    @media (max-width: 520px){
-      .kpis{grid-template-columns: 1fr; }
-    }
-    .kpi{
-      padding:12px;
-      border-radius:14px;
-      background: rgba(255,255,255,.07);
-      border:1px solid rgba(255,255,255,.12);
-    }
-    .kpi small{display:block;color:var(--muted2);font-size:11px;margin-bottom:6px}
-    .kpi b{font-size:16px}
-    .kpi .tag{font-size:11px;color:var(--muted);margin-top:6px}
-
-    /* progress */
-    .progress{
-      width:100%;
-      height:14px;
-      border-radius:999px;
-      background: rgba(255,255,255,.10);
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.12);
-    }
-    .bar{
-      height:100%;
-      width:0%;
-      border-radius:999px;
-      background: linear-gradient(90deg, var(--pink), var(--pink2));
-      transition: width .25s ease;
-    }
-
-    /* treino */
-    .tabs{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      padding:0 14px 14px;
-    }
-    .tab{
-      padding:10px 12px;
-      border-radius:14px;
-      background: rgba(255,255,255,.07);
-      border:1px solid rgba(255,255,255,.14);
-      cursor:pointer;
-      font-weight:800;
-      font-size:12px;
-      user-select:none;
-      transition: transform .12s ease, background .12s ease;
-    }
-    .tab.active{
-      background: linear-gradient(135deg, rgba(255,45,125,.35), rgba(255,90,165,.20));
-      border-color: rgba(255,45,125,.45);
-    }
-    .tab:active{transform:scale(.98)}
-
-    .ex{
-      display:grid;
-      gap:10px;
-      margin-top:10px;
-    }
-    .exItem{
-      padding:12px;
-      border-radius:14px;
-      background: rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.12);
-      display:grid;
-      gap:8px;
-    }
-    .exTop{
-      display:flex; gap:10px; justify-content:space-between; align-items:flex-start;
-    }
-    .exTop b{font-size:13px}
-    .exTop small{color:var(--muted2);font-weight:700}
-    .exTips{
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.35;
-    }
-    .exActions{
-      display:flex; gap:8px; flex-wrap:wrap; align-items:center;
-    }
-    .link{
-      color:#fff;
-      text-decoration:none;
-      font-weight:800;
-      font-size:12px;
-      padding:8px 10px;
-      border-radius:12px;
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.14);
-      display:inline-flex;
-      gap:8px;
-      align-items:center;
-    }
-    .link:active{transform:scale(.98)}
-    .mini{
-      font-size:11px;color:var(--muted2);
-    }
-
-    /* menu inferior */
-    .bottomNav{
-      position:fixed;
-      left:0; right:0; bottom:0;
-      padding:10px 12px 14px;
-      backdrop-filter: blur(14px);
-      background: linear-gradient(180deg, rgba(10,10,18,.22), rgba(10,10,18,.72));
-      border-top:1px solid rgba(255,255,255,.10);
-      z-index:99;
-    }
-    .navRow{
-      max-width:980px;
-      margin:0 auto;
-      display:grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap:10px;
-    }
-    .navBtn{
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.14);
-      color:var(--txt);
-      border-radius:16px;
-      padding:10px 8px;
-      display:grid;
-      place-items:center;
-      gap:4px;
-      cursor:pointer;
-      user-select:none;
-      transition: transform .12s ease, background .12s ease;
-      font-weight:800;
-      font-size:11px;
-    }
-    .navBtn.active{
-      background: linear-gradient(135deg, rgba(255,45,125,.35), rgba(255,90,165,.20));
-      border-color: rgba(255,45,125,.45);
-      box-shadow: 0 14px 30px rgba(255,45,125,.14);
-    }
-    .navBtn:active{transform: scale(.98)}
-    .navBtn span{font-size:18px}
-
-    /* seções */
-    .section{display:none}
-    .section.active{display:block}
-
-    .hint{
-      margin-top:10px;
-      padding:10px 12px;
-      border-radius:14px;
-      background: rgba(53,255,154,.10);
-      border:1px solid rgba(53,255,154,.20);
-      color: rgba(255,255,255,.88);
-      font-size:12px;
-      line-height:1.35;
-    }
-    .warnBox{
-      margin-top:10px;
-      padding:10px 12px;
-      border-radius:14px;
-      background: rgba(255,209,102,.10);
-      border:1px solid rgba(255,209,102,.22);
-      color: rgba(255,255,255,.90);
-      font-size:12px;
-      line-height:1.35;
-    }
-
-    .listSmall{
-      margin-top:10px;
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.35;
-    }
-
-    /* modal simples */
-    .modalBack{
-      position:fixed; inset:0;
-      background: rgba(0,0,0,.55);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-      z-index:120;
-    }
-    .modalBack.show{display:flex}
-    .modal{
-      width:min(720px, 100%);
-      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
-      border:1px solid rgba(255,255,255,.18);
-      border-radius:20px;
-      box-shadow: 0 22px 70px rgba(0,0,0,.55);
-      overflow:hidden;
-    }
-    .modal .mhd{
-      padding:14px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .modal .mhd b{font-size:14px}
-    .modal .mbd{padding:0 14px 14px}
-    .xbtn{
-      width:38px; height:38px; border-radius:14px;
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.14);
-      color:var(--txt);
-      cursor:pointer;
-      font-weight:900;
-    }
-  </style>
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background:#ffe6f0;
+  margin:0;
+  padding:20px;
+}
+h1{
+  text-align:center;
+  color:#d63384;
+}
+.card{
+  background:white;
+  padding:15px;
+  margin:15px auto;
+  border-radius:15px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+  max-width:800px;
+}
+button{
+  background:#ff4d88;
+  color:white;
+  border:none;
+  padding:10px;
+  border-radius:10px;
+  cursor:pointer;
+  margin:5px 3px;
+  font-weight:bold;
+}
+button:hover{ background:#e6005c; }
+input, select{
+  padding:8px;
+  margin:5px 0;
+  width:100%;
+  border-radius:10px;
+  border:1px solid #ffd1e6;
+}
+.small{ font-size:12px; color:#555; }
+.progress{
+  background:#ffd1e6;
+  border-radius:20px;
+  height:15px;
+  margin-top:10px;
+  overflow:hidden;
+}
+.bar{
+  background:#ff4d88;
+  height:100%;
+  width:0%;
+  transition:0.3s;
+}
+.ex{
+  border:1px solid #ffe0ee;
+  border-radius:12px;
+  padding:10px;
+  margin:10px 0;
+}
+.exTitle{ font-weight:bold; }
+.exMeta{ font-size:12px; color:#666; }
+a{ color:#d63384; font-size:12px; }
+</style>
 </head>
 
 <body>
-  <div class="wrap">
 
-    <!-- TOPBAR -->
-    <div class="topbar">
-      <div class="brand">
-        <div class="logo"><span>🍑</span></div>
-        <div class="title">
-          <h1>Projeto Ampulheta da Miriã</h1>
-          <p>Treino + cargas + cintura + água + intestino + fotos • salva no seu celular</p>
-        </div>
-      </div>
-
-      <div class="pill" onclick="openModal('ajudaModal')">
-        <div>✨</div>
-        <div>
-          <b>Dicas rápidas</b><br>
-          <small>instalar no celular</small>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid">
-      <!-- COLUNA PRINCIPAL -->
-      <div class="col">
-
-        <!-- SEÇÃO: DASH -->
-        <div id="sec-dash" class="section active">
-
-          <div class="card">
-            <div class="hd">
-              <div>
-                <h2>📊 Painel ULTRA PRO</h2>
-                <p>Seu resumo do dia + sua proporção ampulheta 😏</p>
-              </div>
-              <button class="btn secondary" onclick="backupExport()">⬇️ Backup</button>
-            </div>
-
-            <div class="bd">
-              <div class="kpis">
-                <div class="kpi">
-                  <small>💧 Água hoje</small>
-                  <b id="kpiAgua">0 ml</b>
-                  <div class="tag" id="kpiAguaTag">Meta: --</div>
-                </div>
-                <div class="kpi">
-                  <small>🥩 Proteína hoje</small>
-                  <b id="kpiProt">0 g</b>
-                  <div class="tag" id="kpiProtTag">Meta: --</div>
-                </div>
-                <div class="kpi">
-                  <small>🍑 Ampulheta</small>
-                  <b id="kpiRatio">--</b>
-                  <div class="tag" id="kpiRatioTag">Glúteo ÷ Cintura</div>
-                </div>
-              </div>
-
-              <div class="divider"></div>
-
-              <div class="row">
-                <button class="btn" onclick="go('treino')">📅 Treino SEG–SEX</button>
-                <button class="btn secondary" onclick="go('agua')">💧 Água</button>
-                <button class="btn secondary" onclick="go('medidas')">📏 Medidas</button>
-                <button class="btn secondary" onclick="go('fotos')">📸 Antes/Depois</button>
-              </div>
-
-              <div class="warnBox">
-                <b>🎯 Foco Ampulheta (B):</b> costas + postura + core (vácuo) + glúteo (hip thrust) = cintura mais marcada sem “afinar pelo osso”.
-              </div>
-
-              <div class="divider"></div>
-
-              <div class="row" style="justify-content:space-between">
-                <div>
-                  <b style="font-size:13px">🍑 Gráfico de evolução (Glúteo & Cintura)</b><br>
-                  <span class="mini">Atualiza quando você salva medidas.</span>
-                </div>
-                <button class="btn ghost" onclick="resetMedidasConfirm()">🧹 zerar gráfico</button>
-              </div>
-
-              <div style="margin-top:10px; background:rgba(0,0,0,.18); border:1px solid rgba(255,255,255,.10); border-radius:16px; padding:10px;">
-                <canvas id="chartGC" height="130"></canvas>
-              </div>
-            </div>
-          </div>
-
-          <div class="card" style="margin-top:14px;">
-            <div class="hd">
-              <div>
-                <h2>✅ Metas da Semana</h2>
-                <p>Marque e veja seu progresso (automático)</p>
-              </div>
-              <button class="btn secondary" onclick="resetSemanaConfirm()">🔄 Nova semana</button>
-            </div>
-
-            <div class="bd">
-              <div class="chips">
-                <div class="chip">🎯 Treinos alvo: <b id="metaTreinosTxt">4</b>/sem</div>
-                <div class="chip">💧 Água alvo: <b id="metaAguaTxt">2500</b> ml/dia</div>
-                <div class="chip">🥩 Proteína alvo: <b id="metaProtTxt">95</b> g/dia</div>
-              </div>
-
-              <div class="divider"></div>
-
-              <div class="kpis">
-                <div class="kpi">
-                  <small>🏋️ Treinos feitos</small>
-                  <b id="wkTreinos">0</b>
-                  <div class="tag" id="wkTreinosTag">de 4</div>
-                </div>
-                <div class="kpi">
-                  <small>💧 Dias batendo água</small>
-                  <b id="wkAgua">0</b>
-                  <div class="tag" id="wkAguaTag">de 7</div>
-                </div>
-                <div class="kpi">
-                  <small>🥩 Dias batendo proteína</small>
-                  <b id="wkProt">0</b>
-                  <div class="tag" id="wkProtTag">de 7</div>
-                </div>
-              </div>
-
-              <div class="divider"></div>
-
-              <div class="row">
-                <button class="btn" onclick="marcarTreinoHoje()">🏁 Marcar treino feito hoje</button>
-                <button class="btn secondary" onclick="openModal('metasModal')">⚙️ Ajustar metas</button>
-              </div>
-
-              <div class="listSmall" id="wkLog"></div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- SEÇÃO: TREINO -->
-        <div id="sec-treino" class="section">
-          <div class="card">
-            <div class="hd">
-              <div>
-                <h2>📅 Treino SEG–SEX (Ampulheta)</h2>
-                <p>Links em PT + espaço para salvar sua carga/rep de cada exercício</p>
-              </div>
-              <button class="btn secondary" onclick="openModal('cargasModal')">📝 Registrar cargas</button>
-            </div>
-
-            <div class="tabs" id="tabsTreino"></div>
-
-            <div class="bd">
-              <div class="chips">
-                <div class="chip">⏱️ Descanso: <b>principais 1m–1m30</b> • acessórios <b>45s–1m</b></div>
-                <div class="chip">🍑 Regra: se completou reps com folga → <b>sobe peso</b> na próxima</div>
-                <div class="chip">🧠 Técnica perfeita vale mais que carga</div>
-              </div>
-
-              <div class="ex" id="listaEx"></div>
-
-              <div class="hint">
-                <b>💡 Hip Thrust (elevação pélvica)</b> = apoio nas costas + força no calcanhar + aperta glúteo no topo. É o principal pra “devolver a bunda” 😅🍑
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SEÇÃO: ÁGUA -->
-        <div id="sec-agua" class="section">
-          <div class="card">
-            <div class="hd">
-              <div>
-                <h2>💧 Água (manual + média 7 dias)</h2>
-                <p>Você digita ml e eu somo + mostro média</p>
-              </div>
-              <button class="btn secondary" onclick="zerarAguaHoje()">🧹 Zerar hoje</button>
-            </div>
-
-            <div class="bd">
-              <div class="field">
-                <label>🎯 Meta diária de água (ml)</label>
-                <input type="number" id="aguaMeta" placeholder="Ex: 2500">
-              </div>
-
-              <div class="field">
-                <label>➕ Adicionar manualmente (ml)</label>
-                <input type="number" id="aguaAdd" placeholder="Ex: 470">
-              </div>
-
-              <div class="row">
-                <button class="btn" onclick="addAguaManual()">➕ Somar</button>
-                <button class="btn secondary" onclick="addAgua(470)">+470 ml</button>
-                <button class="btn secondary" onclick="addAgua(250)">+250 ml</button>
-                <button class="btn ghost" onclick="desfazerAgua()">↩️ Desfazer</button>
-              </div>
-
-              <div class="divider"></div>
-
-              <div class="progress"><div class="bar" id="aguaBar"></div></div>
-              <div class="kpis" style="margin-top:10px;">
-                <div class="kpi">
-                  <small>Hoje</small>
-                  <b id="aguaHojeTxt">0 ml</b>
-                  <div class="tag" id="aguaHojeTag">Meta: --</div>
-                </div>
-                <div class="kpi">
-                  <small>📊 Média (7 dias)</small>
-                  <b id="aguaMedia7">0 ml</b>
-                  <div class="tag">quanto mais constante, menos inchaço</div>
-                </div>
-                <div class="kpi">
-                  <small>🧾 Histórico</small>
-                  <b id="aguaDiasCount">0</b>
-                  <div class="tag">dias registrados (7)</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SEÇÃO: INTESTINO -->
-        <div id="sec-intestino" class="section">
-          <div class="card">
-            <div class="hd">
-              <div>
-                <h2>🚽 Intestino + Chia (monitoramento)</h2>
-                <p>Pra você ver se realmente está ajudando 💛</p>
-              </div>
-              <button class="btn secondary" onclick="resetIntestinoConfirm()">🧹 Limpar histórico</button>
-            </div>
-
-            <div class="bd">
-              <div class="field">
-                <label>Hoje você foi ao banheiro (nº2)?</label>
-                <select id="intFoi">
-                  <option value="nao">Não</option>
-                  <option value="sim">Sim</option>
-                  <option value="pouco">Pouquinho</option>
-                </select>
-              </div>
-
-              <div class="field">
-                <label>✅ Água morna + 1 colher de chia (hidratou 10 min) em jejum?</label>
-                <select id="intChia">
-                  <option value="nao">Não</option>
-                  <option value="sim">Sim</option>
-                </select>
-              </div>
-
-              <div class="field">
-                <label>Observação (opcional)</label>
-                <textarea id="intObs" placeholder="Ex: 'hoje ajudou bem', 'barriga menos inchada', 'tive dor'..."></textarea>
-              </div>
-
-              <div class="row">
-                <button class="btn" onclick="salvarIntestino()">Salvar</button>
-                <button class="btn secondary" onclick="go('dash')">Voltar ao painel</button>
-              </div>
-
-              <div class="divider"></div>
-              <b style="font-size:13px">📌 Últimos registros</b>
-              <div class="listSmall" id="intHist"></div>
-
-              <div class="warnBox">
-                <b>Dica:</b> se continuar ficando 1 semana sem evacuar, vale conversar com médico (constipação crônica pode precisar ajuste de fibras, água e até avaliação).
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SEÇÃO: MEDIDAS -->
-        <div id="sec-medidas" class="section">
-          <div class="card">
-            <div class="hd">
-              <div>
-                <h2>📏 Medidas + Proporção Ampulheta</h2>
-                <p>Cintura 72 / Glúteo 96 → a gente acompanha evolução 😏</p>
-              </div>
-              <button class="btn secondary" onclick="openModal('medidasListaModal')">📜 Ver histórico</button>
-            </div>
-
-            <div class="bd">
-              <div class="row">
-                <div class="field" style="flex:1; min-width:140px;">
-                  <label>Peso (kg)</label>
-                  <input type="number" id="mPeso" step="0.1" placeholder="Ex: 56.9">
-                </div>
-                <div class="field" style="flex:1; min-width:140px;">
-                  <label>Cintura (cm)</label>
-                  <input type="number" id="mCintura" step="0.1" placeholder="Ex: 72">
-                </div>
-                <div class="field" style="flex:1; min-width:140px;">
-                  <label>Abdômen (cm)</label>
-                  <input type="number" id="mAbdomen" step="0.1" placeholder="Ex: 81">
-                </div>
-                <div class="field" style="flex:1; min-width:140px;">
-                  <label>Glúteo (cm)</label>
-                  <input type="number" id="mGluteo" step="0.1" placeholder="Ex: 96">
-                </div>
-              </div>
-
-              <div class="row">
-                <button class="btn" onclick="salvarMedidas()">Salvar medidas</button>
-                <button class="btn ghost" onclick="preencherPadrao()">✨ Preencher com meus números</button>
-              </div>
-
-              <div class="divider"></div>
-
-              <div class="kpis">
-                <div class="kpi">
-                  <small>🍑 Proporção (Glúteo ÷ Cintura)</small>
-                  <b id="ratioTxt">--</b>
-                  <div class="tag" id="ratioNota">--</div>
-                </div>
-                <div class="kpi">
-                  <small>📉 Cintura</small>
-                  <b id="lastCintura">--</b>
-                  <div class="tag">cm</div>
-                </div>
-                <div class="kpi">
-                  <small>📈 Glúteo</small>
-                  <b id="lastGluteo">--</b>
-                  <div class="tag">cm</div>
-                </div>
-              </div>
-
-              <div class="hint">
-                <b>🎯 Meta prática:</b> cintura tende a reduzir com consistência + menos inchaço; glúteo cresce com hip thrust/leg/afundo + progressão.
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SEÇÃO: PROTEÍNA -->
-        <div id="sec-proteina" class="section">
-          <div class="card">
-            <div class="hd">
-              <div>
-                <h2>🥩 Proteína (meta + registro do dia)</h2>
-                <p>Ajuda a “segurar” glúteo e firmar o corpo</p>
-              </div>
-              <button class="btn secondary" onclick="resetProteinaHoje()">🧹 Zerar hoje</button>
-            </div>
-
-            <div class="bd">
-              <div class="field">
-                <label>🎯 Meta de proteína (g/dia)</label>
-                <input type="number" id="protMeta" placeholder="Ex: 95">
-              </div>
-
-              <div class="field">
-                <label>➕ Somar proteína (g) (manual)</label>
-                <input type="number" id="protAdd" placeholder="Ex: 25">
-              </div>
-
-              <div class="row">
-                <button class="btn" onclick="addProteinaManual()">➕ Somar</button>
-                <button class="btn secondary" onclick="addProteina(25)">+25g</button>
-                <button class="btn secondary" onclick="addProteina(15)">+15g</button>
-                <button class="btn ghost" onclick="desfazerProteina()">↩️ Desfazer</button>
-              </div>
-
-              <div class="divider"></div>
-
-              <div class="progress"><div class="bar" id="protBar"></div></div>
-
-              <div class="kpis" style="margin-top:10px;">
-                <div class="kpi">
-                  <small>Hoje</small>
-                  <b id="protHojeTxt">0 g</b>
-                  <div class="tag" id="protHojeTag">Meta: --</div>
-                </div>
-                <div class="kpi">
-                  <small>📊 Média (7 dias)</small>
-                  <b id="protMedia7">0 g</b>
-                  <div class="tag">consistência = resultado</div>
-                </div>
-                <div class="kpi">
-                  <small>✅ Dias batidos (7)</small>
-                  <b id="protDiasOk">0</b>
-                  <div class="tag">meta atingida</div>
-                </div>
-              </div>
-
-              <div class="warnBox">
-                <b>Base econômica:</b> frango, ovos, feijão, iogurte natural, sardinha, patinho moído (quando der), queijo com moderação.
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SEÇÃO: FOTOS -->
-        <div id="sec-fotos" class="section">
-          <div class="card">
-            <div class="hd">
-              <div>
-                <h2>📸 Antes / Depois (salva no seu navegador)</h2>
-                <p>Você adiciona foto e fica guardado só pra você</p>
-              </div>
-              <button class="btn secondary" onclick="resetFotosConfirm()">🧹 Limpar fotos</button>
-            </div>
-
-            <div class="bd">
-              <div class="field">
-                <label>Adicionar foto (antes/depois)</label>
-                <input type="file" id="fotoFile" accept="image/*">
-              </div>
-
-              <div class="field">
-                <label>Legenda (opcional)</label>
-                <input type="text" id="fotoLegenda" placeholder="Ex: 'Antes', 'Depois 2 doses', 'Fev/2026'...">
-              </div>
-
-              <div class="row">
-                <button class="btn" onclick="addFoto()">➕ Salvar foto</button>
-                <button class="btn secondary" onclick="go('dash')">Voltar</button>
-              </div>
-
-              <div class="divider"></div>
-
-              <div id="galeria" style="display:grid; grid-template-columns: repeat(2, 1fr); gap:10px;"></div>
-              <div class="mini" style="margin-top:10px;color:var(--muted2);">
-                Dica: se quiser comparar melhor, tire fotos sempre no mesmo lugar/luz e mesma distância.
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- COLUNA LATERAL (atalhos rápidos) -->
-      <div class="col">
-        <div class="card">
-          <div class="hd">
-            <div>
-              <h2>⚡ Atalhos</h2>
-              <p>um toque e pronto</p>
-            </div>
-          </div>
-          <div class="bd">
-            <div class="row">
-              <button class="btn" onclick="go('agua')">💧 Água</button>
-              <button class="btn" onclick="go('proteina')">🥩 Proteína</button>
-              <button class="btn" onclick="go('intestino')">🚽 Intestino</button>
-              <button class="btn" onclick="go('medidas')">📏 Medidas</button>
-              <button class="btn secondary" onclick="openModal('peitoModal')">💗 Peito firme</button>
-            </div>
-
-            <div class="divider"></div>
-
-            <div class="hint">
-              <b>💗 Sobre peito (silicone + emagrecimento):</b><br>
-              Exercício não “levanta” pele solta, mas <b>melhora MUITO</b> o colo e sustentação visual fortalecendo peitoral e postura.
-            </div>
-
-            <div class="divider"></div>
-
-            <b style="font-size:13px">🍽️ Dieta econômica (sem tapioca)</b>
-            <div class="listSmall" id="dietaTxt"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MENU INFERIOR (tipo app/instagram) -->
-  <div class="bottomNav">
-    <div class="navRow">
-      <div class="navBtn active" id="nav-dash" onclick="go('dash')"><span>🏠</span>Início</div>
-      <div class="navBtn" id="nav-treino" onclick="go('treino')"><span>🏋️</span>Treino</div>
-      <div class="navBtn" id="nav-agua" onclick="go('agua')"><span>💧</span>Água</div>
-      <div class="navBtn" id="nav-medidas" onclick="go('medidas')"><span>📏</span>Medidas</div>
-      <div class="navBtn" id="nav-fotos" onclick="go('fotos')"><span>📸</span>Fotos</div>
-    </div>
-  </div>
-
-  <!-- MODAIS -->
-  <div class="modalBack" id="ajudaModal">
-    <div class="modal">
-      <div class="mhd">
-        <b>✨ Como instalar no celular</b>
-        <button class="xbtn" onclick="closeModal('ajudaModal')">✕</button>
-      </div>
-      <div class="mbd">
-        <div class="warnBox">
-          <b>Android (Chrome):</b> abra o site → menu ⋮ → <b>Instalar app</b>.<br><br>
-          <b>iPhone (Safari):</b> compartilhar → <b>Adicionar à Tela de Início</b>.<br><br>
-          Se não aparecer, aguarde 1–3 min após atualizar o GitHub Pages.
-        </div>
-        <div class="row" style="margin-top:10px;">
-          <button class="btn" onclick="closeModal('ajudaModal')">Entendi ✅</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modalBack" id="metasModal">
-    <div class="modal">
-      <div class="mhd">
-        <b>⚙️ Ajustar metas semanais</b>
-        <button class="xbtn" onclick="closeModal('metasModal')">✕</button>
-      </div>
-      <div class="mbd">
-        <div class="row">
-          <div class="field" style="flex:1; min-width:150px;">
-            <label>Treinos alvo/semana</label>
-            <input type="number" id="metaTreinos" min="1" max="7">
-          </div>
-          <div class="field" style="flex:1; min-width:150px;">
-            <label>Água alvo (ml/dia)</label>
-            <input type="number" id="metaAgua" min="500" step="50">
-          </div>
-          <div class="field" style="flex:1; min-width:150px;">
-            <label>Proteína alvo (g/dia)</label>
-            <input type="number" id="metaProt" min="30" step="1">
-          </div>
-        </div>
-        <div class="row">
-          <button class="btn" onclick="salvarMetas()">Salvar metas ✅</button>
-          <button class="btn secondary" onclick="closeModal('metasModal')">Fechar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modalBack" id="cargasModal">
-    <div class="modal">
-      <div class="mhd">
-        <b>📝 Registrar cargas</b>
-        <button class="xbtn" onclick="closeModal('cargasModal')">✕</button>
-      </div>
-      <div class="mbd">
-        <div class="warnBox">
-          Aqui você salva <b>peso</b> e <b>reps</b> por exercício (fica guardado no seu celular).  
-          Dica: anota a carga mais pesada que você fez com técnica bonita 💅
-        </div>
-        <div class="field">
-          <label>Exercício</label>
-          <select id="cgEx"></select>
-        </div>
-        <div class="row">
-          <div class="field" style="flex:1; min-width:160px;">
-            <label>Carga (kg)</label>
-            <input type="number" id="cgKg" step="0.5" placeholder="Ex: 18">
-          </div>
-          <div class="field" style="flex:1; min-width:160px;">
-            <label>Reps</label>
-            <input type="number" id="cgReps" placeholder="Ex: 12">
-          </div>
-        </div>
-
-        <div class="row">
-          <button class="btn" onclick="salvarCarga()">Salvar ✅</button>
-          <button class="btn ghost" onclick="limparCarga()">🧹 Limpar</button>
-        </div>
-
-        <div class="divider"></div>
-        <b style="font-size:13px">📌 Últimos registros</b>
-        <div class="listSmall" id="cgHist"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modalBack" id="medidasListaModal">
-    <div class="modal">
-      <div class="mhd">
-        <b>📜 Histórico de medidas</b>
-        <button class="xbtn" onclick="closeModal('medidasListaModal')">✕</button>
-      </div>
-      <div class="mbd">
-        <div class="listSmall" id="medidasHist"></div>
-        <div class="row" style="margin-top:10px;">
-          <button class="btn secondary" onclick="closeModal('medidasListaModal')">Fechar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modalBack" id="peitoModal">
-    <div class="modal">
-      <div class="mhd">
-        <b>💗 Exercícios para colo/postura (ajuda no visual do peito)</b>
-        <button class="xbtn" onclick="closeModal('peitoModal')">✕</button>
-      </div>
-      <div class="mbd">
-        <div class="warnBox">
-          <b>Inclui no seu treino (Terça ou Quinta):</b><br>
-          • <b>Supino inclinado máquina</b> 3×12<br>
-          • <b>Crucifixo máquina</b> 3×12<br>
-          • <b>Face Pull</b> 3×15 (postura e “peito pra cima”)<br><br>
-          Isso não troca cirurgia, mas melhora MUITO sustentação visual + firmeza do colo.
-        </div>
-        <div class="row" style="margin-top:10px;">
-          <button class="btn" onclick="go('treino'); closeModal('peitoModal')">Ver no treino ✅</button>
-        </div>
-      </div>
-    </div>
-  </div>
+<h1>🍑 Projeto Corpo Ampulheta</h1>
+
+<div class="card">
+<h2>🏋️ Treino SEG–SEX</h2>
+<div id="treino"></div>
+</div>
+
+<div class="card">
+<h2>💧 Água</h2>
+<input type="number" id="metaAgua" value="2500" placeholder="Meta diária ml">
+<input type="number" id="aguaManual" placeholder="Adicionar ml">
+<button onclick="addAguaManual()">Somar</button>
+<div class="progress"><div class="bar" id="barAgua"></div></div>
+<div id="statusAgua"></div>
+<div id="mediaAgua" class="small"></div>
+</div>
+
+<div class="card">
+<h2>🥩 Meta de Proteína</h2>
+<input type="number" id="metaProteina" value="100" placeholder="Meta diária (g)">
+<input type="number" id="proteinaManual" placeholder="Adicionar proteína (g)">
+<button onclick="addProteina()">Somar</button>
+<div id="statusProteina"></div>
+</div>
+
+<div class="card">
+<h2>📏 Medidas</h2>
+<input type="number" id="peso" placeholder="Peso">
+<input type="number" id="cintura" placeholder="Cintura">
+<input type="number" id="gluteo" placeholder="Glúteo">
+<button onclick="salvarMedidas()">Salvar</button>
+<div id="ultimaMedida" class="small"></div>
+<canvas id="graficoGluteo"></canvas>
+<div id="proporcao" class="small"></div>
+</div>
+
+<div class="card">
+<h2>🚽 Intestino</h2>
+<select id="intStatus">
+<option value="Não fui">Não fui</option>
+<option value="Fui">Fui</option>
+<option value="Pouco">Pouco</option>
+</select>
+<label><input type="checkbox" id="chia"> Tomei água morna + chia</label>
+<button onclick="salvarIntestino()">Salvar</button>
+<div id="histIntestino" class="small"></div>
+</div>
 
 <script>
-  /********************
-   * DADOS + STORAGE
-   ********************/
-  const KEY = "app_ampulheta_miria_ultra";
 
-  function hojeISO(){
-    return new Date().toISOString().slice(0,10);
-  }
+const treinos = {
+SEG:[
+{n:"Cadeira Flexora 3x12",v:"https://www.youtube.com/results?search_query=cadeira+flexora+como+fazer+correto"},
+{n:"Stiff 3x12",v:"https://www.youtube.com/results?search_query=stiff+com+halter+como+fazer"},
+{n:"Hip Thrust 4x10",v:"https://www.youtube.com/results?search_query=hip+thrust+como+fazer"},
+{n:"Abdutora 3x15",v:"https://www.youtube.com/results?search_query=abdutora+m%C3%A1quina+como+usar"}
+],
+TER:[
+{n:"Supino Inclinado 3x12",v:"https://www.youtube.com/results?search_query=supino+inclinado+m%C3%A1quina+como+fazer"},
+{n:"Crucifixo 3x12",v:"https://www.youtube.com/results?search_query=crucifixo+m%C3%A1quina+como+fazer"},
+{n:"Elevação Lateral 3x12",v:"https://www.youtube.com/results?search_query=eleva%C3%A7%C3%A3o+lateral+halter+como+fazer"}
+],
+QUA:[
+{n:"Leg Press 4x12",v:"https://www.youtube.com/results?search_query=leg+press+como+fazer"},
+{n:"Smith 3x10",v:"https://www.youtube.com/results?search_query=agachamento+no+smith+como+fazer"}
+],
+QUI:[
+{n:"Puxada 3x12",v:"https://www.youtube.com/results?search_query=puxada+frente+na+polia+como+fazer"},
+{n:"Remada 3x12",v:"https://www.youtube.com/results?search_query=remada+baixa+na+polia+como+fazer"}
+],
+SEX:[
+{n:"Hip Thrust Pesado 4x8",v:"https://www.youtube.com/results?search_query=hip+thrust+como+fazer"},
+{n:"Afundo 3x10",v:"https://www.youtube.com/results?search_query=afundo+andando+como+fazer"}
+]
+};
+
+let dados = JSON.parse(localStorage.getItem("ampulhetaPremium")) || {
+agua:{}, proteina:{}, medidas:[], intestino:{}
+};
+
+function hoje(){ return new Date().toISOString().split("T")[0]; }
+
+if(!dados.agua[hoje()]) dados.agua[hoje()]={total:0};
+if(!dados.proteina[hoje()]) dados.proteina[hoje()]=0;
+
+function salvar(){ localStorage.setItem("ampulhetaPremium",JSON.stringify(dados)); }
+
+function renderTreino(){
+let html="";
+for(let d in treinos){
+html+="<b>"+d+"</b>";
+treinos[d].forEach(e=>{
+html+=`<div class='ex'><div class='exTitle'>${e.n}</div>
+<a href='${e.v}' target='_blank'>Ver vídeo</a></div>`;
+});
+}
+document.getElementById("treino").innerHTML=html;
+}
+
+function addAguaManual(){
+let v=Number(aguaManual.value);
+if(v>0){
+dados.agua[hoje()].total+=v;
+salvar();
+updateAgua();
+aguaManual.value="";
+}
+}
+
+function updateAgua(){
+let meta=Number(metaAgua.value);
+let total=dados.agua[hoje()].total;
+barAgua.style.width=(total/meta)*100+"%";
+statusAgua.innerHTML="Hoje: "+total+" ml";
+}
+
+function addProteina(){
+let v=Number(proteinaManual.value);
+if(v>0){
+dados.proteina[hoje()]+=v;
+salvar();
+statusProteina.innerHTML="Hoje: "+dados.proteina[hoje()]+" g";
+proteinaManual.value="";
+}
+}
+
+function salvarMedidas(){
+dados.medidas.push({data:hoje(),gluteo:gluteo.value,cintura:cintura.value});
+salvar();
+renderGrafico();
+}
+
+function renderGrafico(){
+let labels=dados.medidas.map(m=>m.data);
+let valores=dados.medidas.map(m=>m.gluteo);
+new Chart(document.getElementById("graficoGluteo"),{
+type:'line',
+data:{labels:labels,datasets:[{label:'Glúteo',data:valores,borderColor:'#ff4d88'}]}
+});
+let ult=dados.medidas[dados.medidas.length-1];
+if(ult){
+let prop=(ult.gluteo/ult.cintura).toFixed(2);
+proporcao.innerHTML="Proporção Ampulheta: "+prop;
+}
+}
+
+function salvarIntestino(){
+dados.intestino[hoje()]={status:intStatus.value,chia:chia.checked};
+salvar();
+histIntestino.innerHTML=hoje()+" - "+intStatus.value;
+}
 
-  function getWeekKey(date = new Date()){
-    // semana baseada em "segunda" como início
-    const d = new Date(date);
-    const day = (d.getDay() + 6) % 7; // seg=0 ... dom=6
-    d.setDate(d.getDate() - day);
-    return d.toISOString().slice(0,10); // monday ISO
-  }
+renderTreino();
+updateAgua();
+statusProteina.innerHTML="Hoje: "+dados.proteina[hoje()]+" g";
+renderGrafico();
 
-  let db = JSON.parse(localStorage.getItem(KEY)) || {
-    metas: { treinosSemana: 4, aguaDia: 2500, protDia: 95 },
-    agua: {},         // { 'YYYY-MM-DD': {total, stack[]} }
-    proteina: {},     // { 'YYYY-MM-DD': {total, stack[]} }
-    intestino: {},    // { 'YYYY-MM-DD': {foi, chia, obs} }
-    medidas: [],      // [{data,peso,cintura,abdomen,gluteo}]
-    cargas: [],       // [{data,ex,kg,reps}]
-    treinoFeito: {},  // {weekKey: {'YYYY-MM-DD':true}}
-    fotos: []         // [{data, legenda, dataUrl}]
-  };
+</script>
 
-  function save(){
-    localStorage.setItem(KEY, JSON.stringify(db));
-    refreshAll();
-  }
 
-  /********************
-   * NAVEGAÇÃO
-   ********************/
-  function go(sec){
-    // sections
-    const map = {
-      dash: "sec-dash",
-      treino: "sec-treino",
-      agua: "sec-agua",
-      intestino: "sec-intestino",
-      medidas: "sec-medidas",
-      proteina: "sec-proteina",
-      fotos: "sec-fotos"
-    };
-    document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
-    document.getElementById(map[sec]).classList.add("active");
-
-    // bottom nav highlight
-    ["dash","treino","agua","medidas","fotos"].forEach(k=>{
-      const el = document.getElementById("nav-"+k);
-      if(el) el.classList.toggle("active", k===sec);
-    });
-
-    // se a pessoa abrir proteína ou intestino pelo painel lateral, menu não tem botão - ok.
-    if(sec==="treino") renderTreino();
-    if(sec==="fotos") renderGaleria();
-    if(sec==="medidas") updateMedidasUI();
-    if(sec==="agua") updateAguaUI();
-    if(sec==="proteina") updateProteinaUI();
-    if(sec==="intestino") updateIntestinoUI();
-  }
-
-  function openModal(id){ document.getElementById(id).classList.add("show"); }
-  function closeModal(id){ document.getElementById(id).classList.remove("show"); }
-
-  /********************
-   * TREINO (SEG–SEX) + VÍDEOS
-   ********************/
-  const treino = {
-    seg: {
-      nome: "Segunda • Glúteo / Posterior 🍑",
-      itens: [
-        { id:"cadeira_flexora", n:"1️⃣ Cadeira Flexora", s:"3×12", w:"👉 20–25kg", t:"Controle total. Sem tirar o quadril do banco.", v:"https://www.youtube.com/results?search_query=cadeira+flexora+como+fazer+correto" },
-        { id:"stiff_halter", n:"2️⃣ Stiff com Halter", s:"3×12", w:"👉 6–8kg cada lado", t:"Coluna neutra. Desce devagar. Sente alongar posterior.", v:"https://www.youtube.com/results?search_query=stiff+com+halter+como+fazer" },
-        { id:"hip_thrust", n:"3️⃣ Elevação pélvica (Hip Thrust)", s:"4×10", w:"👉 20kg (meta evoluir)", t:"Pausa 1s no topo. Não arquear lombar.", v:"https://www.youtube.com/results?search_query=eleva%C3%A7%C3%A3o+p%C3%A9lvica+como+fazer" },
-        { id:"abdutora", n:"4️⃣ Abdutora máquina", s:"3×15", w:"👉 30–35kg", t:"Inclina levemente pra frente e segura 1s aberta.", v:"https://www.youtube.com/results?search_query=abdutora+m%C3%A1quina+como+usar" },
-        { id:"cardio_inclinada", n:"🚶‍♀️ Cardio (opcional)", s:"12 min", w:"👉 esteira inclinada", t:"Leve/moderado pra ajudar barriga sem perder glúteo.", v:"https://www.youtube.com/results?search_query=esteira+inclinada+como+fazer" }
-      ]
-    },
-    ter: {
-      nome: "Terça • Peito + Ombro + Cintura 💗",
-      itens: [
-        { id:"supino_inclinado", n:"1️⃣ Supino inclinado máquina", s:"3×12", w:"👉 15–20kg", t:"Peito aberto. Ombros pra baixo.", v:"https://www.youtube.com/results?search_query=supino+inclinado+m%C3%A1quina+como+fazer" },
-        { id:"crucifixo_maquina", n:"2️⃣ Crucifixo máquina", s:"3×12", w:"👉 15kg", t:"Controlado. Não esticar demais.", v:"https://www.youtube.com/results?search_query=crucifixo+m%C3%A1quina+como+fazer" },
-        { id:"elevacao_lateral", n:"3️⃣ Elevação lateral halter", s:"3×12", w:"👉 4kg", t:"Sobe até linha do ombro. Sem balançar.", v:"https://www.youtube.com/results?search_query=eleva%C3%A7%C3%A3o+lateral+halter+como+fazer" },
-        { id:"desenvolvimento_ombro", n:"4️⃣ Desenvolvimento ombro halter", s:"3×10", w:"👉 6kg", t:"Controle. Não jogar a lombar.", v:"https://www.youtube.com/results?search_query=desenvolvimento+ombro+halter+como+fazer" },
-        { id:"vacuo", n:"⏳ Vácuo abdominal (cintura)", s:"3×20s", w:"👉 cintura marcada", t:"Solta o ar e puxa o umbigo pra dentro.", v:"https://www.youtube.com/results?search_query=vacuum+abdominal+como+fazer" }
-      ]
-    },
-    qua: {
-      nome: "Quarta • Quadríceps + Glúteo 🔥",
-      itens: [
-        { id:"leg_press", n:"1️⃣ Leg Press", s:"4×12", w:"👉 80kg (meta 100–110kg)", t:"Pé um pouco mais alto. Não travar joelho.", v:"https://www.youtube.com/results?search_query=leg+press+como+fazer+correto" },
-        { id:"smith_agacha", n:"2️⃣ Agachamento no Smith", s:"3×10", w:"👉 10kg cada lado", t:"Pés levemente à frente. Desce controlado.", v:"https://www.youtube.com/results?search_query=agachamento+no+smith+como+fazer" },
-        { id:"extensora", n:"3️⃣ Cadeira Extensora", s:"3×12", w:"👉 25kg", t:"Sobe forte e desce controlando.", v:"https://www.youtube.com/results?search_query=cadeira+extensora+como+fazer" },
-        { id:"abdutora2", n:"4️⃣ Abdutora (glúteo lateral)", s:"3×15", w:"👉 30–35kg", t:"Foco no glúteo lateral (ajuda ampulheta).", v:"https://www.youtube.com/results?search_query=abdutora+m%C3%A1quina+como+usar" }
-      ]
-    },
-    qui: {
-      nome: "Quinta • Costas + Postura + Core 🧠",
-      itens: [
-        { id:"puxada_frente", n:"1️⃣ Puxada frente", s:"3×12", w:"👉 25kg", t:"Puxa com cotovelos. Ombros pra baixo.", v:"https://www.youtube.com/results?search_query=puxada+frente+na+polia+como+fazer" },
-        { id:"remada_baixa", n:"2️⃣ Remada baixa", s:"3×12", w:"👉 25kg", t:"Segura 1s atrás. Postura firme.", v:"https://www.youtube.com/results?search_query=remada+baixa+na+polia+como+fazer" },
-        { id:"face_pull", n:"3️⃣ Face Pull", s:"3×15", w:"👉 leve/médio", t:"Postura + colo bonito. Cotovelos altos.", v:"https://www.youtube.com/results?search_query=face+pull+como+fazer" },
-        { id:"prancha", n:"4️⃣ Prancha", s:"3×40s", w:"👉 core firme", t:"Barriga pra dentro. Sem cair lombar.", v:"https://www.youtube.com/results?search_query=prancha+abdominal+como+fazer" }
-      ]
-    },
-    sex: {
-      nome: "Sexta • Glúteo Foco + Cintura 🍑",
-      itens: [
-        { id:"hip_thrust_pesado", n:"1️⃣ Elevação pélvica (pesado)", s:"4×8", w:"👉 30kg (meta 45kg)", t:"Forma perfeita. Pausa no topo.", v:"https://www.youtube.com/results?search_query=hip+thrust+como+fazer" },
-        { id:"stiff2", n:"2️⃣ Stiff", s:"3×12", w:"👉 8kg cada lado", t:"Controle, coluna neutra.", v:"https://www.youtube.com/results?search_query=stiff+com+halter+como+fazer" },
-        { id:"afundo", n:"3️⃣ Afundo andando", s:"3×10 cada perna", w:"👉 4–6kg", t:"Tronco levemente à frente, calcanhar empurra.", v:"https://www.youtube.com/results?search_query=afundo+andando+como+fazer" },
-        { id:"abdutora3", n:"4️⃣ Abdutora", s:"4×15", w:"👉 35–40kg", t:"Segura 1s aberta. Glúteo lateral.", v:"https://www.youtube.com/results?search_query=abdutora+m%C3%A1quina+como+usar" },
-        { id:"vacuo2", n:"⏳ Vácuo abdominal", s:"3×20s", w:"👉 cintura", t:"Consistência 3x/semana.", v:"https://www.youtube.com/results?search_query=vacuum+abdominal+como+fazer" }
-      ]
-    }
-  };
-
-  const orderDays = ["seg","ter","qua","qui","sex"];
-  let diaAtivo = "seg";
-
-  function renderTabs(){
-    const tabs = document.getElementById("tabsTreino");
-    tabs.innerHTML = "";
-    orderDays.forEach(d=>{
-      const t = document.createElement("div");
-      t.className = "tab"+(d===diaAtivo ? " active":"");
-      t.textContent = d.toUpperCase();
-      t.onclick = ()=>{ diaAtivo=d; renderTabs(); renderTreino(); };
-      tabs.appendChild(t);
-    });
-  }
-
-  function renderTreino(){
-    renderTabs();
-    const box = document.getElementById("listaEx");
-    const day = treino[diaAtivo];
-    box.innerHTML = "";
-
-    // título do dia (no topo da lista)
-    const h = document.createElement("div");
-    h.className = "exItem";
-    h.innerHTML = `
-      <div class="exTop">
-        <div><b>${day.nome}</b><div class="mini">Clique em “Ver vídeo (PT)” para ver execução correta</div></div>
-        <small>📌 Salve cargas no botão “Registrar cargas”</small>
-      </div>
-    `;
-    box.appendChild(h);
-
-    day.itens.forEach(item=>{
-      const div = document.createElement("div");
-      div.className = "exItem";
-
-      const last = lastCarga(item.id);
-      const lastTxt = last ? `Último: <b>${last.kg}kg</b> • ${last.reps} reps (${last.data})` : `Sem registro ainda`;
-
-      div.innerHTML = `
-        <div class="exTop">
-          <div>
-            <b>${item.n}</b><br>
-            <span class="mini">${item.s} • ${item.w}</span>
-          </div>
-          <small>${lastTxt}</small>
-        </div>
-        <div class="exTips">💡 ${item.t}</div>
-        <div class="exActions">
-          <a class="link" href="${item.v}" target="_blank" rel="noopener">▶️ Ver vídeo (PT)</a>
-          <span class="mini">ID: ${item.id}</span>
-        </div>
-      `;
-      box.appendChild(div);
-    });
-
-    // Atualiza select do modal de cargas
-    const cgEx = document.getElementById("cgEx");
-    cgEx.innerHTML = "";
-    orderDays.forEach(d=>{
-      treino[d].itens.forEach(i=>{
-        const opt = document.createElement("option");
-        opt.value = i.id;
-        opt.textContent = `${i.n.replace(/\\d️⃣\\s*/,"")} (${d.toUpperCase()})`;
-        cgEx.appendChild(opt);
-      });
-    });
-  }
-
-  function lastCarga(exId){
-    const list = db.cargas.filter(x=>x.ex===exId);
-    if(!list.length) return null;
-    return list[list.length-1];
-  }
-
-  function salvarCarga(){
-    const ex = document.getElementById("cgEx").value;
-    const kg = Number(document.getElementById("cgKg").value);
-    const reps = Number(document.getElementById("cgReps").value);
-    if(!ex || !kg || !reps) { alert("Preenche exercício + kg + reps 😉"); return; }
-
-    db.cargas.push({ data: hojeISO(), ex, kg, reps });
-    document.getElementById("cgKg").value = "";
-    document.getElementById("cgReps").value = "";
-    save();
-    updateCargasHist();
-    renderTreino();
-  }
-
-  function limparCarga(){
-    document.getElementById("cgKg").value = "";
-    document.getElementById("cgReps").value = "";
-  }
-
-  function updateCargasHist(){
-    const box = document.getElementById("cgHist");
-    const last = db.cargas.slice(-10).reverse();
-    box.innerHTML = last.length ? last.map(x=>`• <b>${x.ex}</b> — ${x.kg}kg / ${x.reps} reps <span class="mini">(${x.data})</span>`).join("<br>") : "Sem registros ainda.";
-  }
-
-  /********************
-   * ÁGUA
-   ********************/
-  function ensureAguaToday(){
-    const k = hojeISO();
-    if(!db.agua[k]) db.agua[k] = { total:0, stack:[] };
-  }
-
-  function addAgua(v){
-    ensureAguaToday();
-    const k = hojeISO();
-    db.agua[k].total += v;
-    db.agua[k].stack.push(v);
-    save();
-  }
-
-  function addAguaManual(){
-    const v = Number(document.getElementById("aguaAdd").value);
-    if(!v || v<=0) return;
-    addAgua(v);
-    document.getElementById("aguaAdd").value = "";
-  }
-
-  function desfazerAgua(){
-    ensureAguaToday();
-    const k = hojeISO();
-    const u = db.agua[k].stack.pop();
-    if(u) db.agua[k].total -= u;
-    save();
-  }
-
-  function zerarAguaHoje(){
-    const k = hojeISO();
-    db.agua[k] = { total:0, stack:[] };
-    save();
-  }
-
-  function updateAguaUI(){
-    ensureAguaToday();
-    document.getElementById("aguaMeta").value = db.metas.aguaDia;
-
-    const k = hojeISO();
-    const total = db.agua[k].total;
-    const meta = Number(db.metas.aguaDia);
-
-    document.getElementById("aguaHojeTxt").textContent = `${total} ml`;
-    document.getElementById("aguaHojeTag").textContent = `Meta: ${meta} ml`;
-
-    const pct = Math.min(100, Math.round((total/meta)*100));
-    document.getElementById("aguaBar").style.width = pct + "%";
-
-    // 7 dias
-    let soma=0, dias=0;
-    let okDays=0;
-    for(let i=0;i<7;i++){
-      const d = new Date(); d.setDate(d.getDate()-i);
-      const key = d.toISOString().slice(0,10);
-      if(db.agua[key]){
-        soma += db.agua[key].total;
-        dias++;
-        if(db.agua[key].total >= meta) okDays++;
-      }
-    }
-    const media = dias ? Math.round(soma/dias) : 0;
-    document.getElementById("aguaMedia7").textContent = `${media} ml`;
-    document.getElementById("aguaDiasCount").textContent = dias;
-
-    // kpi
-    document.getElementById("kpiAgua").textContent = `${total} ml`;
-    document.getElementById("kpiAguaTag").textContent = `Meta: ${meta} ml`;
-  }
-
-  /********************
-   * PROTEÍNA
-   ********************/
-  function ensureProtToday(){
-    const k = hojeISO();
-    if(!db.proteina[k]) db.proteina[k] = { total:0, stack:[] };
-  }
-
-  function addProteina(v){
-    ensureProtToday();
-    const k = hojeISO();
-    db.proteina[k].total += v;
-    db.proteina[k].stack.push(v);
-    save();
-  }
-
-  function addProteinaManual(){
-    const v = Number(document.getElementById("protAdd").value);
-    if(!v || v<=0) return;
-    addProteina(v);
-    document.getElementById("protAdd").value = "";
-  }
-
-  function desfazerProteina(){
-    ensureProtToday();
-    const k = hojeISO();
-    const u = db.proteina[k].stack.pop();
-    if(u) db.proteina[k].total -= u;
-    save();
-  }
-
-  function resetProteinaHoje(){
-    const k = hojeISO();
-    db.proteina[k] = { total:0, stack:[] };
-    save();
-  }
-
-  function updateProteinaUI(){
-    ensureProtToday();
-    document.getElementById("protMeta").value = db.metas.protDia;
-
-    const k = hojeISO();
-    const total = db.proteina[k].total;
-    const meta = Number(db.metas.protDia);
-
-    document.getElementById("protHojeTxt").textContent = `${total} g`;
-    document.getElementById("protHojeTag").textContent = `Meta: ${meta} g`;
-
-    const pct = Math.min(100, Math.round((total/meta)*100));
-    document.getElementById("protBar").style.width = pct + "%";
-
-    // 7 dias
-    let soma=0, dias=0, ok=0;
-    for(let i=0;i<7;i++){
-      const d = new Date(); d.setDate(d.getDate()-i);
-      const key = d.toISOString().slice(0,10);
-      if(db.proteina[key]){
-        soma += db.proteina[key].total;
-        dias++;
-        if(db.proteina[key].total >= meta) ok++;
-      }
-    }
-    const media = dias ? Math.round(soma/dias) : 0;
-
-    document.getElementById("protMedia7").textContent = `${media} g`;
-    document.getElementById("protDiasOk").textContent = ok;
-
-    // kpi
-    document.getElementById("kpiProt").textContent = `${total} g`;
-    document.getElementById("kpiProtTag").textContent = `Meta: ${meta} g`;
-  }
-
-  /********************
-   * INTESTINO
-   ********************/
-  function salvarIntestino(){
-    const k = hojeISO();
-    db.intestino[k] = {
-      foi: document.getElementById("intFoi").value,
-      chia: document.getElementById("intChia").value,
-      obs: document.getElementById("intObs").value.trim()
-    };
-    document.getElementById("intObs").value = "";
-    save();
-  }
-
-  function updateIntestinoUI(){
-    const arr = Object.entries(db.intestino).sort((a,b)=>a[0].localeCompare(b[0])).slice(-14).reverse();
-    const box = document.getElementById("intHist");
-    box.innerHTML = arr.length ? arr.map(([d,v])=>{
-      const chia = v.chia==="sim" ? " + chia ✅" : "";
-      const obs = v.obs ? ` — <i>${escapeHtml(v.obs)}</i>` : "";
-      return `• <b>${d}</b> — ${v.foi}${chia}${obs}`;
-    }).join("<br>") : "Sem registros ainda. Bora acompanhar 💛";
-  }
-
-  function resetIntestinoConfirm(){
-    if(confirm("Apagar TODO histórico de intestino?")){ db.intestino = {}; save(); }
-  }
-
-  /********************
-   * MEDIDAS + AMPULHETA + GRÁFICO REAL
-   ********************/
-  function preencherPadrao(){
-    document.getElementById("mPeso").value = 56.9;
-    document.getElementById("mCintura").value = 72;
-    document.getElementById("mAbdomen").value = 81;
-    document.getElementById("mGluteo").value = 96;
-  }
-
-  function salvarMedidas(){
-    const obj = {
-      data: hojeISO(),
-      peso: Number(document.getElementById("mPeso").value) || null,
-      cintura: Number(document.getElementById("mCintura").value) || null,
-      abdomen: Number(document.getElementById("mAbdomen").value) || null,
-      gluteo: Number(document.getElementById("mGluteo").value) || null
-    };
-    if(!obj.cintura || !obj.gluteo){
-      alert("Preenche pelo menos CINTURA e GLÚTEO 😉");
-      return;
-    }
-    db.medidas.push(obj);
-    save();
-  }
-
-  function ratioNota(r){
-    // heurística simples (visual)
-    if(!r) return {txt:"--", nota:"--"};
-    if(r >= 1.33) return {txt:r.toFixed(2), nota:"🔥 Ampulheta bem marcada"};
-    if(r >= 1.25) return {txt:r.toFixed(2), nota:"✨ Ampulheta evidente"};
-    if(r >= 1.18) return {txt:r.toFixed(2), nota:"💗 Natural (boa base)"};
-    return {txt:r.toFixed(2), nota:"🌱 Em construção (bora evoluir)"};
-  }
-
-  function updateMedidasUI(){
-    const last = db.medidas[db.medidas.length-1];
-    if(!last){
-      document.getElementById("ratioTxt").textContent = "--";
-      document.getElementById("ratioNota").textContent = "--";
-      document.getElementById("lastCintura").textContent = "--";
-      document.getElementById("lastGluteo").textContent = "--";
-      document.getElementById("kpiRatio").textContent = "--";
-      renderChart();
-      return;
-    }
-
-    const r = last.gluteo && last.cintura ? (last.gluteo/last.cintura) : null;
-    const rn = ratioNota(r);
-
-    document.getElementById("ratioTxt").textContent = rn.txt;
-    document.getElementById("ratioNota").textContent = rn.nota;
-    document.getElementById("lastCintura").textContent = last.cintura ?? "--";
-    document.getElementById("lastGluteo").textContent = last.gluteo ?? "--";
-
-    document.getElementById("kpiRatio").textContent = rn.txt;
-    document.getElementById("kpiRatioTag").textContent = rn.nota;
-
-    // histórico modal
-    const hist = db.medidas.slice(-30).reverse().map(m=>{
-      const rr = (m.gluteo && m.cintura) ? (m.gluteo/m.cintura) : null;
-      const rrTxt = rr ? rr.toFixed(2) : "--";
-      return `• <b>${m.data}</b> — Peso: ${m.peso ?? "--"}kg | Cintura: ${m.cintura} | Abd: ${m.abdomen ?? "--"} | Glúteo: ${m.gluteo} | Ratio: <b>${rrTxt}</b>`;
-    }).join("<br>");
-    document.getElementById("medidasHist").innerHTML = hist || "Sem registros ainda.";
-
-    renderChart();
-  }
-
-  let chartGC;
-  function renderChart(){
-    const ctx = document.getElementById("chartGC");
-    if(!ctx) return;
-
-    const xs = db.medidas.slice(-12); // últimas 12 medições
-    const labels = xs.map(x=>x.data.slice(5));
-    const gl = xs.map(x=>x.gluteo);
-    const ci = xs.map(x=>x.cintura);
-
-    if(chartGC){ chartGC.destroy(); }
-
-    chartGC = new Chart(ctx, {
-      type: "line",
-      data: {
-        labels,
-        datasets: [
-          { label: "Glúteo (cm)", data: gl, tension:.35, borderWidth:2 },
-          { label: "Cintura (cm)", data: ci, tension:.35, borderWidth:2 }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { labels: { color: "rgba(255,255,255,.85)" } }
-        },
-        scales: {
-          x: { ticks: { color:"rgba(255,255,255,.65)" }, grid:{ color:"rgba(255,255,255,.08)" } },
-          y: { ticks: { color:"rgba(255,255,255,.65)" }, grid:{ color:"rgba(255,255,255,.08)" } }
-        }
-      }
-    });
-  }
-
-  function resetMedidasConfirm(){
-    if(confirm("Zerar TODAS as medidas (e gráfico)?")){
-      db.medidas = [];
-      save();
-    }
-  }
-
-  /********************
-   * METAS SEMANAIS
-   ********************/
-  function salvarMetas(){
-    const t = Number(document.getElementById("metaTreinos").value);
-    const a = Number(document.getElementById("metaAgua").value);
-    const p = Number(document.getElementById("metaProt").value);
-    if(!t || !a || !p) { alert("Preenche as 3 metas 😉"); return; }
-
-    db.metas.treinosSemana = t;
-    db.metas.aguaDia = a;
-    db.metas.protDia = p;
-
-    // também atualiza inputs das telas
-    closeModal("metasModal");
-    save();
-  }
-
-  function marcarTreinoHoje(){
-    const wk = getWeekKey();
-    if(!db.treinoFeito[wk]) db.treinoFeito[wk] = {};
-    db.treinoFeito[wk][hojeISO()] = true;
-    save();
-    alert("Treino marcado ✅🔥");
-  }
-
-  function resetSemanaConfirm(){
-    if(confirm("Começar uma NOVA semana (zera contadores dessa semana)?")){
-      const wk = getWeekKey();
-      db.treinoFeito[wk] = {};
-      save();
-    }
-  }
-
-  function updateSemanaUI(){
-    const wk = getWeekKey();
-    const treinosMap = db.treinoFeito[wk] || {};
-    const treinosCount = Object.keys(treinosMap).length;
-
-    const metaTreinos = db.metas.treinosSemana;
-    document.getElementById("wkTreinos").textContent = treinosCount;
-    document.getElementById("wkTreinosTag").textContent = `de ${metaTreinos}`;
-
-    // água/proteína: conta últimos 7 dias a partir de hoje
-    const metaAgua = db.metas.aguaDia;
-    const metaProt = db.metas.protDia;
-
-    let okAgua=0, okProt=0;
-    for(let i=0;i<7;i++){
-      const d = new Date(); d.setDate(d.getDate()-i);
-      const key = d.toISOString().slice(0,10);
-
-      if(db.agua[key] && db.agua[key].total >= metaAgua) okAgua++;
-      if(db.proteina[key] && db.proteina[key].total >= metaProt) okProt++;
-    }
-
-    document.getElementById("wkAgua").textContent = okAgua;
-    document.getElementById("wkAguaTag").textContent = "de 7";
-    document.getElementById("wkProt").textContent = okProt;
-    document.getElementById("wkProtTag").textContent = "de 7";
-
-    // metas chips
-    document.getElementById("metaTreinosTxt").textContent = metaTreinos;
-    document.getElementById("metaAguaTxt").textContent = metaAgua;
-    document.getElementById("metaProtTxt").textContent = metaProt;
-
-    // modal inputs
-    document.getElementById("metaTreinos").value = metaTreinos;
-    document.getElementById("metaAgua").value = metaAgua;
-    document.getElementById("metaProt").value = metaProt;
-
-    // log simples
-    const dias = Object.keys(treinosMap).sort().reverse().slice(0,7);
-    document.getElementById("wkLog").innerHTML = dias.length
-      ? ("<b>📌 Treinos marcados:</b><br>" + dias.map(d=>`• ${d}`).join("<br>"))
-      : "Nenhum treino marcado nessa semana ainda.";
-  }
-
-  /********************
-   * FOTOS (antes/depois) – salva dataURL
-   ********************/
-  function addFoto(){
-    const input = document.getElementById("fotoFile");
-    const file = input.files && input.files[0];
-    if(!file){ alert("Escolha uma foto 😉"); return; }
-
-    const legenda = document.getElementById("fotoLegenda").value.trim();
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      db.fotos.unshift({ data: hojeISO(), legenda, dataUrl: reader.result });
-      document.getElementById("fotoLegenda").value = "";
-      input.value = "";
-      save();
-      renderGaleria();
-      alert("Foto salva ✅📸");
-    };
-    reader.readAsDataURL(file);
-  }
-
-  function renderGaleria(){
-    const box = document.getElementById("galeria");
-    if(!box) return;
-
-    box.innerHTML = "";
-    if(!db.fotos.length){
-      box.innerHTML = `<div class="mini" style="grid-column:1/-1;">Sem fotos ainda. Adiciona um “Antes” e depois vai colocando os “Depois” 💗</div>`;
-      return;
-    }
-
-    db.fotos.slice(0,12).forEach((f, idx)=>{
-      const card = document.createElement("div");
-      card.style.background = "rgba(255,255,255,.06)";
-      card.style.border = "1px solid rgba(255,255,255,.12)";
-      card.style.borderRadius = "16px";
-      card.style.overflow = "hidden";
-
-      card.innerHTML = `
-        <img src="${f.dataUrl}" alt="foto" style="width:100%; height:220px; object-fit:cover; display:block;">
-        <div style="padding:10px 10px 12px;">
-          <b style="font-size:12px;">${escapeHtml(f.legenda || "Foto")}</b>
-          <div class="mini">${f.data}</div>
-          <div class="row" style="margin-top:8px;">
-            <button class="btn secondary" onclick="baixarFoto(${idx})">⬇️ Baixar</button>
-            <button class="btn ghost" onclick="apagarFoto(${idx})">🗑️</button>
-          </div>
-        </div>
-      `;
-      box.appendChild(card);
-    });
-  }
-
-  function baixarFoto(i){
-    const f = db.fotos[i];
-    if(!f) return;
-    const a = document.createElement("a");
-    a.href = f.dataUrl;
-    a.download = `foto_${f.data}_${(f.legenda||"").replace(/\\s+/g,"_")}.png`;
-    a.click();
-  }
-
-  function apagarFoto(i){
-    if(!confirm("Apagar essa foto?")) return;
-    db.fotos.splice(i,1);
-    save();
-  }
-
-  function resetFotosConfirm(){
-    if(confirm("Apagar TODAS as fotos salvas?")){
-      db.fotos = [];
-      save();
-    }
-  }
-
-  /********************
-   * DIETA ECONÔMICA (sem tapioca) + lista simples
-   ********************/
-  function renderDieta(){
-    const txt = `
-      ✅ <b>Café (06:50)</b>: 2 ovos mexidos + 1 fatia pão integral 12 grãos + 1 fruta (quando tiver).<br>
-      ✅ <b>Lanche (09:40)</b>: mamão + aveia (ou ameixa).<br>
-      ✅ <b>Almoço (11:30)</b>: 3 colheres arroz + 3 feijão + bastante salada + frango/carne.<br>
-      ✅ <b>Lanche (14:40)</b>: fruta (alternar).<br>
-      ✅ <b>Janta (20:30)</b>: salada + 150g frango desfiado.<br><br>
-      💡 <b>Pra inchaço</b>: manter água, evitar suco coado todo dia (prefira fruta inteira quando der).<br>
-      💡 <b>Intestino</b>: água morna + chia (10 min) ajudou — continua registrando no app.
-    `;
-    document.getElementById("dietaTxt").innerHTML = txt;
-  }
-
-  /********************
-   * BACKUP EXPORT
-   ********************/
-  function backupExport(){
-    const blob = new Blob([JSON.stringify(db,null,2)], {type:"application/json"});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "backup_projeto_ampulheta_miria.json";
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-
-  /********************
-   * HELPERS
-   ********************/
-  function escapeHtml(s){
-    return String(s)
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#039;");
-  }
-
-  /********************
-   * REFRESH GERAL
-   ********************/
-  function refreshAll(){
-    // telas
-    updateAguaUI();
-    updateProteinaUI();
-    updateIntestinoUI();
-    updateMedidasUI();
-    updateSemanaUI();
-    updateCargasHist();
-    renderDieta();
-
-    // treino
-    if(document.getElementById("sec-treino").classList.contains("active")){
-      renderTreino();
-    }
-    // fotos
-    if(document.getElementById("sec-fotos").classList.contains("active")){
-      renderGaleria();
-    }
-  }
-
-  /********************
-   * RESET CONFIRMS
-   ********************/
-  function resetSemana(){ resetSemanaConfirm(); }
-  function resetProteina(){ resetProteinaHoje(); }
-
-  /********************
-   * INICIALIZAÇÃO
-   ********************/
-  function initDefaults(){
-    // garante today's objects
-    ensureAguaToday();
-    ensureProtToday();
-
-    // set metas nos inputs
-    document.getElementById("aguaMeta").value = db.metas.aguaDia;
-    document.getElementById("protMeta").value = db.metas.protDia;
-  }
-
-  initDefaults();
-  renderDieta();
-  renderTreino();
-  refreshAll();
-
-  /********************
-   * PWA: registra Service Worker
-   ********************/
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./sw.js").catch(()=>{});
-    });
-  }
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+}
 </script>
 
 </body>
