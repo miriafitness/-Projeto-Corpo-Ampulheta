@@ -2,906 +2,1330 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🍑 Projeto Ampulheta da Miriã</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0b10" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Miriã Sculpt™</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon-192.png" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
 
   <style>
     :root{
-      --bg:#0b0c10;
-      --panel:#12131a;
-      --panel2:#171826;
-      --card:#141522;
-      --stroke:rgba(255,255,255,.08);
-      --text:#f2f2f6;
-      --muted:rgba(242,242,246,.68);
-      --pink:#ff3f8e;
-      --pink2:#ff69a8;
-      --shadow:0 18px 45px rgba(0,0,0,.45);
-      --radius:22px;
-      --radius2:18px;
+      --bg:#0b0b10;
+      --bg2:#12121a;
+      --card:rgba(255,255,255,.06);
+      --card2:rgba(255,255,255,.08);
+      --stroke:rgba(255,255,255,.12);
+      --text:#f4f4f7;
+      --muted:rgba(244,244,247,.72);
+
+      /* Luxo (B): preto + dourado + rosa suave */
+      --rose:#ff3e8e;
+      --rose2:#ff6aa8;
+      --gold:#d6b36a;
+      --gold2:#f0d89b;
+
+      --shadow: 0 18px 50px rgba(0,0,0,.45);
+      --radius: 22px;
+      --radius2: 18px;
     }
 
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1200px 600px at 50% 0%, rgba(255,63,142,.18), transparent 60%) , var(--bg);
       color:var(--text);
-      padding-bottom:92px; /* espaço do menu inferior */
+      background:
+        radial-gradient(1200px 600px at 30% 0%, rgba(255,62,142,.22), transparent 55%),
+        radial-gradient(900px 500px at 90% 10%, rgba(214,179,106,.18), transparent 55%),
+        linear-gradient(180deg, var(--bg), #07070b 55%, var(--bg));
+      padding:16px 14px 90px;
+      max-width: 980px;
+      margin: 0 auto;
     }
 
-    .wrap{max-width:900px;margin:0 auto;padding:16px 14px 18px}
+    /* Topo */
     .top{
-      display:flex; gap:14px; align-items:center;
-      padding:14px 14px 16px;
-      background: linear-gradient(180deg, rgba(255,63,142,.20), rgba(18,19,26,.0));
-      border-bottom: 1px solid rgba(255,255,255,.06);
-      border-radius:0 0 26px 26px;
+      display:flex; gap:14px; align-items:flex-start; justify-content:space-between;
+      padding: 10px 2px 12px;
     }
-    .appicon{
-      width:54px;height:54px;border-radius:18px;
-      background: linear-gradient(135deg, rgba(255,63,142,1), rgba(255,120,170,1));
-      display:grid;place-items:center;
-      box-shadow: 0 10px 28px rgba(255,63,142,.25);
-      flex:0 0 auto;
+    .brand{
+      display:flex; gap:12px; align-items:center;
+      min-width: 0;
     }
-    .appicon span{font-size:26px}
-    .title h1{margin:0;font-size:20px;line-height:1.15}
-    .title p{margin:4px 0 0;color:var(--muted);font-size:12.5px}
+    .avatar{
+      width:52px; height:52px; border-radius:16px;
+      background: radial-gradient(circle at 30% 20%, rgba(255,62,142,.35), transparent 55%),
+                  radial-gradient(circle at 80% 30%, rgba(214,179,106,.35), transparent 55%),
+                  rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      display:grid; place-items:center;
+      flex: 0 0 auto;
+    }
+    .avatar span{font-size:24px}
+    .titlewrap{min-width:0}
+    h1{
+      margin:0;
+      font-size: 22px;
+      letter-spacing:.2px;
+      line-height:1.15;
+    }
+    .subtitle{
+      margin-top:6px;
+      color:var(--muted);
+      font-size: 13px;
+      line-height:1.25;
+    }
 
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border:1px solid var(--stroke);
-      border-radius: var(--radius);
-      padding:14px;
-      box-shadow: var(--shadow);
-      margin:14px 0;
+    .pill{
+      user-select:none;
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      color: var(--text);
+      font-size: 12px;
+      white-space: nowrap;
+      box-shadow: 0 10px 30px rgba(0,0,0,.28);
     }
+
+    /* Cards */
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.05));
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      margin: 12px 0;
+      overflow:hidden;
+    }
+
     .card h2{
       margin:0 0 10px;
-      font-size:18px; display:flex; align-items:center; gap:10px;
+      font-size: 16px;
+      letter-spacing:.2px;
+      display:flex; align-items:center; gap:8px;
     }
-    .small{color:var(--muted); font-size:12.5px; line-height:1.35}
-    .divider{height:1px;background:rgba(255,255,255,.08);margin:12px 0}
+
+    .muted{ color: var(--muted); font-size: 13px; line-height:1.3; }
+
+    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .grid2{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    @media (max-width:700px){
+      .grid2{grid-template-columns:1fr}
+    }
+
+    .btn{
+      border:0;
+      cursor:pointer;
+      border-radius: 16px;
+      padding: 12px 14px;
+      color: #fff;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--rose), var(--rose2));
+      box-shadow: 0 14px 35px rgba(255,62,142,.20);
+    }
+    .btn.secondary{
+      background: rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.12);
+      color: var(--text);
+      font-weight: 650;
+      box-shadow:none;
+    }
+    .btn.gold{
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color:#151515;
+      box-shadow: 0 14px 35px rgba(214,179,106,.18);
+    }
+    .btn:active{ transform: translateY(1px); }
+
+    input, select, textarea{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.24);
+      color: var(--text);
+      outline:none;
+    }
+    input::placeholder, textarea::placeholder{ color: rgba(244,244,247,.48); }
+
+    .kpi{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top: 10px;
+    }
+    .kpi .box{
+      border-radius: 18px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      padding: 12px;
+    }
+    .kpi .big{font-size: 20px; font-weight: 800;}
+    .kpi .small{font-size: 12px; color: var(--muted); margin-top: 4px;}
+
+    /* Barra de progresso */
+    .progress{
+      margin-top: 10px;
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.10);
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .bar{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, var(--rose), var(--gold2));
+      transition: .25s;
+    }
 
     /* Atalhos */
     .shortcuts{
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap:10px;
-      margin-top:10px;
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top: 10px;
     }
     .shortcut{
-      background: linear-gradient(135deg, rgba(255,63,142,.95), rgba(255,105,168,.95));
-      color:#fff;
-      border:none;
+      flex: 1 1 150px;
       border-radius: 18px;
-      padding:14px 12px;
-      font-weight:700;
-      display:flex;align-items:center;justify-content:center;gap:10px;
+      padding: 14px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
       cursor:pointer;
-      box-shadow: 0 14px 35px rgba(255,63,142,.20);
+      display:flex; gap:10px; align-items:center; justify-content:center;
+      font-weight: 800;
     }
-    .shortcut.gray{
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      border:1px solid rgba(255,255,255,.10);
-      color:var(--text);
-      box-shadow:none;
-    }
-    .shortcut span{font-size:18px}
-
-    /* Inputs */
-    label{display:block;margin:10px 0 6px;color:var(--muted);font-size:12.5px}
-    input, select, textarea{
-      width:100%;
-      padding:12px 12px;
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(10,11,16,.55);
-      color:var(--text);
-      outline:none;
-    }
-    textarea{min-height:76px; resize:vertical}
-    input:disabled{opacity:.7}
-
-    .row{display:flex;gap:10px;flex-wrap:wrap}
-    .row > div{flex:1;min-width:170px}
-
-    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-    button.btn{
-      border:none; cursor:pointer;
-      border-radius: 16px;
-      padding:12px 14px;
-      font-weight:800;
-      background: linear-gradient(135deg, rgba(255,63,142,1), rgba(255,105,168,1));
+    .shortcut.rose{
+      background: linear-gradient(135deg, rgba(255,62,142,.92), rgba(255,106,168,.72));
+      border: 1px solid rgba(255,255,255,.12);
       color:#fff;
     }
-    button.btn.ghost{
-      background: rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.10);
-      color:var(--text);
-      font-weight:700;
+
+    /* Abas de dia (Treino) */
+    .tabs{
+      display:flex; gap:8px; flex-wrap:wrap;
+      margin: 10px 0 12px;
     }
-    button.btn.danger{
-      background: rgba(255,255,255,.05);
-      border:1px dashed rgba(255,63,142,.8);
-      color: var(--pink2);
-      font-weight:800;
-    }
-
-    .kpis{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-    .kpi{
-      flex:1; min-width:170px;
-      background: rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius: 18px;
-      padding:12px;
-    }
-    .kpi .t{color:var(--muted);font-size:12px}
-    .kpi .v{font-size:22px;font-weight:900;margin-top:6px}
-    .kpi .s{color:var(--muted);font-size:12px;margin-top:2px}
-
-    .progress{height:14px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:10px}
-    .bar{height:100%;width:0%;background:linear-gradient(90deg,var(--pink),var(--pink2));transition:.25s}
-
-    /* Lista / links */
-    .list{margin-top:10px}
-    .list a{color:var(--pink2);text-decoration:none}
-    .list a:hover{text-decoration:underline}
-    .chip{display:inline-block;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--muted);font-size:12px;margin-right:6px}
-
-    /* Tabs */
-    .view{display:none}
-    .view.active{display:block}
-
-    /* Bottom Nav */
-    .nav{
-      position:fixed; left:0; right:0; bottom:0;
-      background: rgba(12,12,18,.78);
-      backdrop-filter: blur(14px);
-      border-top:1px solid rgba(255,255,255,.08);
-      padding:10px 10px 12px;
-    }
-    .nav .inner{max-width:900px;margin:0 auto;display:flex;gap:10px;justify-content:space-between}
     .tab{
-      flex:1;
-      background: rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.08);
-      color:var(--text);
-      border-radius: 20px;
-      padding:10px 8px;
-      text-align:center;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      color: var(--text);
+      font-weight: 800;
       cursor:pointer;
-      user-select:none;
+      min-width: 62px;
+      text-align:center;
     }
-    .tab .ico{font-size:20px;display:block;margin-bottom:3px}
-    .tab .lbl{font-size:12px;font-weight:800;opacity:.92}
     .tab.active{
-      background: linear-gradient(135deg, rgba(255,63,142,.55), rgba(255,105,168,.28));
-      border:1px solid rgba(255,63,142,.55);
-      box-shadow: 0 14px 35px rgba(255,63,142,.16);
+      background: linear-gradient(135deg, rgba(255,62,142,.38), rgba(214,179,106,.22));
+      border-color: rgba(255,255,255,.16);
+      box-shadow: 0 12px 30px rgba(0,0,0,.25);
     }
 
-    @media (min-width:700px){
-      .shortcuts{grid-template-columns: repeat(3, minmax(0,1fr));}
+    /* Lista de exercícios */
+    .ex{
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.09);
+      margin: 10px 0;
+    }
+    .exTop{
+      display:flex; justify-content:space-between; gap:10px; align-items:flex-start;
+    }
+    .exName{ font-weight: 900; }
+    .exMeta{ color: var(--muted); font-size: 13px; margin-top: 6px; }
+    .exTip{ color: rgba(244,244,247,.78); font-size: 13px; margin-top: 8px; }
+    .ex a{
+      display:inline-block;
+      margin-top: 10px;
+      color: var(--gold2);
+      font-weight: 800;
+      text-decoration:none;
+    }
+
+    /* Navegação inferior */
+    .nav{
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      padding: 10px 12px 14px;
+      background: linear-gradient(180deg, transparent, rgba(0,0,0,.70) 30%, rgba(0,0,0,.86));
+      backdrop-filter: blur(10px);
+    }
+    .navInner{
+      max-width: 980px;
+      margin: 0 auto;
+      display:grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+    .navBtn{
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 12px 8px;
+      text-align:center;
+      font-weight: 900;
+      cursor:pointer;
+      display:flex; flex-direction:column; gap:6px;
+      box-shadow: 0 18px 40px rgba(0,0,0,.25);
+    }
+    .navBtn span{ font-size: 22px; }
+    .navBtn small{ font-size: 12px; color: rgba(244,244,247,.78); }
+    .navBtn.active{
+      background: linear-gradient(135deg, rgba(255,62,142,.35), rgba(214,179,106,.16));
+      border-color: rgba(255,255,255,.16);
+    }
+
+    /* Seções */
+    .section{ display:none; }
+    .section.active{ display:block; }
+
+    /* Canvas gráfico (escuro) */
+    canvas{
+      width:100%;
+      max-height: 260px;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: 18px;
+      padding: 10px;
+    }
+
+    /* Fotos */
+    .photoGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    @media(max-width:700px){ .photoGrid{grid-template-columns:1fr;} }
+    .photoCard{
+      border-radius: 18px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      padding: 12px;
+    }
+    .photoCard img{
+      width:100%;
+      border-radius: 14px;
+      display:block;
+    }
+    .photoMeta{ margin-top: 8px; color: var(--muted); font-size: 12px; }
+
+    .note{
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(214,179,106,.10);
+      border:1px solid rgba(214,179,106,.22);
+      color: rgba(244,244,247,.92);
+      font-size: 13px;
+      line-height:1.35;
+      margin-top: 10px;
     }
   </style>
 </head>
 
 <body>
   <div class="top">
-    <div class="appicon"><span>🍑</span></div>
-    <div class="title">
-      <h1>Projeto Ampulheta da Miriã</h1>
-      <p>Treino + água + proteína + cintura + intestino + fotos • salva no seu celular</p>
+    <div class="brand">
+      <div class="avatar"><span>🍑</span></div>
+      <div class="titlewrap">
+        <h1>Miriã Sculpt™</h1>
+        <div class="subtitle">Esculpindo curvas com estratégia.</div>
+        <div class="subtitle">Treino + cargas + água + proteína + intestino + medidas + fotos • salva no seu celular</div>
+      </div>
+    </div>
+    <div class="pill">✨ Premium</div>
+  </div>
+
+  <!-- ATALHOS -->
+  <div class="card">
+    <h2>⚡ Atalhos <span class="muted">um toque e pronto</span></h2>
+    <div class="shortcuts">
+      <div class="shortcut rose" onclick="go('agua')">💧 Água</div>
+      <div class="shortcut rose" onclick="go('proteina')">🥩 Proteína</div>
+      <div class="shortcut rose" onclick="go('intestino')">🚽 Intestino</div>
+      <div class="shortcut rose" onclick="go('medidas')">📏 Medidas</div>
+      <div class="shortcut" onclick="go('peito')">💗 Peito firme</div>
     </div>
   </div>
 
-  <div class="wrap">
+  <!-- INÍCIO -->
+  <section id="sec-inicio" class="section active">
+    <div class="card">
+      <h2>🎯 Foco Ampulheta (B)</h2>
+      <div class="muted">Costas + postura + core (vácuo) + glúteo (hip thrust) = cintura mais marcada com estratégia.</div>
 
-    <!-- =================== INÍCIO =================== -->
-    <section id="view-inicio" class="view active">
-
-      <div class="card" id="sec-atalhos">
-        <h2>⚡ Atalhos</h2>
-        <p class="small">Um toque e pronto ✨</p>
-
-        <div class="shortcuts">
-          <button class="shortcut" onclick="goTab('agua')"><span>💧</span> Água</button>
-          <button class="shortcut" onclick="jumpTo('sec-proteina')"><span>🥩</span> Proteína</button>
-          <button class="shortcut" onclick="jumpTo('sec-intestino')"><span>🚽</span> Intestino</button>
-          <button class="shortcut" onclick="goTab('medidas')"><span>📏</span> Medidas</button>
-          <button class="shortcut gray" onclick="jumpTo('sec-peito')"><span>💗</span> Peito firme</button>
+      <div class="kpi">
+        <div class="box">
+          <div class="big" id="kpiRatio">—</div>
+          <div class="small">Proporção (glúteo ÷ cintura)</div>
+        </div>
+        <div class="box">
+          <div class="big" id="kpiNota">—</div>
+          <div class="small">Nota ampulheta</div>
         </div>
       </div>
 
-      <!-- RESUMO (mini KPIs) -->
-      <div class="card">
-        <h2>📌 Resumo de hoje</h2>
-        <div class="kpis">
-          <div class="kpi">
-            <div class="t">💧 Água hoje</div>
-            <div class="v" id="miniAgua">0 ml</div>
-            <div class="s" id="miniAgua2">Média 7 dias: 0 ml</div>
-          </div>
-          <div class="kpi">
-            <div class="t">🥩 Proteína hoje</div>
-            <div class="v" id="miniProt">0 g</div>
-            <div class="s" id="miniProt2">Meta: 95 g</div>
-          </div>
+      <div class="note">
+        📸 <b>Fotos:</b> 1x a cada <b>14 dias</b> (mesma luz, mesmo lugar, mesma pose).<br/>
+        📏 <b>Medidas:</b> 1x por <b>semana</b> (de preferência de manhã, em jejum).<br/>
+        🍑 <b>Glúteo:</b> o “segredo” é consistência + progressão leve (subir carga quando ficar fácil).
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🍑 Gráfico de evolução do glúteo</h2>
+      <div class="muted">Ele usa as medidas que você salva em “Medidas”.</div>
+      <div style="margin-top:10px;">
+        <canvas id="chartGluteo" height="240"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- TREINO -->
+  <section id="sec-treino" class="section">
+    <div class="card">
+      <div class="row" style="justify-content:space-between;">
+        <div>
+          <h2>📅 Treino SEG–SEX (Ampulheta)</h2>
+          <div class="muted">Clique no dia. Links em PT + espaço pra salvar suas cargas/rep.</div>
         </div>
-        <div class="divider"></div>
-        <div class="kpis">
-          <div class="kpi">
-            <div class="t">🍑 Ampulheta</div>
-            <div class="v" id="miniAmp">--</div>
-            <div class="s" id="miniAmp2">glúteo ÷ cintura</div>
-          </div>
-          <div class="kpi">
-            <div class="t">🚽 Intestino</div>
-            <div class="v" id="miniInt">--</div>
-            <div class="s" id="miniInt2">chia em jejum ajuda</div>
-          </div>
+        <button class="btn secondary" onclick="go('cargas')">📝 Registrar cargas</button>
+      </div>
+
+      <div class="tabs" id="tabsDias"></div>
+
+      <div class="note" style="background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.10);">
+        ⏱️ <b>Descanso:</b> principais 1m–1m30 • acessórios 45s–1m<br/>
+        🍑 <b>Regra:</b> se completou reps com folga → <b>sobe peso</b> na próxima<br/>
+        🧠 <b>Técnica perfeita</b> vale mais que carga
+      </div>
+
+      <div id="treinoLista"></div>
+    </div>
+  </section>
+
+  <!-- ÁGUA -->
+  <section id="sec-agua" class="section">
+    <div class="card">
+      <div class="row" style="justify-content:space-between;">
+        <h2>💧 Água</h2>
+        <button class="btn secondary" onclick="aguaZerar()">🧹 Zerar hoje</button>
+      </div>
+
+      <div class="grid2">
+        <div>
+          <label class="muted">🎯 Meta diária (ml)</label>
+          <input type="number" id="aguaMeta" value="2500" />
+        </div>
+        <div>
+          <label class="muted">➕ Adicionar manualmente (ml)</label>
+          <input type="number" id="aguaManual" placeholder="Ex: 300" />
         </div>
       </div>
 
-      <!-- PROTEÍNA -->
-      <div class="card" id="sec-proteina">
-        <h2>🥩 Proteína (meta + automático)</h2>
-        <p class="small">Você digita a quantidade e o app calcula a proteína total sozinho ✅</p>
+      <div class="row" style="margin-top:10px;">
+        <button class="btn" onclick="aguaAddManual()">➕ Somar</button>
+        <button class="btn secondary" onclick="aguaAdd(470)">+470</button>
+        <button class="btn secondary" onclick="aguaAdd(250)">+250</button>
+        <button class="btn secondary" onclick="aguaDesfazer()">↩️ Desfazer</button>
+      </div>
 
-        <div class="row">
-          <div>
-            <label>🎯 Meta de proteína (g/dia)</label>
-            <input type="number" id="metaProt" value="95" />
-          </div>
-          <div>
-            <label>📅 Data</label>
-            <input type="text" id="dataProt" disabled />
-          </div>
+      <div class="progress"><div class="bar" id="aguaBar"></div></div>
+
+      <div class="kpi">
+        <div class="box">
+          <div class="big" id="aguaHoje">0 ml</div>
+          <div class="small">Hoje</div>
         </div>
-
-        <div class="divider"></div>
-
-        <div class="row">
-          <div>
-            <label>🍗 Frango (g) — 31g/100g</label>
-            <input type="number" id="prot_frango" placeholder="Ex: 150" oninput="protRecalcular()" />
-          </div>
-          <div>
-            <label>🥩 Carne (g) — 26g/100g</label>
-            <input type="number" id="prot_carne" placeholder="Ex: 120" oninput="protRecalcular()" />
-          </div>
-          <div>
-            <label>🥚 Ovos (un) — 6g/un</label>
-            <input type="number" id="prot_ovo" placeholder="Ex: 2" oninput="protRecalcular()" />
-          </div>
+        <div class="box">
+          <div class="big" id="aguaMedia7">0 ml</div>
+          <div class="small">Média (7 dias)</div>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <div class="row">
-          <div>
-            <label>🥛 Iogurte (un) — 10g/un</label>
-            <input type="number" id="prot_iog" placeholder="Ex: 1" oninput="protRecalcular()" />
-          </div>
-          <div>
-            <label>🧀 Queijo (g) — 25g/100g</label>
-            <input type="number" id="prot_queijo" placeholder="Ex: 30" oninput="protRecalcular()" />
-          </div>
-          <div>
-            <label>🥤 Whey (scoop) — 20g/scoop</label>
-            <input type="number" id="prot_whey" placeholder="Ex: 1" oninput="protRecalcular()" />
-          </div>
+  <!-- PROTEÍNA -->
+  <section id="sec-proteina" class="section">
+    <div class="card">
+      <div class="row" style="justify-content:space-between;">
+        <div>
+          <h2>🥩 Proteína (automática)</h2>
+          <div class="muted">Escolha o alimento + coloque quantidade. O app calcula e soma.</div>
         </div>
+        <button class="btn secondary" onclick="protZerar()">🧹 Zerar hoje</button>
+      </div>
 
-        <div class="btns">
-          <button class="btn" onclick="protSalvar()">💾 Salvar hoje</button>
-          <button class="btn danger" onclick="protZerar()">🧹 Zerar hoje</button>
+      <div class="grid2">
+        <div>
+          <label class="muted">🎯 Meta de proteína (g/dia)</label>
+          <input type="number" id="protMeta" value="100" />
         </div>
-
-        <div class="progress"><div class="bar" id="barProt"></div></div>
-
-        <div class="kpis">
-          <div class="kpi">
-            <div class="t">Proteína hoje</div>
-            <div class="v" id="protHojeKpi">0 g</div>
-            <div class="s" id="protMedia7Kpi">Média 7 dias: 0 g</div>
-          </div>
-          <div class="kpi">
-            <div class="t">Meta</div>
-            <div class="v" id="protMetaKpi">95 g</div>
-            <div class="s" id="protFaltaKpi">Faltam: 95 g</div>
-          </div>
+        <div>
+          <label class="muted">📅 Data</label>
+          <input type="text" id="protData" disabled />
         </div>
       </div>
 
-      <!-- INTESTINO -->
-      <div class="card" id="sec-intestino">
-        <h2>🚽 Intestino + Chia</h2>
-        <p class="small">
-          Rotina que te ajudou: <b>1 copo água morna + 1 colher de chia</b> (hidratar ~10 min) em jejum ✅
-        </p>
-
-        <label>Hoje você foi ao banheiro?</label>
-        <select id="intestinoSel">
-          <option value="nao">Não</option>
-          <option value="sim">Sim</option>
-          <option value="pouco">Pouquinho</option>
-        </select>
-
-        <label>
-          <input type="checkbox" id="chiaCheck" />
-          Tomei água morna + chia hoje
-        </label>
-
-        <div class="btns">
-          <button class="btn" onclick="intSalvar()">💾 Salvar</button>
-          <button class="btn danger" onclick="intLimpar()">🧹 Limpar hoje</button>
+      <div class="grid2" style="margin-top:10px;">
+        <div>
+          <label class="muted">🍽️ Alimento</label>
+          <select id="protFood">
+            <option value="frango">🍗 Frango (31g / 100g)</option>
+            <option value="carne">🥩 Carne (26g / 100g)</option>
+            <option value="ovo">🥚 Ovo (6g / unidade)</option>
+            <option value="iog">🥛 Iogurte (10g / unidade)</option>
+            <option value="queijo">🧀 Queijo (25g / 100g)</option>
+            <option value="whey">🥤 Whey (20g / scoop)</option>
+          </select>
         </div>
-
-        <div class="list small" id="intHistorico"></div>
-      </div>
-
-      <!-- PEITO FIRME -->
-      <div class="card" id="sec-peito">
-        <h2>💗 Peito firme (apoio)</h2>
-        <p class="small">
-          Treino não “levanta silicone”, mas ajuda MUITO no <b>colo</b> e na <b>postura</b> (fica mais firme visualmente):<br>
-          ✅ Supino inclinado (máquina) • ✅ Crucifixo (máquina) • ✅ Desenvolvimento (ombro) • ✅ Face Pull (postura)
-        </p>
-        <div class="small">
-          <span class="chip">2x/semana</span>
-          <span class="chip">3×12</span>
-          <span class="chip">controle total</span>
+        <div>
+          <label class="muted">✍️ Quantidade</label>
+          <input type="number" id="protQtd" placeholder="Ex: 150 (g) ou 2 (ovos)" />
         </div>
       </div>
 
-    </section>
-
-    <!-- =================== TREINO =================== -->
-    <section id="view-treino" class="view">
-      <div class="card">
-        <h2>🏋️ Treino (Segunda a Sexta)</h2>
-        <p class="small">
-          🎯 Foco Ampulheta (B): <b>glúteo + postura + core (vácuo/prancha)</b> = cintura mais marcada com corpo firme.
-        </p>
-        <div class="divider"></div>
-        <div id="treinoLista"></div>
+      <div class="row" style="margin-top:10px;">
+        <button class="btn" onclick="protAdd()">➕ Adicionar</button>
+        <button class="btn secondary" onclick="protDesfazer()">↩️ Desfazer</button>
       </div>
-    </section>
 
-    <!-- =================== ÁGUA =================== -->
-    <section id="view-agua" class="view">
-      <div class="card">
-        <h2>💧 Controle de Água</h2>
-        <div class="row">
-          <div>
-            <label>🎯 Meta diária (ml)</label>
-            <input type="number" id="metaAgua" value="2500" />
-          </div>
-          <div>
-            <label>➕ Adicionar manualmente (ml)</label>
-            <input type="number" id="aguaManual" placeholder="Ex: 300" />
-          </div>
+      <div class="progress"><div class="bar" id="protBar"></div></div>
+
+      <div class="kpi">
+        <div class="box">
+          <div class="big" id="protHoje">0 g</div>
+          <div class="small">Proteína hoje</div>
         </div>
-
-        <div class="btns">
-          <button class="btn" onclick="aguaSomarManual()">➕ Somar</button>
-          <button class="btn ghost" onclick="aguaSomar(470)">+470 ml</button>
-          <button class="btn ghost" onclick="aguaSomar(250)">+250 ml</button>
-          <button class="btn ghost" onclick="aguaDesfazer()">↩️ Desfazer</button>
-          <button class="btn danger" onclick="aguaZerar()">🧹 Zerar hoje</button>
-        </div>
-
-        <div class="progress"><div class="bar" id="barAgua"></div></div>
-
-        <div class="kpis">
-          <div class="kpi">
-            <div class="t">Hoje</div>
-            <div class="v" id="aguaHojeKpi">0 ml</div>
-            <div class="s" id="aguaMedia7Kpi">Média 7 dias: 0 ml</div>
-          </div>
-          <div class="kpi">
-            <div class="t">Status</div>
-            <div class="v" id="aguaPct">0%</div>
-            <div class="s">bora fechar a meta 💗</div>
-          </div>
+        <div class="box">
+          <div class="big" id="protFaltam">—</div>
+          <div class="small">Faltam para meta</div>
         </div>
       </div>
-    </section>
 
-    <!-- =================== MEDIDAS =================== -->
-    <section id="view-medidas" class="view">
-      <div class="card">
-        <h2>📏 Medidas + Ampulheta</h2>
-        <p class="small">
-          📏 Medidas: a cada <b>7 dias</b> (manhã, em jejum).<br>
-          📸 Fotos: a cada <b>14 dias</b> (mesma luz/posição).
-        </p>
+      <div class="card" style="margin:12px 0 0; background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.10);">
+        <h2 style="margin:0 0 8px;">🧾 Itens de hoje</h2>
+        <div id="protLista" class="muted"></div>
+      </div>
+    </div>
+  </section>
 
-        <div class="row">
-          <div>
-            <label>Peso (kg)</label>
-            <input type="number" id="m_peso" placeholder="Ex: 56.9" />
-          </div>
-          <div>
-            <label>Cintura (cm)</label>
-            <input type="number" id="m_cintura" placeholder="Ex: 72" />
-          </div>
-          <div>
-            <label>Abdômen (cm)</label>
-            <input type="number" id="m_abdomen" placeholder="Ex: 81" />
-          </div>
-          <div>
-            <label>Glúteo (cm)</label>
-            <input type="number" id="m_gluteo" placeholder="Ex: 96" />
-          </div>
+  <!-- INTESTINO -->
+  <section id="sec-intestino" class="section">
+    <div class="card">
+      <h2>🚽 Intestino</h2>
+      <div class="muted">Marca se foi ao banheiro e se tomou água morna + chia (ajuda a acompanhar).</div>
+
+      <div class="grid2" style="margin-top:10px;">
+        <div>
+          <label class="muted">Hoje eu fui?</label>
+          <select id="intSel">
+            <option value="nao">Não</option>
+            <option value="sim">Sim</option>
+            <option value="pouco">Pouquinho</option>
+          </select>
         </div>
-
-        <div class="btns">
-          <button class="btn" onclick="medSalvar()">💾 Salvar medida</button>
-          <button class="btn danger" onclick="medLimparTudo()">🧨 Apagar histórico</button>
-        </div>
-
-        <div class="kpis">
-          <div class="kpi">
-            <div class="t">Ampulheta</div>
-            <div class="v" id="kpiAmp">--</div>
-            <div class="s" id="kpiNota">Nota: --</div>
-          </div>
-          <div class="kpi">
-            <div class="t">Última medida</div>
-            <div class="v" style="font-size:16px" id="medUltima">--</div>
-            <div class="s">salvo no histórico</div>
-          </div>
+        <div>
+          <label class="muted">Chia em jejum?</label>
+          <select id="chiaSel">
+            <option value="nao">Não</option>
+            <option value="sim">Sim</option>
+          </select>
         </div>
       </div>
-    </section>
 
-    <!-- =================== FOTOS =================== -->
-    <section id="view-fotos" class="view">
-      <div class="card">
-        <h2>📸 Fotos (Antes/Depois)</h2>
-        <p class="small">
-          Cole o link da foto (Google Fotos/Drive) + observação. Assim você acompanha tudo no app ✅
-        </p>
-
-        <div class="row">
-          <div>
-            <label>Tipo</label>
-            <select id="fotoTipo">
-              <option value="antes">Antes</option>
-              <option value="depois">Depois</option>
-              <option value="check">Check-in</option>
-            </select>
-          </div>
-          <div>
-            <label>Data</label>
-            <input type="text" id="fotoData" disabled />
-          </div>
-        </div>
-
-        <label>Link da foto (URL)</label>
-        <input type="text" id="fotoUrl" placeholder="Cole o link aqui" />
-
-        <label>Observação (opcional)</label>
-        <textarea id="fotoObs" placeholder="Ex: menos inchaço / cintura mais marcada"></textarea>
-
-        <div class="btns">
-          <button class="btn" onclick="fotoSalvar()">💾 Salvar foto</button>
-          <button class="btn danger" onclick="fotoLimparTudo()">🧨 Apagar fotos</button>
-        </div>
-
-        <div class="list small" id="fotoLista"></div>
+      <div class="row" style="margin-top:10px;">
+        <button class="btn" onclick="intSalvar()">Salvar</button>
       </div>
-    </section>
 
-  </div>
+      <div class="card" style="margin:12px 0 0; background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.10);">
+        <h2 style="margin:0 0 8px;">📆 Últimos registros</h2>
+        <div id="intHist" class="muted"></div>
+      </div>
 
-  <!-- MENU INFERIOR -->
+      <div class="note">
+        💡 <b>Como fazer:</b> 1 copo de <b>água morna</b> + 1 colher de <b>chia</b> (hidratar 10 min) em jejum.<br/>
+        ✅ Se te ajudou sexta e domingo, continue e acompanhe aqui (consistência).
+      </div>
+    </div>
+  </section>
+
+  <!-- MEDIDAS -->
+  <section id="sec-medidas" class="section">
+    <div class="card">
+      <h2>📏 Medidas</h2>
+      <div class="muted">Recomendado: 1x por semana (mesmo horário). O app calcula proporção e nota.</div>
+
+      <div class="grid2" style="margin-top:10px;">
+        <div>
+          <label class="muted">Peso (kg)</label>
+          <input type="number" id="mPeso" step="0.1" placeholder="Ex: 56.9" />
+        </div>
+        <div>
+          <label class="muted">Cintura (cm)</label>
+          <input type="number" id="mCintura" placeholder="Ex: 72" />
+        </div>
+      </div>
+
+      <div class="grid2" style="margin-top:10px;">
+        <div>
+          <label class="muted">Abdômen (cm)</label>
+          <input type="number" id="mAbdomen" placeholder="Ex: 81" />
+        </div>
+        <div>
+          <label class="muted">Glúteo (cm)</label>
+          <input type="number" id="mGluteo" placeholder="Ex: 96" />
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:10px;">
+        <button class="btn" onclick="medSalvar()">Salvar</button>
+        <button class="btn secondary" onclick="medExport()">📤 Exportar (texto)</button>
+      </div>
+
+      <div class="card" style="margin:12px 0 0; background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.10);">
+        <h2 style="margin:0 0 8px;">🕒 Última medida</h2>
+        <div id="medUlt" class="muted"></div>
+      </div>
+
+      <div class="card" style="margin:12px 0 0; background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.10);">
+        <h2 style="margin:0 0 8px;">📜 Histórico</h2>
+        <div id="medHist" class="muted"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOTOS -->
+  <section id="sec-fotos" class="section">
+    <div class="card">
+      <h2>📸 Fotos (Antes/Depois)</h2>
+      <div class="muted">Dica: 1x a cada 14 dias. Mesma luz, mesma pose, mesma distância.</div>
+
+      <div class="grid2" style="margin-top:10px;">
+        <div>
+          <label class="muted">Data da foto</label>
+          <input type="date" id="fotoData" />
+        </div>
+        <div>
+          <label class="muted">Tipo</label>
+          <select id="fotoTipo">
+            <option value="antes">Antes</option>
+            <option value="depois">Depois</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top:10px;">
+        <label class="muted">Escolher imagem</label>
+        <input type="file" id="fotoFile" accept="image/*" />
+      </div>
+
+      <div class="row" style="margin-top:10px;">
+        <button class="btn" onclick="fotoSalvar()">Salvar foto</button>
+        <button class="btn secondary" onclick="fotoLimpar()">🗑️ Limpar tudo</button>
+      </div>
+
+      <div class="photoGrid" id="fotoGrid" style="margin-top:12px;"></div>
+      <div class="note">🔒 As fotos ficam só no seu celular (LocalStorage). Se limpar dados do navegador, apaga.</div>
+    </div>
+  </section>
+
+  <!-- CARGAS -->
+  <section id="sec-cargas" class="section">
+    <div class="card">
+      <h2>📝 Registrar cargas</h2>
+      <div class="muted">Escolha dia + exercício. Salva peso e reps.</div>
+
+      <div class="grid2" style="margin-top:10px;">
+        <div>
+          <label class="muted">Dia</label>
+          <select id="cDia"></select>
+        </div>
+        <div>
+          <label class="muted">Exercício</label>
+          <select id="cEx"></select>
+        </div>
+      </div>
+
+      <div class="grid2" style="margin-top:10px;">
+        <div>
+          <label class="muted">Peso (kg)</label>
+          <input type="number" id="cPeso" placeholder="Ex: 18" />
+        </div>
+        <div>
+          <label class="muted">Reps</label>
+          <input type="text" id="cReps" placeholder="Ex: 12" />
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:10px;">
+        <button class="btn" onclick="cSalvar()">Salvar</button>
+        <button class="btn secondary" onclick="cLimpar()">🧹 Limpar dia</button>
+      </div>
+
+      <div class="card" style="margin:12px 0 0; background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.10);">
+        <h2 style="margin:0 0 8px;">📌 Últimos registros</h2>
+        <div id="cHist" class="muted"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PEITO FIRME -->
+  <section id="sec-peito" class="section">
+    <div class="card">
+      <h2>💗 Peito firme (apoio)</h2>
+      <div class="muted">O treino não “levanta” pele sozinho, mas melhora sustentação com peitoral + postura.</div>
+
+      <div class="note">
+        ✅ <b>2x por semana</b> (no dia de superior) já ajuda muito:<br/>
+        • Supino inclinado (máquina) 3×12<br/>
+        • Crucifixo máquina 3×12<br/>
+        • Face pull 3×15 (postura/colo)<br/>
+        • Remada baixa 3×12 (costas firmes)<br/>
+        <br/>
+        💡 Dica: postura faz o peito “aparecer” mais alto.
+      </div>
+    </div>
+  </section>
+
+  <!-- NAV INFERIOR -->
   <div class="nav">
-    <div class="inner">
-      <div class="tab active" id="tab-inicio" onclick="goTab('inicio')">
-        <span class="ico">🏠</span><span class="lbl">Início</span>
-      </div>
-      <div class="tab" id="tab-treino" onclick="goTab('treino')">
-        <span class="ico">🏋️</span><span class="lbl">Treino</span>
-      </div>
-      <div class="tab" id="tab-agua" onclick="goTab('agua')">
-        <span class="ico">💧</span><span class="lbl">Água</span>
-      </div>
-      <div class="tab" id="tab-medidas" onclick="goTab('medidas')">
-        <span class="ico">📏</span><span class="lbl">Medidas</span>
-      </div>
-      <div class="tab" id="tab-fotos" onclick="goTab('fotos')">
-        <span class="ico">📸</span><span class="lbl">Fotos</span>
-      </div>
+    <div class="navInner">
+      <div class="navBtn active" id="nav-inicio" onclick="go('inicio')"><span>🏠</span><small>Início</small></div>
+      <div class="navBtn" id="nav-treino" onclick="go('treino')"><span>🏋️‍♀️</span><small>Treino</small></div>
+      <div class="navBtn" id="nav-agua" onclick="go('agua')"><span>💧</span><small>Água</small></div>
+      <div class="navBtn" id="nav-medidas" onclick="go('medidas')"><span>📏</span><small>Medidas</small></div>
+      <div class="navBtn" id="nav-fotos" onclick="go('fotos')"><span>📸</span><small>Fotos</small></div>
     </div>
   </div>
 
 <script>
-/* ========= BASE ========= */
-function hojeISO(){ return new Date().toISOString().split("T")[0]; }
-function fmtBR(iso){ const [y,m,d]=iso.split("-"); return `${d}/${m}/${y}`; }
+/* ==========================
+   DADOS (LocalStorage)
+========================== */
+const KEY = "miria_sculpt_v3";
 
-const KEY = "app_miria_ampulheta_dark_v1";
-let dados = JSON.parse(localStorage.getItem(KEY)) || {
-  agua:{}, intestino:{}, medidas:[], fotos:[], proteina:{}
+function hojeISO(){
+  return new Date().toISOString().split("T")[0];
+}
+function fmtBR(iso){
+  if(!iso) return "";
+  const [y,m,d] = iso.split("-");
+  return `${d}/${m}/${y}`;
+}
+function load(){
+  const d = JSON.parse(localStorage.getItem(KEY) || "null");
+  return d || {
+    agua: {},                 // { "YYYY-MM-DD": {total, pilha[]} }
+    proteina: {},             // { "YYYY-MM-DD": {meta, itens:[{food,qtd,prot}]} }
+    intestino: {},            // { "YYYY-MM-DD": {foi, chia} }
+    medidas: [],              // [{data,peso,cintura,abdomen,gluteo}]
+    fotos: [],                // [{data,tipo,src}]
+    cargas: {}                // { "SEG": { "exName": {peso,reps,data} } }
+  };
+}
+function save(){
+  localStorage.setItem(KEY, JSON.stringify(state));
+}
+let state = load();
+
+/* ==========================
+   TREINO (SEG–SEX) + LINKS
+========================== */
+const TREINO = {
+  "SEG": {
+    titulo: "Segunda • Glúteo / Posterior 🍑",
+    itens: [
+      {n:"1️⃣ Cadeira Flexora", s:"3×12", w:"👉 20–25kg", t:"Controle total. Sem tirar o quadril do banco.", v:"https://www.youtube.com/results?search_query=cadeira+flexora+como+fazer+correto"},
+      {n:"2️⃣ Stiff com halter", s:"3×12", w:"👉 6–8kg cada lado", t:"Coluna neutra. Desce devagar. Sente alongar posterior.", v:"https://www.youtube.com/results?search_query=stiff+com+halter+como+fazer"},
+      {n:"3️⃣ Elevação pélvica (Hip Thrust)", s:"4×10", w:"👉 20kg (meta evoluir)", t:"Pausa 1s no topo. Não arquear lombar.", v:"https://www.youtube.com/results?search_query=eleva%C3%A7%C3%A3o+p%C3%A9lvica+como+fazer"},
+      {n:"4️⃣ Abdutora máquina", s:"3×15", w:"👉 30–35kg", t:"Inclina levemente pra frente e segura 1s aberta.", v:"https://www.youtube.com/results?search_query=abdutora+m%C3%A1quina+como+usar"},
+      {n:"🚶‍♀️ Cardio (opcional)", s:"12 min", w:"👉 esteira inclinada", t:"Leve/moderado pra ajudar barriga sem perder glúteo.", v:"https://www.youtube.com/results?search_query=esteira+inclinada+como+fazer"}
+    ]
+  },
+  "TER": {
+    titulo: "Terça • Peito + Ombro (colo firme) 💗",
+    itens: [
+      {n:"1️⃣ Supino inclinado máquina", s:"3×12", w:"👉 15–20kg", t:"Peito aberto. Ombros pra baixo.", v:"https://www.youtube.com/results?search_query=supino+inclinado+m%C3%A1quina+como+fazer"},
+      {n:"2️⃣ Crucifixo máquina", s:"3×12", w:"👉 15kg", t:"Controlado. Não esticar demais.", v:"https://www.youtube.com/results?search_query=crucifixo+m%C3%A1quina+como+fazer"},
+      {n:"3️⃣ Elevação lateral halter", s:"3×12", w:"👉 4kg", t:"Sobe até linha do ombro. Sem balançar.", v:"https://www.youtube.com/results?search_query=eleva%C3%A7%C3%A3o+lateral+halter+como+fazer"},
+      {n:"4️⃣ Desenvolvimento ombro halter", s:"3×10", w:"👉 6kg", t:"Controle. Não jogar a lombar.", v:"https://www.youtube.com/results?search_query=desenvolvimento+ombro+halter+como+fazer"},
+      {n:"⏳ Vácuo abdominal", s:"3×20s", w:"👉 cintura marcada", t:"Solta o ar e puxa o umbigo pra dentro.", v:"https://www.youtube.com/results?search_query=vacuum+abdominal+como+fazer"}
+    ]
+  },
+  "QUA": {
+    titulo: "Quarta • Quadríceps + Glúteo 🍑",
+    itens: [
+      {n:"1️⃣ Leg Press", s:"4×12", w:"👉 80kg (meta 100–110kg)", t:"Pé um pouco mais alto. Não travar joelho.", v:"https://www.youtube.com/results?search_query=leg+press+como+fazer+correto"},
+      {n:"2️⃣ Agachamento no Smith", s:"3×10", w:"👉 10kg cada lado", t:"Pés levemente à frente. Desce controlado.", v:"https://www.youtube.com/results?search_query=agachamento+no+smith+como+fazer"},
+      {n:"3️⃣ Cadeira Extensora", s:"3×12", w:"👉 25kg", t:"Sobe forte e desce controlando.", v:"https://www.youtube.com/results?search_query=cadeira+extensora+como+fazer"},
+      {n:"4️⃣ Abdutora", s:"3×15", w:"👉 30–35kg", t:"Foco no glúteo lateral (ajuda ampulheta).", v:"https://www.youtube.com/results?search_query=abdutora+m%C3%A1quina+como+usar"}
+    ]
+  },
+  "QUI": {
+    titulo: "Quinta • Costas + Postura 🧘‍♀️",
+    itens: [
+      {n:"1️⃣ Puxada frente", s:"3×12", w:"👉 25kg", t:"Puxa com cotovelos. Ombros pra baixo.", v:"https://www.youtube.com/results?search_query=puxada+frente+na+polia+como+fazer"},
+      {n:"2️⃣ Remada baixa", s:"3×12", w:"👉 25kg", t:"Segura 1s atrás. Postura firme.", v:"https://www.youtube.com/results?search_query=remada+baixa+na+polia+como+fazer"},
+      {n:"3️⃣ Face Pull", s:"3×15", w:"👉 leve/médio", t:"Postura e colo bonito. Cotovelos altos.", v:"https://www.youtube.com/results?search_query=face+pull+como+fazer"},
+      {n:"4️⃣ Prancha", s:"3×40s", w:"👉 core firme", t:"Barriga pra dentro. Sem cair lombar.", v:"https://www.youtube.com/results?search_query=prancha+abdominal+como+fazer"}
+    ]
+  },
+  "SEX": {
+    titulo: "Sexta • Glúteo Foco 🍑",
+    itens: [
+      {n:"1️⃣ Elevação pélvica (pesado)", s:"4×8", w:"👉 30kg (meta 45kg)", t:"Forma perfeita. Pausa no topo.", v:"https://www.youtube.com/results?search_query=hip+thrust+como+fazer"},
+      {n:"2️⃣ Stiff", s:"3×12", w:"👉 8kg cada lado", t:"Controle, coluna neutra.", v:"https://www.youtube.com/results?search_query=stiff+com+halter+como+fazer"},
+      {n:"3️⃣ Afundo andando", s:"3×10 cada perna", w:"👉 4–6kg", t:"Tronco levemente à frente, calcanhar empurra.", v:"https://www.youtube.com/results?search_query=afundo+andando+como+fazer"},
+      {n:"4️⃣ Abdutora", s:"4×15", w:"👉 35–40kg", t:"Segura 1s aberta. Glúteo lateral.", v:"https://www.youtube.com/results?search_query=abdutora+m%C3%A1quina+como+usar"},
+      {n:"⏳ Vácuo abdominal", s:"3×20s", w:"👉 cintura", t:"Consistência 3x/semana.", v:"https://www.youtube.com/results?search_query=vacuum+abdominal+como+fazer"}
+    ]
+  }
 };
-function salvar(){ localStorage.setItem(KEY, JSON.stringify(dados)); }
 
-/* ========= NAVEGAÇÃO ========= */
-function goTab(tab){
-  const views = ["inicio","treino","agua","medidas","fotos"];
-  views.forEach(v=>{
-    document.getElementById("view-"+v).classList.remove("active");
-    document.getElementById("tab-"+v).classList.remove("active");
-  });
-  document.getElementById("view-"+tab).classList.add("active");
-  document.getElementById("tab-"+tab).classList.add("active");
-  window.scrollTo({top:0, behavior:"smooth"});
-}
-function jumpTo(id){
-  goTab("inicio");
-  setTimeout(()=>{
-    document.getElementById(id).scrollIntoView({behavior:"smooth", block:"start"});
-  }, 120);
+/* ==========================
+   NAVEGAÇÃO
+========================== */
+function go(sec){
+  // section
+  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+  document.getElementById("sec-"+sec).classList.add("active");
+
+  // nav
+  document.querySelectorAll(".navBtn").forEach(b=>b.classList.remove("active"));
+  const navId = "nav-" + sec;
+  const el = document.getElementById(navId);
+  if(el) el.classList.add("active");
+
+  // telas que precisam renderizar
+  if(sec==="inicio"){ renderKPIs(); drawGluteoChart(); }
+  if(sec==="treino"){ renderTreino(); }
+  if(sec==="agua"){ renderAgua(); }
+  if(sec==="proteina"){ renderProt(); }
+  if(sec==="intestino"){ renderInt(); }
+  if(sec==="medidas"){ renderMed(); renderKPIs(); drawGluteoChart(); }
+  if(sec==="fotos"){ renderFotos(); }
+  if(sec==="cargas"){ renderCargasUI(); renderCargasHist(); }
+  if(sec==="peito"){ /* ok */ }
 }
 
-/* ========= ÁGUA ========= */
-function initAgua(){
-  if(!dados.agua[hojeISO()]) dados.agua[hojeISO()] = {total:0, pilha:[]};
+/* ==========================
+   ÁGUA
+========================== */
+function ensureAguaHoje(){
+  const d = hojeISO();
+  if(!state.agua[d]) state.agua[d] = { total:0, pilha:[] };
 }
-function aguaSomar(v){
-  initAgua();
-  dados.agua[hojeISO()].total += v;
-  dados.agua[hojeISO()].pilha.push(v);
-  salvar(); aguaRender(); miniRender();
+function aguaAdd(v){
+  ensureAguaHoje();
+  state.agua[hojeISO()].total += v;
+  state.agua[hojeISO()].pilha.push(v);
+  save(); renderAgua();
 }
-function aguaSomarManual(){
-  const v = Number(document.getElementById("aguaManual").value || 0);
-  if(v>0){ aguaSomar(v); document.getElementById("aguaManual").value=""; }
+function aguaAddManual(){
+  const v = Number(document.getElementById("aguaManual").value||0);
+  if(v>0){ aguaAdd(v); document.getElementById("aguaManual").value=""; }
 }
 function aguaDesfazer(){
-  initAgua();
-  const ultimo = dados.agua[hojeISO()].pilha.pop();
-  if(ultimo) dados.agua[hojeISO()].total -= ultimo;
-  salvar(); aguaRender(); miniRender();
+  ensureAguaHoje();
+  const stack = state.agua[hojeISO()].pilha;
+  const last = stack.pop();
+  if(last){ state.agua[hojeISO()].total -= last; }
+  save(); renderAgua();
 }
 function aguaZerar(){
-  dados.agua[hojeISO()] = {total:0, pilha:[]};
-  salvar(); aguaRender(); miniRender();
+  state.agua[hojeISO()] = { total:0, pilha:[] };
+  save(); renderAgua();
 }
-function aguaRender(){
-  initAgua();
-  const meta = Number(document.getElementById("metaAgua").value || 2500);
-  const total = dados.agua[hojeISO()].total;
+function renderAgua(){
+  ensureAguaHoje();
+  const meta = Number(document.getElementById("aguaMeta")?.value || 2500);
+  const total = state.agua[hojeISO()].total;
 
-  document.getElementById("aguaHojeKpi").innerHTML = `${total} ml`;
-
-  let pct = meta>0 ? Math.round((total/meta)*100) : 0;
-  if(pct>100) pct=100;
-  document.getElementById("barAgua").style.width = pct + "%";
-  document.getElementById("aguaPct").innerHTML = pct + "%";
+  const pct = Math.min(100, Math.round((total/meta)*100));
+  document.getElementById("aguaBar").style.width = pct + "%";
+  document.getElementById("aguaHoje").innerText = total + " ml";
 
   // média 7 dias
   let soma=0, dias=0;
   for(let i=0;i<7;i++){
-    const d = new Date(); d.setDate(d.getDate()-i);
-    const k = d.toISOString().split("T")[0];
-    if(dados.agua[k]){ soma += dados.agua[k].total; dias++; }
-  }
-  const media = dias? Math.round(soma/dias) : 0;
-  document.getElementById("aguaMedia7Kpi").innerHTML = `Média 7 dias: ${media} ml`;
-  // mini
-  document.getElementById("miniAgua").innerHTML = total + " ml";
-  document.getElementById("miniAgua2").innerHTML = "Média 7 dias: " + media + " ml";
-}
-
-/* ========= PROTEÍNA ========= */
-const fatores = {
-  frango:{por:100, prot:31},
-  carne:{por:100, prot:26},
-  ovo:{por:1, prot:6},
-  iog:{por:1, prot:10},
-  queijo:{por:100, prot:25},
-  whey:{por:1, prot:20}
-};
-function protCalc(qtd,cfg){
-  qtd = Number(qtd||0);
-  if(qtd<=0) return 0;
-  if(cfg.por===1) return qtd*cfg.prot;
-  return (qtd/cfg.por)*cfg.prot;
-}
-function protTotalHojeObj(obj){
-  if(!obj) return 0;
-  return Math.round(
-    protCalc(obj.frango,fatores.frango)+
-    protCalc(obj.carne,fatores.carne)+
-    protCalc(obj.ovo,fatores.ovo)+
-    protCalc(obj.iog,fatores.iog)+
-    protCalc(obj.queijo,fatores.queijo)+
-    protCalc(obj.whey,fatores.whey)
-  );
-}
-function protRecalcular(){
-  const fr = protCalc(document.getElementById("prot_frango").value, fatores.frango);
-  const ca = protCalc(document.getElementById("prot_carne").value, fatores.carne);
-  const ov = protCalc(document.getElementById("prot_ovo").value, fatores.ovo);
-  const io = protCalc(document.getElementById("prot_iog").value, fatores.iog);
-  const qu = protCalc(document.getElementById("prot_queijo").value, fatores.queijo);
-  const wh = protCalc(document.getElementById("prot_whey").value, fatores.whey);
-
-  const total = Math.round(fr+ca+ov+io+qu+wh);
-  const meta = Number(document.getElementById("metaProt").value || 0);
-  const falta = Math.max(0, meta-total);
-
-  document.getElementById("protHojeKpi").innerHTML = total + " g";
-  document.getElementById("protMetaKpi").innerHTML = meta + " g";
-  document.getElementById("protFaltaKpi").innerHTML = "Faltam: " + falta + " g";
-
-  // barra
-  let pct = meta>0 ? Math.round((total/meta)*100) : 0;
-  if(pct>100) pct=100;
-  document.getElementById("barProt").style.width = pct + "%";
-
-  miniRender();
-}
-function protSalvar(){
-  const k = hojeISO();
-  dados.proteina[k] = {
-    meta: Number(document.getElementById("metaProt").value || 0),
-    frango: Number(document.getElementById("prot_frango").value || 0),
-    carne: Number(document.getElementById("prot_carne").value || 0),
-    ovo: Number(document.getElementById("prot_ovo").value || 0),
-    iog: Number(document.getElementById("prot_iog").value || 0),
-    queijo: Number(document.getElementById("prot_queijo").value || 0),
-    whey: Number(document.getElementById("prot_whey").value || 0)
-  };
-  salvar(); protRender(); miniRender();
-}
-function protZerar(){
-  delete dados.proteina[hojeISO()];
-  document.getElementById("prot_frango").value="";
-  document.getElementById("prot_carne").value="";
-  document.getElementById("prot_ovo").value="";
-  document.getElementById("prot_iog").value="";
-  document.getElementById("prot_queijo").value="";
-  document.getElementById("prot_whey").value="";
-  salvar(); protRender(); miniRender();
-}
-function protRender(){
-  const k = hojeISO();
-  document.getElementById("dataProt").value = fmtBR(k);
-
-  const d = dados.proteina[k];
-  if(d){
-    document.getElementById("metaProt").value = d.meta || 95;
-    document.getElementById("prot_frango").value = d.frango || "";
-    document.getElementById("prot_carne").value = d.carne || "";
-    document.getElementById("prot_ovo").value = d.ovo || "";
-    document.getElementById("prot_iog").value = d.iog || "";
-    document.getElementById("prot_queijo").value = d.queijo || "";
-    document.getElementById("prot_whey").value = d.whey || "";
-  }
-
-  protRecalcular();
-
-  // média 7 dias
-  let soma=0, dias=0;
-  for(let i=0;i<7;i++){
-    const dt = new Date(); dt.setDate(dt.getDate()-i);
-    const key = dt.toISOString().split("T")[0];
-    if(dados.proteina[key]){
-      soma += protTotalHojeObj(dados.proteina[key]);
+    const d = new Date();
+    d.setDate(d.getDate()-i);
+    const key = d.toISOString().split("T")[0];
+    if(state.agua[key]){
+      soma += state.agua[key].total;
       dias++;
     }
   }
-  const media = dias? Math.round(soma/dias) : 0;
-  document.getElementById("protMedia7Kpi").innerHTML = "Média 7 dias: " + media + " g";
+  const media = dias ? Math.round(soma/dias) : 0;
+  document.getElementById("aguaMedia7").innerText = media + " ml";
 }
 
-/* ========= INTESTINO ========= */
-function intSalvar(){
-  dados.intestino[hojeISO()] = {
-    foi: document.getElementById("intestinoSel").value,
-    chia: document.getElementById("chiaCheck").checked
-  };
-  salvar(); intRender(); miniRender();
+/* ==========================
+   PROTEÍNA (AUTOMÁTICA)
+========================== */
+const fatores = {
+  frango: { tipo:"g", por:100, prot:31 },
+  carne:  { tipo:"g", por:100, prot:26 },
+  ovo:    { tipo:"un", por:1,   prot:6  },
+  iog:    { tipo:"un", por:1,   prot:10 },
+  queijo: { tipo:"g", por:100, prot:25 },
+  whey:   { tipo:"sc", por:1,   prot:20 }
+};
+function ensureProtHoje(){
+  const d = hojeISO();
+  if(!state.proteina[d]) state.proteina[d] = { meta: 100, itens: [], pilha: [] };
 }
-function intLimpar(){
-  delete dados.intestino[hojeISO()];
-  salvar(); intRender(); miniRender();
+function calcProt(food, qtd){
+  const cfg = fatores[food];
+  qtd = Number(qtd||0);
+  if(!cfg || qtd<=0) return 0;
+  if(cfg.por===1) return qtd * cfg.prot;
+  return (qtd / cfg.por) * cfg.prot;
 }
-function intRender(){
-  const d = dados.intestino[hojeISO()];
-  if(d){
-    document.getElementById("intestinoSel").value = d.foi;
-    document.getElementById("chiaCheck").checked = !!d.chia;
-  }else{
-    document.getElementById("intestinoSel").value = "nao";
-    document.getElementById("chiaCheck").checked = false;
+function protAdd(){
+  ensureProtHoje();
+  const d = hojeISO();
+  const food = document.getElementById("protFood").value;
+  const qtd = Number(document.getElementById("protQtd").value||0);
+  if(qtd<=0) return;
+
+  const p = Math.round(calcProt(food, qtd));
+  state.proteina[d].meta = Number(document.getElementById("protMeta").value||100);
+  state.proteina[d].itens.push({ food, qtd, prot:p });
+  state.proteina[d].pilha.push({ food, qtd, prot:p });
+
+  save();
+  document.getElementById("protQtd").value="";
+  renderProt();
+}
+function protDesfazer(){
+  ensureProtHoje();
+  const d = hojeISO();
+  const last = state.proteina[d].pilha.pop();
+  if(last){
+    // remove último item correspondente
+    for(let i=state.proteina[d].itens.length-1;i>=0;i--){
+      const it = state.proteina[d].itens[i];
+      if(it.food===last.food && it.qtd===last.qtd && it.prot===last.prot){
+        state.proteina[d].itens.splice(i,1);
+        break;
+      }
+    }
   }
+  save(); renderProt();
+}
+function protZerar(){
+  state.proteina[hojeISO()] = { meta: Number(document.getElementById("protMeta")?.value||100), itens:[], pilha:[] };
+  save(); renderProt();
+}
+function renderProt(){
+  ensureProtHoje();
+  const d = hojeISO();
+  document.getElementById("protData").value = fmtBR(d);
 
-  const entries = Object.entries(dados.intestino).sort((a,b)=>a[0].localeCompare(b[0]));
-  const ult = entries.slice(-10).reverse().map(([data,val])=>{
-    const foiTxt = val.foi==="sim" ? "✅ Sim" : (val.foi==="pouco" ? "🟡 Pouquinho" : "❌ Não");
-    const chiaTxt = val.chia ? " + 🌿 chia" : "";
-    return `<div>📅 <b>${fmtBR(data)}</b> — ${foiTxt}${chiaTxt}</div>`;
-  }).join("");
-  document.getElementById("intHistorico").innerHTML = ult || "Sem registros ainda.";
+  const meta = Number(document.getElementById("protMeta").value||100);
+  state.proteina[d].meta = meta;
+
+  const total = state.proteina[d].itens.reduce((a,b)=>a+Number(b.prot||0),0);
+  const faltam = Math.max(0, meta - total);
+
+  document.getElementById("protHoje").innerText = total + " g";
+  document.getElementById("protFaltam").innerText = faltam + " g";
+  const pct = Math.min(100, Math.round((total/meta)*100));
+  document.getElementById("protBar").style.width = pct + "%";
+
+  const nomeFood = (f)=>{
+    if(f==="frango") return "🍗 Frango";
+    if(f==="carne") return "🥩 Carne";
+    if(f==="ovo") return "🥚 Ovo";
+    if(f==="iog") return "🥛 Iogurte";
+    if(f==="queijo") return "🧀 Queijo";
+    if(f==="whey") return "🥤 Whey";
+    return f;
+  };
+  const unit = (f)=>{
+    const t = fatores[f]?.tipo;
+    if(t==="g") return "g";
+    if(t==="un") return "un";
+    if(t==="sc") return "scoop";
+    return "";
+  };
+
+  const html = state.proteina[d].itens.length
+    ? state.proteina[d].itens.map(it=> `• ${nomeFood(it.food)}: <b>${it.qtd}${unit(it.food)}</b> → <b>${it.prot}g</b>`).join("<br>")
+    : "Sem itens ainda.";
+
+  document.getElementById("protLista").innerHTML = html;
+  save();
 }
 
-/* ========= MEDIDAS ========= */
-function ampNota(r){
-  if(!isFinite(r) || r<=0) return {nota:"--", txt:"--"};
-  if(r>=1.35) return {nota:"A+", txt:"🔥 Muito marcada"};
-  if(r>=1.30) return {nota:"A", txt:"🍑 Ampulheta forte"};
-  if(r>=1.25) return {nota:"B", txt:"✨ Boa (em construção)"};
-  return {nota:"C", txt:"📈 Vamos marcar mais"};
+/* ==========================
+   INTESTINO
+========================== */
+function intSalvar(){
+  const d = hojeISO();
+  state.intestino[d] = {
+    foi: document.getElementById("intSel").value,
+    chia: document.getElementById("chiaSel").value
+  };
+  save(); renderInt();
 }
+function renderInt(){
+  const d = hojeISO();
+  if(state.intestino[d]){
+    document.getElementById("intSel").value = state.intestino[d].foi;
+    document.getElementById("chiaSel").value = state.intestino[d].chia;
+  }else{
+    document.getElementById("intSel").value = "nao";
+    document.getElementById("chiaSel").value = "nao";
+  }
+  // últimos 10
+  const entries = Object.entries(state.intestino)
+    .sort((a,b)=>a[0].localeCompare(b[0]))
+    .slice(-10);
+
+  const txt = entries.length
+    ? entries.map(([data,val])=>{
+        const foiTxt = val.foi==="sim" ? "✅ Sim" : (val.foi==="pouco" ? "🟡 Pouquinho" : "❌ Não");
+        const chiaTxt = val.chia==="sim" ? " + 🌿 chia" : "";
+        return `<b>${fmtBR(data)}</b> — ${foiTxt}${chiaTxt}`;
+      }).join("<br>")
+    : "Sem registros ainda.";
+
+  document.getElementById("intHist").innerHTML = txt;
+}
+
+/* ==========================
+   MEDIDAS + KPI + CHART
+========================== */
+function ratioNota(cintura, gluteo){
+  cintura = Number(cintura||0);
+  gluteo = Number(gluteo||0);
+  if(!cintura || !gluteo) return {ratio:null, nota:"—"};
+  const r = gluteo / cintura; // ex: 96/72=1.33
+  let nota = "Natural";
+  if(r >= 1.30) nota = "Ampulheta ⭐";
+  if(r >= 1.35) nota = "Ampulheta PRO ✨";
+  return {ratio:r, nota};
+}
+
 function medSalvar(){
   const item = {
     data: hojeISO(),
-    peso: Number(document.getElementById("m_peso").value || 0),
-    cintura: Number(document.getElementById("m_cintura").value || 0),
-    abdomen: Number(document.getElementById("m_abdomen").value || 0),
-    gluteo: Number(document.getElementById("m_gluteo").value || 0)
+    peso: Number(document.getElementById("mPeso").value||0),
+    cintura: Number(document.getElementById("mCintura").value||0),
+    abdomen: Number(document.getElementById("mAbdomen").value||0),
+    gluteo: Number(document.getElementById("mGluteo").value||0)
   };
-  dados.medidas.push(item);
-  salvar(); medRender(); miniRender();
+  state.medidas.push(item);
+  save();
+  renderMed();
+  renderKPIs();
+  drawGluteoChart();
 }
-function medLimparTudo(){
-  if(confirm("Quer apagar TODO o histórico de medidas?")){
-    dados.medidas = [];
-    salvar(); medRender(); miniRender();
-  }
-}
-function medRender(){
-  const last = dados.medidas.length ? dados.medidas[dados.medidas.length-1] : null;
-  if(!last){
-    document.getElementById("kpiAmp").innerHTML="--";
-    document.getElementById("kpiNota").innerHTML="Nota: --";
-    document.getElementById("medUltima").innerHTML="--";
+function renderMed(){
+  if(!state.medidas.length){
+    document.getElementById("medUlt").innerHTML = "Sem medidas ainda.";
+    document.getElementById("medHist").innerHTML = "";
     return;
   }
-  const r = last.cintura>0 ? (last.gluteo/last.cintura) : 0;
-  const rTxt = r ? r.toFixed(2) : "--";
-  const an = ampNota(r);
+  const ult = state.medidas[state.medidas.length-1];
+  const rn = ratioNota(ult.cintura, ult.gluteo);
 
-  document.getElementById("kpiAmp").innerHTML = rTxt;
-  document.getElementById("kpiNota").innerHTML = `Nota: <b>${an.nota}</b> — ${an.txt}`;
-  document.getElementById("medUltima").innerHTML =
-    `<b>${fmtBR(last.data)}</b><br>
-     Peso ${last.peso}kg • Cintura ${last.cintura} • Abdômen ${last.abdomen} • Glúteo ${last.gluteo}`;
+  document.getElementById("medUlt").innerHTML =
+    `<b>${fmtBR(ult.data)}</b><br>
+     Peso: <b>${ult.peso || "—"}</b> kg<br>
+     Cintura: <b>${ult.cintura || "—"}</b> cm • Abdômen: <b>${ult.abdomen || "—"}</b> cm • Glúteo: <b>${ult.gluteo || "—"}</b> cm<br>
+     Proporção: <b>${rn.ratio ? rn.ratio.toFixed(2) : "—"}</b> • Nota: <b>${rn.nota}</b>`;
 
-  // mini
-  document.getElementById("miniAmp").innerHTML = rTxt;
-  document.getElementById("miniAmp2").innerHTML = `${an.nota} • ${an.txt}`;
+  const hist = state.medidas.slice(-12).map(m=>{
+    const rr = ratioNota(m.cintura, m.gluteo);
+    return `• <b>${fmtBR(m.data)}</b> — Cint ${m.cintura} | Glút ${m.gluteo} | Ratio ${rr.ratio?rr.ratio.toFixed(2):"—"}`;
+  }).join("<br>");
+
+  document.getElementById("medHist").innerHTML = hist;
+}
+function medExport(){
+  if(!state.medidas.length) return alert("Ainda não tem medidas salvas.");
+  const lines = state.medidas.map(m=>{
+    const r = ratioNota(m.cintura, m.gluteo);
+    return `${m.data} | Peso ${m.peso} | Cint ${m.cintura} | Abd ${m.abdomen} | Glút ${m.gluteo} | Ratio ${r.ratio? r.ratio.toFixed(2):"—"}`;
+  }).join("\n");
+  navigator.clipboard?.writeText(lines);
+  alert("Copiado! (Se não copiar, selecione e copie manualmente no navegador.)");
 }
 
-/* ========= FOTOS ========= */
-function fotoSalvar(){
-  const item = {
-    data: hojeISO(),
-    tipo: document.getElementById("fotoTipo").value,
-    url: (document.getElementById("fotoUrl").value || "").trim(),
-    obs: (document.getElementById("fotoObs").value || "").trim()
-  };
-  if(!item.url){ alert("Cole um link da foto (URL)."); return; }
-  dados.fotos.push(item);
-  document.getElementById("fotoUrl").value="";
-  document.getElementById("fotoObs").value="";
-  salvar(); fotoRender();
-}
-function fotoLimparTudo(){
-  if(confirm("Quer apagar TODAS as fotos salvas?")){
-    dados.fotos = [];
-    salvar(); fotoRender();
+function renderKPIs(){
+  const ult = state.medidas[state.medidas.length-1];
+  if(!ult){
+    document.getElementById("kpiRatio").innerText = "—";
+    document.getElementById("kpiNota").innerText = "—";
+    return;
   }
-}
-function fotoRender(){
-  document.getElementById("fotoData").value = fmtBR(hojeISO());
-  const items = dados.fotos.slice().reverse().slice(0,30).map(f=>{
-    const emoji = f.tipo==="antes" ? "🟣" : (f.tipo==="depois" ? "🟢" : "📸");
-    const obs = f.obs ? ` — <i>${f.obs}</i>` : "";
-    return `<div>${emoji} <b>${fmtBR(f.data)}</b> • ${f.tipo.toUpperCase()} • <a href="${f.url}" target="_blank">abrir</a>${obs}</div>`;
-  }).join("");
-  document.getElementById("fotoLista").innerHTML = items || "Sem fotos salvas ainda.";
+  const rn = ratioNota(ult.cintura, ult.gluteo);
+  document.getElementById("kpiRatio").innerText = rn.ratio ? rn.ratio.toFixed(2) : "—";
+  document.getElementById("kpiNota").innerText = rn.nota;
 }
 
-/* ========= TREINO (SEG–SEX) ========= */
-const treinos = {
-  "Segunda – Glúteo/Posterior 🍑": [
-    {n:"1️⃣ Cadeira Flexora", s:"3×12", w:"20–25kg", t:"Controle total. Sem tirar o quadril do banco.", v:"https://www.youtube.com/results?search_query=cadeira+flexora+como+fazer+correto"},
-    {n:"2️⃣ Stiff com Halter", s:"3×12", w:"6–8kg cada lado", t:"Coluna neutra. Desce devagar. Sente alongar posterior.", v:"https://www.youtube.com/results?search_query=stiff+com+halter+como+fazer"},
-    {n:"3️⃣ Elevação pélvica (Hip Thrust)", s:"4×10", w:"20kg (meta evoluir)", t:"Pausa 1s no topo. Não arquear lombar.", v:"https://www.youtube.com/results?search_query=eleva%C3%A7%C3%A3o+p%C3%A9lvica+como+fazer"},
-    {n:"4️⃣ Abdutora máquina", s:"3×15", w:"30–35kg", t:"Inclina levemente pra frente e segura 1s aberta.", v:"https://www.youtube.com/results?search_query=abdutora+m%C3%A1quina+como+usar"},
-    {n:"🚶‍♀️ Cardio (opcional)", s:"12 min", w:"esteira inclinada", t:"Leve/moderado pra ajudar barriga sem perder glúteo.", v:"https://www.youtube.com/results?search_query=esteira+inclinada+como+fazer"}
-  ],
-  "Terça – Peito + Ombro + Core ✨": [
-    {n:"1️⃣ Supino inclinado (máquina)", s:"3×12", w:"15–20kg", t:"Peito aberto. Ombros pra baixo.", v:"https://www.youtube.com/results?search_query=supino+inclinado+m%C3%A1quina+como+fazer"},
-    {n:"2️⃣ Crucifixo (máquina)", s:"3×12", w:"15kg", t:"Controlado. Não esticar demais.", v:"https://www.youtube.com/results?search_query=crucifixo+m%C3%A1quina+como+fazer"},
-    {n:"3️⃣ Elevação lateral (halter)", s:"3×12", w:"4kg", t:"Sobe até linha do ombro. Sem balançar.", v:"https://www.youtube.com/results?search_query=eleva%C3%A7%C3%A3o+lateral+halter+como+fazer"},
-    {n:"4️⃣ Desenvolvimento ombro (halter)", s:"3×10", w:"6kg", t:"Controle. Sem forçar lombar.", v:"https://www.youtube.com/results?search_query=desenvolvimento+ombro+halter+como+fazer"},
-    {n:"⏳ Vácuo abdominal", s:"3×20s", w:"cintura", t:"Solta o ar e puxa o umbigo pra dentro.", v:"https://www.youtube.com/results?search_query=vacuum+abdominal+como+fazer"}
-  ],
-  "Quarta – Quadríceps + Glúteo 🍑": [
-    {n:"1️⃣ Leg Press", s:"4×12", w:"80kg (meta 100–110kg)", t:"Pé um pouco mais alto. Não travar joelho.", v:"https://www.youtube.com/results?search_query=leg+press+como+fazer+correto"},
-    {n:"2️⃣ Agachamento no Smith", s:"3×10", w:"10kg cada lado", t:"Pés levemente à frente. Desce controlado.", v:"https://www.youtube.com/results?search_query=agachamento+no+smith+como+fazer"},
-    {n:"3️⃣ Cadeira Extensora", s:"3×12", w:"25kg", t:"Sobe forte e desce controlando.", v:"https://www.youtube.com/results?search_query=cadeira+extensora+como+fazer"},
-    {n:"4️⃣ Abdutora", s:"3×15", w:"30–35kg", t:"Foco glúteo lateral (ajuda ampulheta).", v:"https://www.youtube.com/results?search_query=abdutora+m%C3%A1quina+como+usar"}
-  ],
-  "Quinta – Costas + Postura 🧍‍♀️": [
-    {n:"1️⃣ Puxada frente", s:"3×12", w:"25kg", t:"Puxa com cotovelos. Ombros pra baixo.", v:"https://www.youtube.com/results?search_query=puxada+frente+na+polia+como+fazer"},
-    {n:"2️⃣ Remada baixa", s:"3×12", w:"25kg", t:"Segura 1s atrás. Postura firme.", v:"https://www.youtube.com/results?search_query=remada+baixa+na+polia+como+fazer"},
-    {n:"3️⃣ Face Pull", s:"3×15", w:"leve/médio", t:"Postura + parte de cima mais firme.", v:"https://www.youtube.com/results?search_query=face+pull+como+fazer"},
-    {n:"4️⃣ Prancha", s:"3×40s", w:"core", t:"Barriga pra dentro. Sem cair lombar.", v:"https://www.youtube.com/results?search_query=prancha+abdominal+como+fazer"}
-  ],
-  "Sexta – Glúteo foco 🍑🔥": [
-    {n:"1️⃣ Elevação pélvica (pesado)", s:"4×8", w:"30kg (meta 45kg)", t:"Forma perfeita. Pausa no topo.", v:"https://www.youtube.com/results?search_query=hip+thrust+como+fazer"},
-    {n:"2️⃣ Stiff", s:"3×12", w:"8kg cada lado", t:"Controle, coluna neutra.", v:"https://www.youtube.com/results?search_query=stiff+com+halter+como+fazer"},
-    {n:"3️⃣ Afundo andando", s:"3×10 cada perna", w:"4–6kg", t:"Tronco levemente à frente, calcanhar empurra.", v:"https://www.youtube.com/results?search_query=afundo+andando+como+fazer"},
-    {n:"4️⃣ Abdutora", s:"4×15", w:"35–40kg", t:"Segura 1s aberta. Glúteo lateral.", v:"https://www.youtube.com/results?search_query=abdutora+m%C3%A1quina+como+usar"},
-    {n:"⏳ Vácuo abdominal", s:"3×20s", w:"cintura", t:"Consistência 3x/semana.", v:"https://www.youtube.com/results?search_query=vacuum+abdominal+como+fazer"}
-  ]
-};
-function treinoRender(){
-  let html="";
-  Object.entries(treinos).forEach(([dia,lista])=>{
-    html += `<div style="margin:10px 0 6px"><b>${dia}</b></div>`;
-    lista.forEach(ex=>{
-      html += `
-        <div class="card" style="margin:10px 0;padding:12px;border-radius:18px;box-shadow:none;background:rgba(255,255,255,.03)">
-          <div><b>${ex.n}</b> <span class="chip">${ex.s}</span> <span class="chip">${ex.w}</span></div>
-          <div class="small" style="margin-top:6px">${ex.t}</div>
-          <div class="small" style="margin-top:8px">▶️ <a href="${ex.v}" target="_blank">Ver vídeo (PT)</a></div>
-        </div>`;
+function drawGluteoChart(){
+  const c = document.getElementById("chartGluteo");
+  if(!c) return;
+  const ctx = c.getContext("2d");
+  ctx.clearRect(0,0,c.width,c.height);
+
+  const data = state.medidas.slice(-10).filter(m=>Number(m.gluteo||0)>0);
+  if(data.length < 2){
+    ctx.fillStyle = "rgba(244,244,247,.70)";
+    ctx.font = "14px system-ui";
+    ctx.fillText("Salve pelo menos 2 medidas de glúteo para ver o gráfico.", 16, 40);
+    return;
+  }
+
+  // ajustar para canvas real
+  const w = c.width = c.clientWidth * devicePixelRatio;
+  const h = c.height = 240 * devicePixelRatio;
+
+  const pad = 22 * devicePixelRatio;
+  const xs = data.map((_,i)=> i);
+  const ys = data.map(m=> Number(m.gluteo));
+
+  const minY = Math.min(...ys) - 1;
+  const maxY = Math.max(...ys) + 1;
+
+  function X(i){ return pad + (i/(xs.length-1))*(w-2*pad); }
+  function Y(v){ return (h-pad) - ((v-minY)/(maxY-minY))*(h-2*pad); }
+
+  // grid
+  ctx.strokeStyle = "rgba(255,255,255,.10)";
+  ctx.lineWidth = 1 * devicePixelRatio;
+  for(let i=0;i<4;i++){
+    const y = pad + i*((h-2*pad)/3);
+    ctx.beginPath(); ctx.moveTo(pad,y); ctx.lineTo(w-pad,y); ctx.stroke();
+  }
+
+  // line
+  ctx.strokeStyle = "rgba(240,216,155,.95)";
+  ctx.lineWidth = 3 * devicePixelRatio;
+  ctx.beginPath();
+  ys.forEach((v,i)=>{
+    const x = X(i), y = Y(v);
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+
+  // points
+  ys.forEach((v,i)=>{
+    const x = X(i), y = Y(v);
+    ctx.fillStyle = "rgba(255,62,142,.95)";
+    ctx.beginPath(); ctx.arc(x,y,4.5*devicePixelRatio,0,Math.PI*2); ctx.fill();
+  });
+
+  // labels
+  ctx.fillStyle = "rgba(244,244,247,.85)";
+  ctx.font = `${12*devicePixelRatio}px system-ui`;
+  ctx.fillText(`Glúteo (cm)`, pad, pad-6*devicePixelRatio);
+
+  // last value
+  const last = ys[ys.length-1];
+  ctx.fillStyle = "rgba(244,244,247,.92)";
+  ctx.font = `${14*devicePixelRatio}px system-ui`;
+  ctx.fillText(`Último: ${last} cm`, pad, h - (pad/2));
+}
+
+/* ==========================
+   TREINO RENDER (tabs SEG–SEX)
+========================== */
+let diaAtivo = "SEG";
+
+function renderTabs(){
+  const cont = document.getElementById("tabsDias");
+  cont.innerHTML = "";
+  ["SEG","TER","QUA","QUI","SEX"].forEach(d=>{
+    const b = document.createElement("div");
+    b.className = "tab" + (d===diaAtivo ? " active" : "");
+    b.innerText = d;
+    b.onclick = ()=>{ diaAtivo=d; renderTreino(); };
+    cont.appendChild(b);
+  });
+}
+
+function renderTreino(){
+  renderTabs();
+  const box = document.getElementById("treinoLista");
+  const dia = TREINO[diaAtivo];
+  box.innerHTML = `
+    <div class="ex" style="background: rgba(255,255,255,.06);">
+      <div class="muted"><b>${dia.titulo}</b><br>Toque em <b>“Ver vídeo (PT)”</b> para ver execução correta.</div>
+    </div>
+  `;
+
+  dia.itens.forEach((it,idx)=>{
+    const reg = (state.cargas[diaAtivo] && state.cargas[diaAtivo][it.n]) ? state.cargas[diaAtivo][it.n] : null;
+    const right = reg ? `✅ ${reg.peso}kg • ${reg.reps} reps` : `Sem registro ainda`;
+
+    const div = document.createElement("div");
+    div.className = "ex";
+    div.innerHTML = `
+      <div class="exTop">
+        <div>
+          <div class="exName">${it.n}</div>
+          <div class="exMeta">${it.s} • ${it.w}</div>
+        </div>
+        <div class="muted" style="font-weight:800;">${right}</div>
+      </div>
+      <div class="exTip">💡 ${it.t}</div>
+      <a href="${it.v}" target="_blank" rel="noopener">▶ Ver vídeo (PT)</a>
+    `;
+    box.appendChild(div);
+  });
+
+  // também atualiza selects de cargas
+  renderCargasUI();
+}
+
+/* ==========================
+   CARGAS
+========================== */
+function renderCargasUI(){
+  const sd = document.getElementById("cDia");
+  const se = document.getElementById("cEx");
+  if(!sd || !se) return;
+
+  sd.innerHTML = "";
+  ["SEG","TER","QUA","QUI","SEX"].forEach(d=>{
+    const opt = document.createElement("option");
+    opt.value = d; opt.textContent = d;
+    sd.appendChild(opt);
+  });
+  sd.value = diaAtivo;
+
+  function fillEx(){
+    se.innerHTML = "";
+    TREINO[sd.value].itens.forEach(it=>{
+      const opt = document.createElement("option");
+      opt.value = it.n; opt.textContent = it.n;
+      se.appendChild(opt);
+    });
+  }
+  fillEx();
+  sd.onchange = fillEx;
+}
+function cSalvar(){
+  const dia = document.getElementById("cDia").value;
+  const ex = document.getElementById("cEx").value;
+  const peso = Number(document.getElementById("cPeso").value||0);
+  const reps = (document.getElementById("cReps").value||"").trim();
+  if(!peso || !reps) return alert("Preencha peso e reps.");
+
+  if(!state.cargas[dia]) state.cargas[dia] = {};
+  state.cargas[dia][ex] = { peso, reps, data: hojeISO() };
+
+  save();
+  renderTreino();
+  renderCargasHist();
+  alert("Salvo ✅");
+}
+function cLimpar(){
+  const dia = document.getElementById("cDia").value;
+  state.cargas[dia] = {};
+  save();
+  renderTreino();
+  renderCargasHist();
+}
+function renderCargasHist(){
+  const el = document.getElementById("cHist");
+  if(!el) return;
+
+  let rows = [];
+  ["SEG","TER","QUA","QUI","SEX"].forEach(d=>{
+    const obj = state.cargas[d] || {};
+    Object.entries(obj).forEach(([ex,v])=>{
+      rows.push(`• <b>${d}</b> — ${ex}: <b>${v.peso}kg</b> • <b>${v.reps}</b> (${fmtBR(v.data)})`);
     });
   });
-  document.getElementById("treinoLista").innerHTML = html;
+  el.innerHTML = rows.length ? rows.slice(-12).join("<br>") : "Sem registros ainda.";
 }
 
-/* ========= MINI RESUMO ========= */
-function miniRender(){
-  // proteína
-  const k = hojeISO();
-  const d = dados.proteina[k];
-  const meta = Number(document.getElementById("metaProt")?.value || (d?.meta||95));
-  const total = d ? protTotalHojeObj(d) : (()=> {
-    const fr = protCalc(document.getElementById("prot_frango")?.value, fatores.frango);
-    const ca = protCalc(document.getElementById("prot_carne")?.value, fatores.carne);
-    const ov = protCalc(document.getElementById("prot_ovo")?.value, fatores.ovo);
-    const io = protCalc(document.getElementById("prot_iog")?.value, fatores.iog);
-    const qu = protCalc(document.getElementById("prot_queijo")?.value, fatores.queijo);
-    const wh = protCalc(document.getElementById("prot_whey")?.value, fatores.whey);
-    return Math.round(fr+ca+ov+io+qu+wh);
-  })();
-  document.getElementById("miniProt").innerHTML = total + " g";
-  document.getElementById("miniProt2").innerHTML = "Meta: " + meta + " g";
+/* ==========================
+   FOTOS (LocalStorage)
+========================== */
+function fotoSalvar(){
+  const data = document.getElementById("fotoData").value || hojeISO();
+  const tipo = document.getElementById("fotoTipo").value;
+  const file = document.getElementById("fotoFile").files[0];
+  if(!file) return alert("Escolha uma imagem.");
 
-  // intestino
-  const it = dados.intestino[k];
-  const txt = it ? (it.foi==="sim" ? "✅ Sim" : (it.foi==="pouco" ? "🟡 Pouquinho" : "❌ Não")) : "--";
-  document.getElementById("miniInt").innerHTML = txt;
-  document.getElementById("miniInt2").innerHTML = it?.chia ? "🌿 com chia" : "sem registro";
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    state.fotos.unshift({ data, tipo, src: reader.result });
+    save(); renderFotos();
+    document.getElementById("fotoFile").value="";
+    alert("Foto salva ✅");
+  };
+  reader.readAsDataURL(file);
+}
+function fotoLimpar(){
+  if(confirm("Tem certeza que quer apagar TODAS as fotos salvas no app?")){
+    state.fotos = [];
+    save(); renderFotos();
+  }
+}
+function renderFotos(){
+  const grid = document.getElementById("fotoGrid");
+  if(!grid) return;
+
+  grid.innerHTML = "";
+  if(!state.fotos.length){
+    grid.innerHTML = `<div class="muted">Sem fotos ainda.</div>`;
+    return;
+  }
+  state.fotos.slice(0,10).forEach(p=>{
+    const div = document.createElement("div");
+    div.className = "photoCard";
+    div.innerHTML = `
+      <img src="${p.src}" alt="foto" />
+      <div class="photoMeta"><b>${p.tipo.toUpperCase()}</b> • ${fmtBR(p.data)}</div>
+    `;
+    grid.appendChild(div);
+  });
 }
 
-/* ========= INIT ========= */
-document.getElementById("dataProt").value = fmtBR(hojeISO());
-document.getElementById("fotoData").value = fmtBR(hojeISO());
+/* ==========================
+   BOOT
+========================== */
+function init(){
+  // defaults UI
+  document.getElementById("protData").value = fmtBR(hojeISO());
 
-initAgua(); aguaRender();
-protRender();
-intRender();
-medRender();
-fotoRender();
-treinoRender();
-miniRender();
+  // Render inicial
+  renderKPIs();
+  drawGluteoChart();
+  renderTreino();
+  renderAgua();
+  renderProt();
+  renderInt();
+  renderMed();
+  renderFotos();
+  renderCargasHist();
 
-// listeners de metas
-document.getElementById("metaAgua").addEventListener("input", ()=>{ aguaRender(); });
-document.getElementById("metaProt").addEventListener("input", ()=>{ protRecalcular(); });
-
+  // Service Worker (PWA)
+  if("serviceWorker" in navigator){
+    navigator.serviceWorker.register("./sw.js").catch(()=>{});
+  }
+}
+init();
 </script>
 </body>
 </html>
